@@ -58,7 +58,7 @@ public class MainScreen extends ApplicationTemplate {
 			// in the same RenderableLayer, along with any World Wind object
 			// implementing the Renderable interface.
 			this.symbolLayer = new RenderableLayer();
-			this.symbolLayer.setName("Tactical Symbols");
+			this.symbolLayer.setName("Símbolos Tácticos");
 
 			// Create normal and highlight attribute bundles that are shared by
 			// all tactical symbols. Changes to these
