@@ -62,8 +62,9 @@ import si.xlab.gaea.core.ogc.kml.KMLStyleFactory;
 import si.xlab.gaea.examples.WfsPanel;
 
 /**
- * 
+ * Aplicación de posicionamiento de unidades militares basada en GAEA+ 
  * @author vgonllo
+ * 
  */
 public class BMSAppFrame extends ApplicationTemplate {
 
