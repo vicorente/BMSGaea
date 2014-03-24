@@ -2,3 +2,4 @@
 /milstd2525-symbols.zip
 *.DS_Store
 /.settings
+.classpath

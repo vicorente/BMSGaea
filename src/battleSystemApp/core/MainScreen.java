@@ -19,8 +19,13 @@ import gov.nasa.worldwindx.examples.ApplicationTemplate;
 import javax.swing.*;
 import javax.swing.Box;
 import javax.swing.event.*;
+
+import battleSystemApp.utils.ProxyAuthenticator;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.net.Authenticator;
+
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
@@ -51,6 +56,14 @@ public class MainScreen extends ApplicationTemplate {
 		protected BasicDragger dragger;
 
 		public AppFrame() {
+			//Autenticamos la app contra el proxy
+			Authenticator.setDefault(new ProxyAuthenticator("vgonllo", "Cinmeria13"));
+			System.out.println("Configuring Proxy settings...");
+			System.getProperties().put("http.proxyHost", "10.7.180.112");
+			System.getProperties().put("http.proxyPort", "80");
+			System.getProperties().put("https.proxyHost", "10.7.180.112");
+			System.getProperties().put("https.proxyPort", "80");
+			
 			// Create a renderable layer to display the tactical symbols. This
 			// example adds only three symbols, but many
 			// symbols can be added to a single layer. Note that tactical
@@ -58,7 +71,7 @@ public class MainScreen extends ApplicationTemplate {
 			// in the same RenderableLayer, along with any World Wind object
 			// implementing the Renderable interface.
 			this.symbolLayer = new RenderableLayer();
-			this.symbolLayer.setName("Símbolos Tácticos");
+			this.symbolLayer.setName("Simbolos Tacticos");
 
 			// Create normal and highlight attribute bundles that are shared by
 			// all tactical symbols. Changes to these
