@@ -27,6 +27,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.Authenticator;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -42,6 +44,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -72,8 +76,8 @@ public class BMSAppFrame extends ApplicationTemplate {
 		JMenuItem openWfsItem = new JMenuItem(new AbstractAction(
 				"Add WFS layer...") {
 			/**
-					 * 
-					 */
+			*
+			*/
 			private static final long serialVersionUID = 304812140664922952L;
 
 			@Override
@@ -130,7 +134,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 		menuBar.add(optionsMenu);
 		ButtonGroup optionsGroup = new ButtonGroup();
 
-		JMenuItem wwShading = new ShadingItem(new boolean[] { false, false,
+		JMenuItem wwShading = new ShadingItem(new boolean[] { true, false,
 				false, false, false }, "Default World Wind");
 		optionsMenu.add(wwShading);
 		optionsGroup.add(wwShading);
@@ -323,7 +327,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 			System.getProperties().put("http.proxyPort", "80");
 			System.getProperties().put("https.proxyHost", "10.7.180.112");
 			System.getProperties().put("https.proxyPort", "80");
-			
+
 			this.symbolLayer = new RenderableLayer();
 			this.symbolLayer.setName("Simbolos Tacticos");
 
@@ -435,7 +439,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 
 			// Add the symbol layer to the World Wind model.
 			this.getWwd().getModel().getLayers().add(symbolLayer);
-			// Update the layer panel to display the symbol layer.
+			
 		}
 
 		protected void updateLayerPanel() {
@@ -449,7 +453,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 			getWwd().getModel().getLayers()
 					.add(rttIndex, RenderToTextureLayer.getInstance());
 		}
-		
+
 		protected void addSymbolControls() {
 			Box box = Box.createVerticalBox();
 			box.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -613,7 +617,14 @@ public class BMSAppFrame extends ApplicationTemplate {
 	public static void main(String[] args) {
 		// MeasureRenderTime.enable(true);
 		// MeasureRenderTime.setMesureGpu(true);
-
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException e) {
+			Logger.getLogger(BMSAppFrame.class.getName()).log(Level.SEVERE,
+					"ERROR al fijar el look and feel de la aplicación", e);
+			e.printStackTrace();
+		}
 		Configuration
 				.insertConfigurationDocument("si/xlab/gaea/examples/gaea-example-config.xml");
 		appFrame = (GaeaAppFrame) ApplicationTemplate.start(
