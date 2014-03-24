@@ -2,6 +2,8 @@ package battleSystemApp.utils;
 
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  * Permite la utilización de la aplicación en presencia de un Proxy
  * @author vgonllo
@@ -16,13 +18,16 @@ public class ProxyAuthenticator extends Authenticator {
 		super();
 		this.username = new String(username);
 		this.password = password.toCharArray();
+		Logger.getLogger(ProxyAuthenticator.class.getName()).log(
+				Level.INFO,
+				"Creando autenticador para el proxy...");
 	}
 
 	protected PasswordAuthentication getPasswordAuthentication() {
 		String requestingHost = getRequestingHost();
-		System.out
-				.println("getPasswordAuthentication() request recieved from->"
-						+ requestingHost);
+		Logger.getLogger(ProxyAuthenticator.class.getName()).log(
+				Level.INFO,
+				"petición recibida del proxy -> "+requestingHost);
 		return new PasswordAuthentication(username, password);
 
 	}

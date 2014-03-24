@@ -18,8 +18,8 @@ public class ConfigurationManager {
 	Properties properties = null;
 	
 	public final String CONFIG_FILE_NAME = "configuration.properties";
-	public final String USERNAME = "username";
-	public final String PASSWORD = "password";
+	public final String PROXY_USERNAME = "proxy_username";
+	public final String PROXY_PASSWORD = "proxy_password";
 	
 	private ResourceManager rm;
 
