@@ -20,6 +20,7 @@ import javax.swing.*;
 import javax.swing.Box;
 import javax.swing.event.*;
 
+import battleSystemApp.utils.ConfigurationManager;
 import battleSystemApp.utils.ProxyAuthenticator;
 
 import java.awt.*;
@@ -54,16 +55,17 @@ public class MainScreen extends ApplicationTemplate {
 		protected TacticalSymbolAttributes sharedAttrs;
 		protected TacticalSymbolAttributes sharedHighlightAttrs;
 		protected BasicDragger dragger;
-
+		protected ConfigurationManager confManager;
 		public AppFrame() {
+			
+			confManager = new ConfigurationManager();
 			//Autenticamos la app contra el proxy
-			Authenticator.setDefault(new ProxyAuthenticator("vgonllo", "Cinmeria13"));
+			Authenticator.setDefault(new ProxyAuthenticator(confManager.getProperty(confManager.USERNAME), confManager.getProperty(confManager.PASSWORD)));
 			System.out.println("Configuring Proxy settings...");
 			System.getProperties().put("http.proxyHost", "10.7.180.112");
 			System.getProperties().put("http.proxyPort", "80");
 			System.getProperties().put("https.proxyHost", "10.7.180.112");
 			System.getProperties().put("https.proxyPort", "80");
-			
 			// Create a renderable layer to display the tactical symbols. This
 			// example adds only three symbols, but many
 			// symbols can be added to a single layer. Note that tactical
