@@ -76,8 +76,8 @@ public class BMSAppFrame extends ApplicationTemplate {
 		JMenuItem openWfsItem = new JMenuItem(new AbstractAction(
 				"Add WFS layer...") {
 			/**
-			*
-			*/
+			 *
+			 */
 			private static final long serialVersionUID = 304812140664922952L;
 
 			@Override
