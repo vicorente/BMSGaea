@@ -2,14 +2,14 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/LLorente/workspace/akka-2.2.3/lib/akka/akka-actor_2.10-2.2.3.jar"/>
+	<classpathentry kind="lib" path="/Users/LLorente/workspace/akka-2.2.3/lib/akka/config-1.0.2.jar"/>
+	<classpathentry kind="lib" path="/Users/LLorente/git/gaeaplus/lib/gdal.jar"/>
+	<classpathentry kind="lib" path="/Users/LLorente/git/gaeaplus/lib/gluegen-rt-natives-macosx-universal.jar"/>
+	<classpathentry kind="lib" path="/Users/LLorente/git/gaeaplus/lib/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="/Users/LLorente/git/gaeaplus/lib/jogl-all-natives-macosx-universal.jar"/>
+	<classpathentry kind="lib" path="/Users/LLorente/git/gaeaplus/lib/jogl-all.jar"/>
+	<classpathentry kind="lib" path="/Users/LLorente/git/gaeaplus/lib/plugin.jar"/>
 	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/vgonllo/Documents/DESARROLLO/MI-BMS/gaeaplus-master/lib/gdal.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vgonllo/Documents/DESARROLLO/MI-BMS/akka-2.2.3/lib/akka/akka-actor_2.10-2.2.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vgonllo/Documents/DESARROLLO/MI-BMS/gaeaplus-master/lib/gluegen-rt.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vgonllo/Documents/DESARROLLO/MI-BMS/gaeaplus-master/lib/gluegen-rt-natives-windows-i586.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vgonllo/Documents/DESARROLLO/MI-BMS/gaeaplus-master/lib/jogl-all.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vgonllo/Documents/DESARROLLO/MI-BMS/gaeaplus-master/lib/jogl-all-natives-windows-i586.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vgonllo/Documents/DESARROLLO/MI-BMS/gaeaplus-master/lib/plugin.jar"/>
-	<classpathentry kind="lib" path="C:/Users/vgonllo/Documents/DESARROLLO/MI-BMS/akka-2.2.3/lib/scala-library.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
