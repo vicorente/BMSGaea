@@ -49,6 +49,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import battleSystemApp.dds.DDSCommLayer;
+import battleSystemApp.dds.DDSListener;
+import battleSystemApp.dds.idl.Msg;
 import battleSystemApp.dds.listeners.DDSDragger;
 import battleSystemApp.utils.ConfigurationManager;
 import battleSystemApp.utils.ProxyAuthenticator;
@@ -308,7 +311,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 		appFrame.updateLayerPanel();
 	}
 
-	public static class GaeaAppFrame extends AppFrame {
+	public static class GaeaAppFrame extends AppFrame implements DDSListener{
 		/**
 		 * 
 		 */
@@ -318,7 +321,8 @@ public class BMSAppFrame extends ApplicationTemplate {
 		protected TacticalSymbolAttributes sharedHighlightAttrs;
 		protected DDSDragger dragger;
 		protected ConfigurationManager confManager;
-
+		protected DDSCommLayer dds;
+		
 		public GaeaAppFrame() {
 			confManager = new ConfigurationManager();
 			// Autenticamos la app contra el proxy
@@ -330,6 +334,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 			System.getProperties().put("https.proxyHost", "10.7.180.112");
 			System.getProperties().put("https.proxyPort", "80");
 
+			dds = new DDSCommLayer();
 			this.symbolLayer = new RenderableLayer();
 			this.symbolLayer.setName("Simbolos Tacticos");
 
@@ -432,9 +437,9 @@ public class BMSAppFrame extends ApplicationTemplate {
 
 			// Add a dragging controller to enable user click-and-drag control
 			// over tactical symbols.
-			this.dragger = new DDSDragger(this.getWwd(), true);
+			this.dragger = new DDSDragger(this.getWwd(), true, dds);
 			this.getWwd().addSelectListener(this.dragger);
-
+			this.dds.addListener(this);
 			// Create a Swing control panel that provides user control over the
 			// symbol's appearance.
 			this.addSymbolControls();
@@ -611,6 +616,20 @@ public class BMSAppFrame extends ApplicationTemplate {
 			box.add(cb);
 
 			this.getLayerPanel().add(box, BorderLayout.SOUTH);
+		}
+
+		@Override
+		public void receivedMessage(Msg message) {
+			// TODO Auto-generated method stub
+			Logger.getLogger(DDSCommLayer.class.getName()).log(Level.INFO,
+					"Recibido mensaje DDS -" + message.unitID + "- Lat: "+message.lat+" Lon: " +message.lon+" Alt: "+ message.alt);
+			for (Renderable r: symbolLayer.getRenderables()){
+				TacticalSymbol C2Symbol = (TacticalSymbol) r;
+				if( C2Symbol.getIdentifier().equals(message.unitID)){
+					// Set new symbol position
+					C2Symbol.setPosition(Position.fromDegrees(message.lat, message.lon, message.alt));
+				}
+			}
 		}
 	}
 

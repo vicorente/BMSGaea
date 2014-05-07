@@ -1,5 +1,11 @@
 package battleSystemApp.dds.listeners;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import battleSystemApp.dds.DDSCommLayer;
+import battleSystemApp.dds.DDSListener;
+import battleSystemApp.dds.idl.Msg;
 import gov.nasa.worldwind.Movable;
 import gov.nasa.worldwind.View;
 import gov.nasa.worldwind.WorldWindow;
@@ -10,6 +16,7 @@ import gov.nasa.worldwind.geom.Line;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.Vec4;
 import gov.nasa.worldwind.globes.Globe;
+import gov.nasa.worldwind.symbology.milstd2525.MilStd2525TacticalSymbol;
 import gov.nasa.worldwind.util.BasicDragger;
 import gov.nasa.worldwind.util.Logging;
 
@@ -22,13 +29,17 @@ import gov.nasa.worldwind.util.Logging;
  */
 public class DDSDragger extends BasicDragger {
 
-	public DDSDragger(WorldWindow wwd) {
+	private DDSCommLayer dds;
+
+	public DDSDragger(WorldWindow wwd, DDSCommLayer _dds) {
 		super(wwd);
+		dds = _dds;
 		// TODO Auto-generated constructor stub
 	}
 
-	public DDSDragger(WorldWindow wwd, boolean useTerrain) {
+	public DDSDragger(WorldWindow wwd, boolean useTerrain, DDSCommLayer _dds) {
 		super(wwd, useTerrain);
+		dds = _dds;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -41,9 +52,33 @@ public class DDSDragger extends BasicDragger {
 		}
 
 		if (event.getEventAction().equals(SelectEvent.DRAG_END)) {
+			DragSelectEvent dragEvent = (DragSelectEvent) event;
+			Object topObject = dragEvent.getTopObject();
+			MilStd2525TacticalSymbol dragObject = (MilStd2525TacticalSymbol) topObject;
+
+			// Compute dragged object ref-point in model coordinates.
+			// Use the Icon and Annotation logic of elevation as offset above
+			// ground when below max elevation.
+			Position refPos = dragObject.getReferencePosition();
+			View view = wwd.getView();
+			Globe globe = wwd.getModel().getGlobe();
+
+			// Compute dragged object ref-point in model coordinates.
+			// Use the Icon and Annotation logic of elevation as offset above
+			// ground when below max elevation.
+
+			Vec4 refPoint = globe.computePointFromPosition(refPos);
+			// Prepare DDS message to publish
+
+			Msg message = new Msg(dragObject.getIdentifier(), dragObject
+					.getPosition().getLatitude().getDegrees(), dragObject
+					.getPosition().getLongitude().getDegrees(), dragObject
+					.getPosition().getAltitude());
+			this.dds.publish(message);
+
 			this.dragging = false;
 			event.consume();
-			//TODO: introducir aquí los datos de comunicación DDS
+			// TODO: INTRODUCIR AQUI LOS DATOS DE COMUNICACION DDS
 		} else if (event.getEventAction().equals(SelectEvent.DRAG)) {
 			DragSelectEvent dragEvent = (DragSelectEvent) event;
 			Object topObject = dragEvent.getTopObject();

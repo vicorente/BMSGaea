@@ -5,7 +5,7 @@ import java.net.PasswordAuthentication;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
- * Permite la utilización de la aplicación en presencia de un Proxy
+ * Permite la utilizaciï¿½n de la aplicaciï¿½n en presencia de un Proxy
  * @author vgonllo
  *
  */
@@ -27,7 +27,7 @@ public class ProxyAuthenticator extends Authenticator {
 		String requestingHost = getRequestingHost();
 		Logger.getLogger(ProxyAuthenticator.class.getName()).log(
 				Level.INFO,
-				"petición recibida del proxy -> "+requestingHost);
+				"peticiÃ³n recibida del proxy -> "+requestingHost);
 		return new PasswordAuthentication(username, password);
 
 	}

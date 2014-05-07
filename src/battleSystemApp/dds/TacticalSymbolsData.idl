@@ -1,0 +1,18 @@
+
+module battleSystemApp
+{
+	module dds
+	{
+		module idl
+		{
+		   struct Msg
+		   {
+		      string unitID;    
+		      double lat;
+		      double lon;
+		      double alt;
+		   };
+		   #pragma keylist Msg unitID
+		};
+	};
+};
