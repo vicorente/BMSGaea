@@ -25,9 +25,9 @@ public class ProxyAuthenticator extends Authenticator {
 
 	protected PasswordAuthentication getPasswordAuthentication() {
 		String requestingHost = getRequestingHost();
-		Logger.getLogger(ProxyAuthenticator.class.getName()).log(
-				Level.INFO,
-				"petición recibida del proxy -> "+requestingHost);
+//		Logger.getLogger(ProxyAuthenticator.class.getName()).log(
+//				Level.INFO,
+//				"petición recibida del proxy -> "+requestingHost);
 		return new PasswordAuthentication(username, password);
 
 	}

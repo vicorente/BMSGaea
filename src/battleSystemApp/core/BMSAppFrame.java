@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.net.Authenticator;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -130,6 +131,8 @@ public class BMSAppFrame extends ApplicationTemplate {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				((GaeaAppFrame) appFrame).getDDSCommLayer().removeAllListeners();
+				((GaeaAppFrame) appFrame).getDDSCommLayer().closeDDSEntities();
 				System.exit(0);
 			}
 		});
@@ -449,6 +452,10 @@ public class BMSAppFrame extends ApplicationTemplate {
 			
 		}
 
+		public DDSCommLayer getDDSCommLayer() {
+			return this.dds;
+		}
+
 		protected void updateLayerPanel() {
 			// remove RTT layer, update layer panel, re-insert RTT; otherwise it
 			// will appear in the layer list
@@ -646,6 +653,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 					"ERROR al fijar el look and feel de la aplicación", e);
 			e.printStackTrace();
 		}
+		
 		Configuration
 				.insertConfigurationDocument("si/xlab/gaea/examples/gaea-example-config.xml");
 		appFrame = (GaeaAppFrame) ApplicationTemplate.start(
@@ -656,4 +664,5 @@ public class BMSAppFrame extends ApplicationTemplate {
 				new FeatureSelectListener(appFrame.getWwd()));
 		makeMenu(appFrame);
 	}
+
 }
