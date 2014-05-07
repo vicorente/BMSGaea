@@ -1,0 +1,12 @@
+
+module idl
+{
+   struct Msg
+   {
+      string unitID;    
+      float lat;
+      float lon;
+      float alt;
+   };
+   #pragma keylist Msg unitID
+};

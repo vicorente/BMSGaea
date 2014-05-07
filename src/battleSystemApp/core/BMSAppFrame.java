@@ -49,7 +49,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import listeners.DDSDragger;
+import battleSystemApp.dds.listeners.DDSDragger;
 import battleSystemApp.utils.ConfigurationManager;
 import battleSystemApp.utils.ProxyAuthenticator;
 import si.xlab.gaea.avlist.AvKeyExt;
