@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Clase que proporciona acceso al fichero de configuración
+ * Clase que proporciona acceso al fichero de configuraciï¿½n
  * configuration.properties
  * 
  * @author Victor
@@ -29,7 +29,7 @@ public class ConfigurationManager {
 		try {
 			Logger.getLogger(ConfigurationManager.class.getName()).log(
 					Level.INFO,
-					"Fichero de configuración: " + rm.getConfigurationPath()
+					"Fichero de configuraciÃ³n: " + rm.getConfigurationPath()
 							+ CONFIG_FILE_NAME);
 			FileInputStream in = new FileInputStream(rm.getConfigurationPath()
 					+ CONFIG_FILE_NAME);
@@ -37,7 +37,7 @@ public class ConfigurationManager {
 			in.close();
 			Logger.getLogger(ConfigurationManager.class.getName()).log(
 					Level.INFO,
-					"Leyendo valores del fichero de configuración...");
+					"Leyendo valores del fichero de configuraciÃ³n...");
 			for (String key : properties.stringPropertyNames()) {
 				String value = properties.getProperty(key);
 				Logger.getLogger(ConfigurationManager.class.getName()).log(
@@ -51,7 +51,7 @@ public class ConfigurationManager {
 	}
 
 	/**
-	 * Devuelve la propiedad de configuración solicitada
+	 * Devuelve la propiedad de configuraciï¿½n solicitada
 	 * 
 	 * @param key 
 	 * @return

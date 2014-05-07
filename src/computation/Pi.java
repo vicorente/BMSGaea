@@ -1,7 +1,7 @@
 package computation;
 
 /**
- * Copyright (C) 2009-2012 Typesafe Inc. <http://www.typesafe.com>
+ * Ejemplo de uso de AKKA para distribuir tareas entre actores
  */
 
 import akka.actor.ActorRef;

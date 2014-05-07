@@ -18,13 +18,13 @@ import java.awt.*;
  */
 public class BasicDragger implements SelectListener
 {
-    private final WorldWindow wwd;
-    private boolean dragging = false;
+    protected final WorldWindow wwd;
+    protected boolean dragging = false;
     private boolean useTerrain = true;
 
-    private Point dragRefCursorPoint;
-    private Vec4 dragRefObjectPoint;
-    private double dragRefAltitude;
+    protected Point dragRefCursorPoint;
+    protected Vec4 dragRefObjectPoint;
+    protected double dragRefAltitude;
 
     public BasicDragger(WorldWindow wwd)
     {

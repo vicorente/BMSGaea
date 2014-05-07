@@ -49,6 +49,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import listeners.DDSDragger;
 import battleSystemApp.utils.ConfigurationManager;
 import battleSystemApp.utils.ProxyAuthenticator;
 import si.xlab.gaea.avlist.AvKeyExt;
@@ -62,7 +63,7 @@ import si.xlab.gaea.core.ogc.kml.KMLStyleFactory;
 import si.xlab.gaea.examples.WfsPanel;
 
 /**
- * Aplicación de posicionamiento de unidades militares basada en GAEA+ 
+ * AplicaciÃ³n de posicionamiento de unidades militares basada en GAEA+ 
  * @author vgonllo
  * 
  */
@@ -315,7 +316,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 		protected RenderableLayer symbolLayer;
 		protected TacticalSymbolAttributes sharedAttrs;
 		protected TacticalSymbolAttributes sharedHighlightAttrs;
-		protected BasicDragger dragger;
+		protected DDSDragger dragger;
 		protected ConfigurationManager confManager;
 
 		public GaeaAppFrame() {
@@ -431,7 +432,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 
 			// Add a dragging controller to enable user click-and-drag control
 			// over tactical symbols.
-			this.dragger = new BasicDragger(this.getWwd());
+			this.dragger = new DDSDragger(this.getWwd(), true);
 			this.getWwd().addSelectListener(this.dragger);
 
 			// Create a Swing control panel that provides user control over the
@@ -623,7 +624,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | UnsupportedLookAndFeelException e) {
 			Logger.getLogger(BMSAppFrame.class.getName()).log(Level.SEVERE,
-					"ERROR al fijar el look and feel de la aplicación", e);
+					"ERROR al fijar el look and feel de la aplicaciÃ³n", e);
 			e.printStackTrace();
 		}
 		Configuration
