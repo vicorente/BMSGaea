@@ -98,7 +98,7 @@ public class DDSCommLayer implements DataReaderListener<Msg> {
 	public void closeDDSEntities() {
 		// Close the DDS DomainParticipant and all its child entities
 		Logger.getLogger(DDSCommLayer.class.getName()).log(Level.INFO,
-				"Eliminando DomainParticipants de DDS -");
+				"Eliminando DomainParticipants de DDS..");
 		dp.close();
 		
 	}
