@@ -25,7 +25,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 import java.net.Authenticator;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -67,7 +69,8 @@ import si.xlab.gaea.core.ogc.kml.KMLStyleFactory;
 import si.xlab.gaea.examples.WfsPanel;
 
 /**
- * Aplicación de posicionamiento de unidades militares basada en GAEA+ 
+ * Aplicación de posicionamiento de unidades militares basada en GAEA+
+ * 
  * @author vgonllo
  * 
  */
@@ -131,7 +134,8 @@ public class BMSAppFrame extends ApplicationTemplate {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				((GaeaAppFrame) appFrame).getDDSCommLayer().removeAllListeners();
+				((GaeaAppFrame) appFrame).getDDSCommLayer()
+						.removeAllListeners();
 				((GaeaAppFrame) appFrame).getDDSCommLayer().closeDDSEntities();
 				System.exit(0);
 			}
@@ -314,7 +318,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 		appFrame.updateLayerPanel();
 	}
 
-	public static class GaeaAppFrame extends AppFrame implements DDSListener{
+	public static class GaeaAppFrame extends AppFrame implements DDSListener {
 		/**
 		 * 
 		 */
@@ -325,8 +329,9 @@ public class BMSAppFrame extends ApplicationTemplate {
 		protected DDSDragger dragger;
 		protected ConfigurationManager confManager;
 		protected DDSCommLayer dds;
-		
+
 		public GaeaAppFrame() {
+
 			confManager = new ConfigurationManager();
 			// Autenticamos la app contra el proxy
 			Authenticator.setDefault(new ProxyAuthenticator(confManager
@@ -449,7 +454,16 @@ public class BMSAppFrame extends ApplicationTemplate {
 
 			// Add the symbol layer to the World Wind model.
 			this.getWwd().getModel().getLayers().add(symbolLayer);
-			
+
+			// Delete resources before exit
+			addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					dds.removeAllListeners();
+					dds.closeDDSEntities();
+					System.exit(0);
+				}
+			});
+
 		}
 
 		public DDSCommLayer getDDSCommLayer() {
@@ -627,14 +641,17 @@ public class BMSAppFrame extends ApplicationTemplate {
 
 		@Override
 		public void receivedMessage(Msg message) {
-			// TODO Auto-generated method stub
-			Logger.getLogger(DDSCommLayer.class.getName()).log(Level.INFO,
-					"Recibido mensaje DDS -" + message.unitID + "- Lat: "+message.lat+" Lon: " +message.lon+" Alt: "+ message.alt);
-			for (Renderable r: symbolLayer.getRenderables()){
+			Logger.getLogger(DDSCommLayer.class.getName()).log(
+					Level.INFO,
+					"Recibido mensaje DDS -" + message.unitID + "- Lat: "
+							+ message.lat + " Lon: " + message.lon + " Alt: "
+							+ message.alt);
+			for (Renderable r : symbolLayer.getRenderables()) {
 				TacticalSymbol C2Symbol = (TacticalSymbol) r;
-				if( C2Symbol.getIdentifier().equals(message.unitID)){
+				if (C2Symbol.getIdentifier().equals(message.unitID)) {
 					// Set new symbol position
-					C2Symbol.setPosition(Position.fromDegrees(message.lat, message.lon, message.alt));
+					C2Symbol.setPosition(Position.fromDegrees(message.lat,
+							message.lon, message.alt));
 				}
 			}
 		}
@@ -653,7 +670,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 					"ERROR al fijar el look and feel de la aplicación", e);
 			e.printStackTrace();
 		}
-		
+
 		Configuration
 				.insertConfigurationDocument("si/xlab/gaea/examples/gaea-example-config.xml");
 		appFrame = (GaeaAppFrame) ApplicationTemplate.start(
