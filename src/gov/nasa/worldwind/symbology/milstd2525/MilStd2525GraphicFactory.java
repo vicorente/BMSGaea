@@ -87,7 +87,7 @@ public class MilStd2525GraphicFactory implements TacticalGraphicFactory
         this.mapClass(DoseRateContourLine.class, DoseRateContourLine.getSupportedGraphics());
 
         // Fire support
-
+        
         this.mapClass(RectangularTarget.class, RectangularTarget.getSupportedGraphics());
         this.mapClass(LinearTarget.class, LinearTarget.getSupportedGraphics());
         this.mapClass(RectangularFireSupportArea.class, RectangularFireSupportArea.getSupportedGraphics());
