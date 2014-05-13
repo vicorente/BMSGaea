@@ -29,7 +29,7 @@ public class InterfaceLayer extends RenderableLayer{
     protected final static String IMAGE_VE_UP = "images/view-elevation-up-32x32.png";
     protected final static String IMAGE_VE_DOWN = "images/view-elevation-down-32x32.png";
     // mis imagenes
-    protected final static String IMAGE_NEW_UNIT = "images/pin_zoom_in.png";
+    protected final static String IMAGE_NEW_UNIT = "images/layer-manager-64x64.png";
    // protected final static String CONTROL_NEW_UNIT = "battleSystemApp.controlNewUnit";
     // The annotations used to display the controls.
     protected ScreenAnnotation controlPan;
@@ -579,6 +579,7 @@ public class InterfaceLayer extends RenderableLayer{
         	 controlNewUnit =  new ScreenAnnotation(NOTEXT, ORIGIN, ca);
         	 controlNewUnit.setValue(AVKey.VIEW_OPERATION, AVKey.BUTTON_NEW_UNIT);
              controlNewUnit.getAttributes().setImageSource(getImageSource(AVKey.BUTTON_NEW_UNIT));
+             controlNewUnit.getAttributes().setSize(new Dimension(panSize, panSize));
              this.addRenderable(controlNewUnit);
         }
 
