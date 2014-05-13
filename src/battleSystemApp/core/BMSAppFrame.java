@@ -8,6 +8,8 @@ import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.Sector;
 import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.RenderableLayer;
+import gov.nasa.worldwind.layers.ViewControlsLayer;
+import gov.nasa.worldwind.layers.ViewControlsSelectListener;
 import gov.nasa.worldwind.ogc.kml.KMLStyle;
 import gov.nasa.worldwind.render.DrawContext;
 import gov.nasa.worldwind.render.Material;
@@ -59,6 +61,8 @@ import javax.swing.JToolBar;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
 
+import battleSystemApp.components.InterfaceLayer;
+import battleSystemApp.components.InterfaceLayerSelectListener;
 import battleSystemApp.components.RoundedPanel;
 import battleSystemApp.dds.DDSCommLayer;
 import battleSystemApp.dds.DDSListener;
@@ -362,8 +366,12 @@ public class BMSAppFrame extends ApplicationTemplate {
 			this.symbolLayer = new RenderableLayer();
 			this.symbolLayer.setName("Simbolos Tacticos");
 			
-			// Operaciones de generación de interfaz
-
+			// OPERACIONES DE INTERFAZ
+			// Create and install the view controls layer and register a controller for it with the World Window.
+            InterfaceLayer interfaceLayer = new InterfaceLayer();
+            insertBeforeCompass(this.getWwd(), interfaceLayer);
+            this.getWwd().addSelectListener(new InterfaceLayerSelectListener(this.getWwd(), interfaceLayer));
+            
 			
 			// Create normal and highlight attribute bundles that are shared by
 			// all tactical symbols. Changes to these
