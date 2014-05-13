@@ -30,7 +30,7 @@ public class InterfaceLayer extends RenderableLayer{
     protected final static String IMAGE_VE_DOWN = "images/view-elevation-down-32x32.png";
     // mis imagenes
     protected final static String IMAGE_NEW_UNIT = "images/pin_zoom_in.png";
-    protected final static String CONTROL_NEW_UNIT = "battleSystemApp.controlNewUnit";
+   // protected final static String CONTROL_NEW_UNIT = "battleSystemApp.controlNewUnit";
     // The annotations used to display the controls.
     protected ScreenAnnotation controlPan;
     protected ScreenAnnotation controlLook;
@@ -417,8 +417,8 @@ public class InterfaceLayer extends RenderableLayer{
             return AVKey.VIEW_FOV_WIDE;
         else if (showVeControls && controlVeUp.equals(control))
             return AVKey.VERTICAL_EXAGGERATION_UP;
-        else if (showVeControls && controlVeDown.equals(control))
-            return AVKey.VERTICAL_EXAGGERATION_DOWN;
+        else if (showNewUnitControls && controlNewUnit.equals(control))
+            return AVKey.BUTTON_NEW_UNIT;
 
         return null;
     }
@@ -574,11 +574,11 @@ public class InterfaceLayer extends RenderableLayer{
             
            
         }
-        
+        // necesario para que pinte los controles
         if (this.showNewUnitControls){
         	 controlNewUnit =  new ScreenAnnotation(NOTEXT, ORIGIN, ca);
-        	 controlVeDown.setValue(AVKey.VIEW_OPERATION, CONTROL_NEW_UNIT);
-             controlNewUnit.getAttributes().setImageSource(getImageSource(CONTROL_NEW_UNIT));
+        	 controlNewUnit.setValue(AVKey.VIEW_OPERATION, AVKey.BUTTON_NEW_UNIT);
+             controlNewUnit.getAttributes().setImageSource(getImageSource(AVKey.BUTTON_NEW_UNIT));
              this.addRenderable(controlNewUnit);
         }
 
@@ -626,7 +626,7 @@ public class InterfaceLayer extends RenderableLayer{
             return IMAGE_VE_DOWN;
         else if (control.equals(AVKey.VERTICAL_EXAGGERATION_DOWN))
             return IMAGE_VE_DOWN;
-        else if (control.equals(CONTROL_NEW_UNIT))
+        else if (control.equals(AVKey.BUTTON_NEW_UNIT))
             return IMAGE_NEW_UNIT;
         return null;
     }

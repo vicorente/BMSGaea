@@ -437,6 +437,7 @@ public class InterfaceLayerSelectListener implements SelectListener
             SceneController sc = this.wwd.getSceneController();
             sc.setVerticalExaggeration(Math.max(1d, sc.getVerticalExaggeration() - this.veStep));
         }
+       
         view.firePropertyChange(AVKey.VIEW, null, view);
     }
 

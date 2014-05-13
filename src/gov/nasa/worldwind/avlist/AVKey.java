@@ -464,6 +464,8 @@ public interface AVKey // TODO: Eliminate unused constants, if any
     final String VIEW_INPUT_HANDLER_CLASS_NAME = "gov.nasa.worldwind.avkey.ViewInputHandlerClassName";
     final String VIEW_QUIET = "gov.nasa.worldwind.avkey.ViewQuiet";
 
+    final String BUTTON_NEW_UNIT = "gov.nasa.worldwind.avkey.NewUnit";
+
     // Viewing operations
     final String VIEW_OPERATION = "gov.nasa.worldwind.avkey.ViewOperation";
     final String VIEW_PAN = "gov.nasa.worldwind.avkey.Pan";
