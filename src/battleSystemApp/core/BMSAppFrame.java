@@ -23,9 +23,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.Authenticator;
@@ -36,6 +39,7 @@ import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -55,13 +59,13 @@ import javax.swing.JToolBar;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
 
+import battleSystemApp.components.RoundedPanel;
 import battleSystemApp.dds.DDSCommLayer;
 import battleSystemApp.dds.DDSListener;
 import battleSystemApp.dds.idl.Msg;
 import battleSystemApp.dds.listeners.DDSDragger;
 import battleSystemApp.utils.ConfigurationManager;
 import battleSystemApp.utils.ProxyAuthenticator;
-
 import si.xlab.gaea.avlist.AvKeyExt;
 import si.xlab.gaea.core.event.FeatureSelectListener;
 import si.xlab.gaea.core.layers.RenderToTextureLayer;
@@ -334,7 +338,11 @@ public class BMSAppFrame extends ApplicationTemplate {
 		protected DDSDragger dragger;
 		protected ConfigurationManager confManager;
 		protected DDSCommLayer dds;
+		private RoundedPanel configPanel;
 
+		/**
+		 * 
+		 */
 		public GaeaAppFrame() {
 
 			confManager = new ConfigurationManager();
@@ -355,29 +363,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 			this.symbolLayer.setName("Simbolos Tacticos");
 			
 			// Operaciones de generación de interfaz
-			JToolBar toolBar = new JToolBar();
-			toolBar.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-			toolBar.setAlignmentY(Component.CENTER_ALIGNMENT);
-			toolBar.setFloatable(false);
-			this.getContentPane().add(toolBar, BorderLayout.NORTH);
-			
-			JToggleButton btnFicheroMision = new JToggleButton("");
-			btnFicheroMision.setToolTipText("Carga un fichero de misi\u00F3n");
-			btnFicheroMision.setIcon(new ImageIcon(GaeaAppFrame.class
-					.getResource("/icons/notepad_add.png")));
-			toolBar.add(btnFicheroMision);
 
-			JToggleButton btnGuardaSituacion = new JToggleButton("");
-			btnGuardaSituacion.setToolTipText("Guarda la situaci\u00F3n actual");
-			btnGuardaSituacion.setIcon(new ImageIcon(GaeaAppFrame.class
-					.getResource("/icons/inbox_in.png")));
-			toolBar.add(btnGuardaSituacion);
-
-			JToggleButton btnCargarMapa = new JToggleButton("");
-			btnCargarMapa.setToolTipText("Cargar Mapa");
-			btnCargarMapa.setIcon(new ImageIcon(GaeaAppFrame.class
-					.getResource("/icons/map.png")));
-			toolBar.add(btnCargarMapa);
 			
 			// Create normal and highlight attribute bundles that are shared by
 			// all tactical symbols. Changes to these
@@ -701,6 +687,94 @@ public class BMSAppFrame extends ApplicationTemplate {
 		}
 	}
 
+	private static RoundedPanel createConfigPanel(final JComponent parent) {
+		final RoundedPanel panel = new RoundedPanel();
+		ButtonGroup buttonGroupConfigPanel = new ButtonGroup();
+		
+		panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		panel.setSize(new Dimension(80, 300));
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		Component verticalGlue_2 = Box.createVerticalGlue();
+		panel.add(verticalGlue_2);
+
+		JToggleButton btnNewButton = new JToggleButton("");
+		buttonGroupConfigPanel.add(btnNewButton);
+		btnNewButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnNewButton.setIcon(new ImageIcon(GaeaAppFrame.class
+				.getResource("/icons/alarm.png")));
+		panel.add(btnNewButton);
+
+		Component verticalGlue_1 = Box.createVerticalGlue();
+		panel.add(verticalGlue_1);
+
+		JToggleButton btnNewButton_2 = new JToggleButton("");
+		btnNewButton_2.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+			}
+		});
+		buttonGroupConfigPanel.add(btnNewButton_2);
+		btnNewButton_2.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnNewButton_2.setIcon(new ImageIcon(GaeaAppFrame.class
+				.getResource("/icons/battery_2_3.png")));
+		panel.add(btnNewButton_2);
+		// situamos el panel en la esquina superior derecha del mapa
+		parent.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				panel.setLocation(20, 20);
+			}
+		});
+
+		Component verticalGlue = Box.createVerticalGlue();
+		panel.add(verticalGlue);
+
+		JToggleButton btnNewButton_3 = new JToggleButton("");
+		btnNewButton_3.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+			}
+		});
+		buttonGroupConfigPanel.add(btnNewButton_3);
+		btnNewButton_3.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnNewButton_3.setIcon(new ImageIcon(GaeaAppFrame.class
+				.getResource("/icons/arrow_1.png")));
+		panel.add(btnNewButton_3);
+
+		Component verticalGlue_3 = Box.createVerticalGlue();
+		panel.add(verticalGlue_3);
+
+		JToggleButton btnNewButton_4 = new JToggleButton("");
+		btnNewButton_4.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+			}
+		});
+		buttonGroupConfigPanel.add(btnNewButton_4);
+		btnNewButton_4.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnNewButton_4.setIcon(new ImageIcon(GaeaAppFrame.class
+				.getResource("/icons/camera.png")));
+		panel.add(btnNewButton_4);
+
+		Component verticalGlue_4 = Box.createVerticalGlue();
+		panel.add(verticalGlue_4);
+
+		JToggleButton button = new JToggleButton("");
+		button.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+			}
+		});
+		buttonGroupConfigPanel.add(button);
+		button.setIcon(new ImageIcon(GaeaAppFrame.class
+				.getResource("/icons/polaroids.png")));
+		button.setAlignmentX(0.5f);
+		panel.add(button);
+
+		Component verticalGlue_5 = Box.createVerticalGlue();
+		panel.add(verticalGlue_5);
+
+		panel.setVisible(false);
+		return panel;
+	}
+	
 	private static GaeaAppFrame appFrame = null;
 
 	public static void main(String[] args) {
