@@ -17,17 +17,17 @@ import gov.nasa.worldwind.symbology.SymbologyConstants;
 import gov.nasa.worldwind.symbology.TacticalSymbol;
 import gov.nasa.worldwind.symbology.TacticalSymbolAttributes;
 import gov.nasa.worldwind.symbology.milstd2525.MilStd2525TacticalSymbol;
-import gov.nasa.worldwind.util.BasicDragger;
 import gov.nasa.worldwindx.examples.ApplicationTemplate;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowStateListener;
 import java.net.Authenticator;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -51,6 +51,9 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.JToolBar;
+import javax.swing.ImageIcon;
+import javax.swing.JToggleButton;
 
 import battleSystemApp.dds.DDSCommLayer;
 import battleSystemApp.dds.DDSListener;
@@ -58,6 +61,7 @@ import battleSystemApp.dds.idl.Msg;
 import battleSystemApp.dds.listeners.DDSDragger;
 import battleSystemApp.utils.ConfigurationManager;
 import battleSystemApp.utils.ProxyAuthenticator;
+
 import si.xlab.gaea.avlist.AvKeyExt;
 import si.xlab.gaea.core.event.FeatureSelectListener;
 import si.xlab.gaea.core.layers.RenderToTextureLayer;
@@ -134,6 +138,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// Eliminamos los recursos DDS
 				((GaeaAppFrame) appFrame).getDDSCommLayer()
 						.removeAllListeners();
 				((GaeaAppFrame) appFrame).getDDSCommLayer().closeDDSEntities();
@@ -342,10 +347,38 @@ public class BMSAppFrame extends ApplicationTemplate {
 			System.getProperties().put("https.proxyHost", "10.7.180.112");
 			System.getProperties().put("https.proxyPort", "80");
 
+			// Capa de comunicaciones DDS
 			dds = new DDSCommLayer();
+			this.dds.addListener(this);
+			
 			this.symbolLayer = new RenderableLayer();
 			this.symbolLayer.setName("Simbolos Tacticos");
+			
+			// Operaciones de generación de interfaz
+			JToolBar toolBar = new JToolBar();
+			toolBar.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+			toolBar.setAlignmentY(Component.CENTER_ALIGNMENT);
+			toolBar.setFloatable(false);
+			this.getContentPane().add(toolBar, BorderLayout.NORTH);
+			
+			JToggleButton btnFicheroMision = new JToggleButton("");
+			btnFicheroMision.setToolTipText("Carga un fichero de misi\u00F3n");
+			btnFicheroMision.setIcon(new ImageIcon(GaeaAppFrame.class
+					.getResource("/icons/notepad_add.png")));
+			toolBar.add(btnFicheroMision);
 
+			JToggleButton btnGuardaSituacion = new JToggleButton("");
+			btnGuardaSituacion.setToolTipText("Guarda la situaci\u00F3n actual");
+			btnGuardaSituacion.setIcon(new ImageIcon(GaeaAppFrame.class
+					.getResource("/icons/inbox_in.png")));
+			toolBar.add(btnGuardaSituacion);
+
+			JToggleButton btnCargarMapa = new JToggleButton("");
+			btnCargarMapa.setToolTipText("Cargar Mapa");
+			btnCargarMapa.setIcon(new ImageIcon(GaeaAppFrame.class
+					.getResource("/icons/map.png")));
+			toolBar.add(btnCargarMapa);
+			
 			// Create normal and highlight attribute bundles that are shared by
 			// all tactical symbols. Changes to these
 			// attribute bundles are reflected in all symbols. We specify both
@@ -447,7 +480,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 			// over tactical symbols.
 			this.dragger = new DDSDragger(this.getWwd(), true, dds);
 			this.getWwd().addSelectListener(this.dragger);
-			this.dds.addListener(this);
+			
 			// Create a Swing control panel that provides user control over the
 			// symbol's appearance.
 			this.addSymbolControls();
@@ -637,8 +670,19 @@ public class BMSAppFrame extends ApplicationTemplate {
 			box.add(cb);
 
 			this.getLayerPanel().add(box, BorderLayout.SOUTH);
+			
 		}
-
+		
+		/**
+		 * Añade los controles sobre el mapa
+		 */
+		protected void addInMapControls(){
+			
+		}
+		/**
+		 * Implementación de la interfaz DDSListener.
+		 * Llamado cuando llega un mensaje
+		 */
 		@Override
 		public void receivedMessage(Msg message) {
 			Logger.getLogger(DDSCommLayer.class.getName()).log(
@@ -663,6 +707,8 @@ public class BMSAppFrame extends ApplicationTemplate {
 		// MeasureRenderTime.enable(true);
 		// MeasureRenderTime.setMesureGpu(true);
 		try {
+			// Fijamos el aspecto de la aplicacion para que lo obtenga igual
+			// al sistema donde se ejecuta
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | UnsupportedLookAndFeelException e) {

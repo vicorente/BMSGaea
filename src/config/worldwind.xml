@@ -94,5 +94,5 @@
          Examples: http://myserver.com/milstd2525/   (web server)
                    jar:file:milstd2525-symbols.zip!  (local zip archive)  -->
     <Property name="gov.nasa.worldwind.avkey.MilStd2525IconRetrieverPath"
-              value="jar:file:milstd2525-symbols.zip!"/>
+              value="jar:file:resources/milstd2525-symbols.zip!"/>
 </WorldWindConfiguration>
