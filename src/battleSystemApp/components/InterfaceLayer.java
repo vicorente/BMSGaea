@@ -16,7 +16,7 @@ import gov.nasa.worldwind.avlist.AVKey;
 
 public class InterfaceLayer extends RenderableLayer{
 	// The default images
-    protected final static String IMAGE_PAN = "icons/view-pan-64x64.png";
+    protected final static String IMAGE_PAN = "images/view-pan-64x64.png";
     protected final static String IMAGE_LOOK = "images/view-look-64x64.png";
     protected final static String IMAGE_HEADING_LEFT = "images/view-heading-left-32x32.png";
     protected final static String IMAGE_HEADING_RIGHT = "images/view-heading-right-32x32.png";
@@ -28,7 +28,9 @@ public class InterfaceLayer extends RenderableLayer{
     protected final static String IMAGE_FOV_WIDE = "images/view-fov-wide-32x32.png";
     protected final static String IMAGE_VE_UP = "images/view-elevation-up-32x32.png";
     protected final static String IMAGE_VE_DOWN = "images/view-elevation-down-32x32.png";
-
+    // mis imagenes
+    protected final static String IMAGE_NEW_UNIT = "images/pin_zoom_in.png";
+    protected final static String CONTROL_NEW_UNIT = "battleSystemApp.controlNewUnit";
     // The annotations used to display the controls.
     protected ScreenAnnotation controlPan;
     protected ScreenAnnotation controlLook;
@@ -43,6 +45,9 @@ public class InterfaceLayer extends RenderableLayer{
     protected ScreenAnnotation controlVeUp;
     protected ScreenAnnotation controlVeDown;
     protected ScreenAnnotation currentControl;
+    
+    // mis controles
+    protected ScreenAnnotation controlNewUnit;
 
     protected String position = AVKey.SOUTHWEST;
     protected String layout = AVKey.HORIZONTAL;
@@ -56,12 +61,13 @@ public class InterfaceLayer extends RenderableLayer{
     protected Rectangle referenceViewport;
 
     protected boolean showPanControls = true;
-    protected boolean showLookControls = false;
+    protected boolean showLookControls = true;
     protected boolean showZoomControls = true;
     protected boolean showHeadingControls = true;
     protected boolean showPitchControls = true;
-    protected boolean showFovControls = false;
+    protected boolean showFovControls = true;
     protected boolean showVeControls = true;
+    protected boolean showNewUnitControls = true;
 
     public int getBorderWidth()
     {
@@ -358,6 +364,20 @@ public class InterfaceLayer extends RenderableLayer{
     {
         return this.showVeControls;
     }
+    
+    public boolean isShowNewUnitControls()
+    {
+        return this.showNewUnitControls;
+    }
+
+    public void setShowNewUnitControls(boolean state)
+    {
+        if (this.showNewUnitControls != state)
+        {
+            this.showNewUnitControls = state;
+            clearControls();
+        }
+    }
 
     /**
      * Get the control type associated with the given object or null if unknown.
@@ -551,6 +571,15 @@ public class InterfaceLayer extends RenderableLayer{
             controlVeDown.setValue(AVKey.VIEW_OPERATION, AVKey.VERTICAL_EXAGGERATION_DOWN);
             controlVeDown.getAttributes().setImageSource(getImageSource(AVKey.VERTICAL_EXAGGERATION_DOWN));
             this.addRenderable(controlVeDown);
+            
+           
+        }
+        
+        if (this.showNewUnitControls){
+        	 controlNewUnit =  new ScreenAnnotation(NOTEXT, ORIGIN, ca);
+        	 controlVeDown.setValue(AVKey.VIEW_OPERATION, CONTROL_NEW_UNIT);
+             controlNewUnit.getAttributes().setImageSource(getImageSource(CONTROL_NEW_UNIT));
+             this.addRenderable(controlNewUnit);
         }
 
         // Place controls according to layout and viewport dimension
@@ -595,7 +624,10 @@ public class InterfaceLayer extends RenderableLayer{
             return IMAGE_VE_UP;
         else if (control.equals(AVKey.VERTICAL_EXAGGERATION_DOWN))
             return IMAGE_VE_DOWN;
-
+        else if (control.equals(AVKey.VERTICAL_EXAGGERATION_DOWN))
+            return IMAGE_VE_DOWN;
+        else if (control.equals(CONTROL_NEW_UNIT))
+            return IMAGE_NEW_UNIT;
         return null;
     }
 
@@ -611,7 +643,8 @@ public class InterfaceLayer extends RenderableLayer{
             (showHeadingControls ? buttonSize : 0) +
             (showPitchControls ? buttonSize : 0) +
             (showFovControls ? buttonSize : 0) +
-            (showVeControls ? buttonSize : 0);
+            (showVeControls ? buttonSize : 0) + 
+            (showNewUnitControls ? buttonSize: 0);
         int height = Math.max(panSize, buttonSize * 2);
         width = (int) (width * scale);
         height = (int) (height * scale);
@@ -698,9 +731,16 @@ public class InterfaceLayer extends RenderableLayer{
             controlVeUp.setScreenPoint(new Point(x + halfButtonSize + xOffset, y + yOffset));
             controlVeDown.setScreenPoint(new Point(x + halfButtonSize, y));
             if (horizontalLayout)
-                x += (int) (buttonSize * scale);
+                x += (int) (buttonSize * scale);         
         }
 
+        if (this.showNewUnitControls){
+        	if (!horizontalLayout)
+                y -= (int) (buttonSize * scale);
+            controlNewUnit.setScreenPoint(new Point(x + halfButtonSize + xOffset, y + yOffset));
+            if (horizontalLayout)
+                x += (int) (buttonSize * scale);  
+        }
         this.referenceViewport = dc.getView().getViewport();
     }
 

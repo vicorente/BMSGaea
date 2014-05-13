@@ -121,9 +121,9 @@ public class ApplicationTemplate
             }
 
             // Create and install the view controls layer and register a controller for it with the World Window.
-            ViewControlsLayer viewControlsLayer = new ViewControlsLayer();
-            insertBeforeCompass(getWwd(), viewControlsLayer);
-            this.getWwd().addSelectListener(new ViewControlsSelectListener(this.getWwd(), viewControlsLayer));
+            //ViewControlsLayer viewControlsLayer = new ViewControlsLayer();
+           // insertBeforeCompass(getWwd(), viewControlsLayer);
+           // this.getWwd().addSelectListener(new ViewControlsSelectListener(this.getWwd(), viewControlsLayer));
 
             // Register a rendering exception listener that's notified when exceptions occur during rendering.
             this.wwjPanel.getWwd().addRenderingExceptionListener(new RenderingExceptionListener()

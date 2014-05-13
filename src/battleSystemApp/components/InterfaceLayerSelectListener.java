@@ -38,9 +38,9 @@ public class InterfaceLayerSelectListener implements SelectListener
     protected double veStep = 0.1;
 
     /**
-     * Construct a controller for specified <code>WorldWindow</code> and <code>ViewControlsLayer<c/code>.
+     * Construct a controller for specified <code>WorldWindow</code> and <code>InterfaceLayer<c/code>.
      * <p/>
-     * <code>ViewControlLayer</code>s are not sharable among <code>WorldWindow</code>s. A separate layer and controller
+     * <code>InterfaceLayer</code>s are not sharable among <code>WorldWindow</code>s. A separate layer and controller
      * must be established for each window that's to have view controls.
      *
      * @param wwd   the <code>WorldWindow</code> the specified layer is associated with.
