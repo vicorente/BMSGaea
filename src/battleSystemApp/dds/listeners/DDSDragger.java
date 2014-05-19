@@ -54,30 +54,34 @@ public class DDSDragger extends BasicDragger {
 		if (event.getEventAction().equals(SelectEvent.DRAG_END)) {
 			DragSelectEvent dragEvent = (DragSelectEvent) event;
 			Object topObject = dragEvent.getTopObject();
-			MilStd2525TacticalSymbol dragObject = (MilStd2525TacticalSymbol) topObject;
+			if (topObject instanceof MilStd2525TacticalSymbol) {
+				MilStd2525TacticalSymbol dragObject = (MilStd2525TacticalSymbol) topObject;
 
-			// Compute dragged object ref-point in model coordinates.
-			// Use the Icon and Annotation logic of elevation as offset above
-			// ground when below max elevation.
-			Position refPos = dragObject.getReferencePosition();
-			View view = wwd.getView();
-			Globe globe = wwd.getModel().getGlobe();
+				// Compute dragged object ref-point in model coordinates.
+				// Use the Icon and Annotation logic of elevation as offset
+				// above
+				// ground when below max elevation.
+				Position refPos = dragObject.getReferencePosition();
+				View view = wwd.getView();
+				Globe globe = wwd.getModel().getGlobe();
 
-			// Compute dragged object ref-point in model coordinates.
-			// Use the Icon and Annotation logic of elevation as offset above
-			// ground when below max elevation.
+				// Compute dragged object ref-point in model coordinates.
+				// Use the Icon and Annotation logic of elevation as offset
+				// above
+				// ground when below max elevation.
 
-			Vec4 refPoint = globe.computePointFromPosition(refPos);
-			// Prepare DDS message to publish
+				Vec4 refPoint = globe.computePointFromPosition(refPos);
+				// Prepare DDS message to publish
 
-			Msg message = new Msg(dragObject.getIdentifier(), dragObject
-					.getPosition().getLatitude().getDegrees(), dragObject
-					.getPosition().getLongitude().getDegrees(), dragObject
-					.getPosition().getAltitude());
-			this.dds.publish(message);
+				Msg message = new Msg(dragObject.getIdentifier(), dragObject
+						.getPosition().getLatitude().getDegrees(), dragObject
+						.getPosition().getLongitude().getDegrees(), dragObject
+						.getPosition().getAltitude());
+				this.dds.publish(message);
 
-			this.dragging = false;
-			event.consume();
+				this.dragging = false;
+				event.consume();
+			}
 			// TODO: INTRODUCIR AQUI LOS DATOS DE COMUNICACION DDS
 		} else if (event.getEventAction().equals(SelectEvent.DRAG)) {
 			DragSelectEvent dragEvent = (DragSelectEvent) event;
