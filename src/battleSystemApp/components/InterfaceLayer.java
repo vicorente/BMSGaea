@@ -14,7 +14,7 @@ import gov.nasa.worldwind.render.ScreenAnnotation;
 import gov.nasa.worldwind.util.Logging;
 import gov.nasa.worldwind.avlist.AVKey;
 
-public class InterfaceLayer extends RenderableLayer{
+public class InterfaceLayer extends RenderableLayer {
 	// The default images
     protected final static String IMAGE_PAN = "images/view-pan-64x64.png";
     protected final static String IMAGE_LOOK = "images/view-look-64x64.png";
@@ -29,7 +29,7 @@ public class InterfaceLayer extends RenderableLayer{
     protected final static String IMAGE_VE_UP = "images/view-elevation-up-32x32.png";
     protected final static String IMAGE_VE_DOWN = "images/view-elevation-down-32x32.png";
     // mis imagenes
-    protected final static String IMAGE_NEW_UNIT = "images/layer-manager-64x64.png";
+    protected final static String IMAGE_NEW_UNIT = "icons/arrow_up.png";
    // protected final static String CONTROL_NEW_UNIT = "battleSystemApp.controlNewUnit";
     // The annotations used to display the controls.
     protected ScreenAnnotation controlPan;
@@ -49,7 +49,7 @@ public class InterfaceLayer extends RenderableLayer{
     // mis controles
     protected ScreenAnnotation controlNewUnit;
 
-    protected String position = AVKey.SOUTHWEST;
+    protected String position = AVKey.CENTER;
     protected String layout = AVKey.HORIZONTAL;
     protected Vec4 locationCenter = null;
     protected Vec4 locationOffset = null;
@@ -62,11 +62,11 @@ public class InterfaceLayer extends RenderableLayer{
 
     protected boolean showPanControls = true;
     protected boolean showLookControls = true;
-    protected boolean showZoomControls = true;
-    protected boolean showHeadingControls = true;
-    protected boolean showPitchControls = true;
-    protected boolean showFovControls = true;
-    protected boolean showVeControls = true;
+    protected boolean showZoomControls = false;
+    protected boolean showHeadingControls = false;
+    protected boolean showPitchControls = false;
+    protected boolean showFovControls = false;
+    protected boolean showVeControls = false;
     protected boolean showNewUnitControls = true;
 
     public int getBorderWidth()
@@ -491,7 +491,7 @@ public class InterfaceLayer extends RenderableLayer{
         ca.setBackgroundColor(new Color(0, 0, 0, 0));
         ca.setImageOpacity(.5);
         ca.setScale(scale);
-
+        
         final String NOTEXT = "";
         final Point ORIGIN = new Point(0, 0);
         if (this.showPanControls)
@@ -782,6 +782,11 @@ public class InterfaceLayer extends RenderableLayer{
         else if (this.position.equals(AVKey.SOUTHWEST))
         {
             x = 0d + this.borderWidth;
+            y = 0d + this.borderWidth;
+        }
+        else if (this.position.equals(AVKey.CENTER))
+        {
+            x = viewport.getWidth()/2 - controls.width /2 - this.borderWidth;
             y = 0d + this.borderWidth;
         }
         else // use North East as default

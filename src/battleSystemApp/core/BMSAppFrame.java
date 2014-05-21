@@ -14,6 +14,7 @@ import gov.nasa.worldwind.symbology.TacticalSymbolAttributes;
 import gov.nasa.worldwind.symbology.milstd2525.MilStd2525TacticalSymbol;
 import gov.nasa.worldwind.util.WWUtil;
 import gov.nasa.worldwindx.examples.ApplicationTemplate;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -37,6 +38,10 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import si.xlab.gaea.avlist.AvKeyExt;
+import si.xlab.gaea.core.layers.RenderToTextureLayer;
+import si.xlab.gaea.core.layers.elev.SlopeLayer;
 import battleSystemApp.components.InterfaceLayer;
 import battleSystemApp.components.InterfaceLayerSelectListener;
 import battleSystemApp.components.RoundedPanel;
@@ -115,7 +120,14 @@ public class BMSAppFrame extends ApplicationTemplate {
 			System.getProperties().put("http.proxyPort", "80");
 			System.getProperties().put("https.proxyHost", "10.7.180.112");
 			System.getProperties().put("https.proxyPort", "80");
+			
+//			this.getWwd().getSceneController().firePropertyChange(AvKeyExt.ENABLE_SUNLIGHT, false, true);
+//			this.getWwd().getSceneController().firePropertyChange(AvKeyExt.ENABLE_ATMOSPHERE, false, true);
+//			this.getWwd().getSceneController().firePropertyChange(AvKeyExt.ENABLE_ATMOSPHERE_WITH_AERIAL_PERSPECTIVE, false, true);
+//			this.getWwd().getSceneController().firePropertyChange(AvKeyExt.ENABLE_SHADOWS, false, true);
+			this.getWwd().getSceneController().firePropertyChange(AvKeyExt.ENABLE_POS_EFFECTS, false, true);
 
+			//insertBeforePlacenames(this.getWwd(), new SlopeLayer());
 			// Capa de comunicaciones DDS
 			dds = new DDSCommLayer();
 			this.dds.addListener(this);
@@ -234,7 +246,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 			
 			// Create a Swing control panel that provides user control over the
 			// symbol's appearance.
-			this.addSymbolControls();
+			//this.addSymbolControls();
 
 			// Add the symbol layer to the World Wind model.
 			this.getWwd().getModel().getLayers().add(symbolLayer);
@@ -453,7 +465,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 	}
 
 	
-	//private static GaeaAppFrame appFrame = null;
+	private static GaeaAppFrame appFrame = null;
 
 	public static void main(String[] args) {
 		// MeasureRenderTime.enable(true);
@@ -475,13 +487,13 @@ public class BMSAppFrame extends ApplicationTemplate {
         Configuration.setValue(AVKey.INITIAL_PITCH, 82);
         Configuration.setValue(AVKey.INITIAL_ALTITUDE, 20000);
 
-        start("World Wind Tactical Symbols", GaeaAppFrame.class);
+//        start("World Wind Tactical Symbols", GaeaAppFrame.class);
 //		Configuration
 //				.insertConfigurationDocument("si/xlab/gaea/examples/gaea-example-config.xml");
-//		appFrame = (GaeaAppFrame) ApplicationTemplate.start(
-//				"Gaea+ Open Source Example Application", GaeaAppFrame.class);
-//		insertBeforeCompass(appFrame.getWwd(),
-//				RenderToTextureLayer.getInstance());
+		appFrame = (GaeaAppFrame) start(
+				"Gaea+ Open Source Example Application", GaeaAppFrame.class);
+		insertBeforeCompass(appFrame.getWwd(),
+				RenderToTextureLayer.getInstance());
 	
 	}
 
