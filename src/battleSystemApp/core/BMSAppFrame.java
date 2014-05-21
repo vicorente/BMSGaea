@@ -2,6 +2,8 @@ package battleSystemApp.core;
 
 import gov.nasa.worldwind.Configuration;
 import gov.nasa.worldwind.avlist.AVKey;
+import gov.nasa.worldwind.event.SelectEvent;
+import gov.nasa.worldwind.event.SelectListener;
 import gov.nasa.worldwind.geom.Angle;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.layers.RenderableLayer;
@@ -9,15 +11,14 @@ import gov.nasa.worldwind.render.Material;
 import gov.nasa.worldwind.render.Renderable;
 import gov.nasa.worldwind.symbology.BasicTacticalSymbolAttributes;
 import gov.nasa.worldwind.symbology.SymbologyConstants;
+import gov.nasa.worldwind.symbology.TacticalGraphic;
 import gov.nasa.worldwind.symbology.TacticalSymbol;
 import gov.nasa.worldwind.symbology.TacticalSymbolAttributes;
 import gov.nasa.worldwind.symbology.milstd2525.MilStd2525TacticalSymbol;
+import gov.nasa.worldwind.util.BasicDragger;
 import gov.nasa.worldwind.util.WWUtil;
 import gov.nasa.worldwindx.examples.ApplicationTemplate;
 import gov.nasa.worldwindx.examples.BulkDownloadPanel;
-
-
-
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -26,6 +27,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.Authenticator;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,6 +40,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSlider;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
@@ -58,6 +61,7 @@ import battleSystemApp.dds.idl.Msg;
 import battleSystemApp.dds.listeners.DDSDragger;
 import battleSystemApp.utils.ConfigurationManager;
 import battleSystemApp.utils.ProxyAuthenticator;
+import battleSystemApp.views.ViewController;
 
 /**
  * Aplicación de posicionamiento de unidades militares basada en GAEA+
@@ -105,13 +109,17 @@ public class BMSAppFrame extends ApplicationTemplate {
 		protected DDSDragger dragger;
 		protected ConfigurationManager confManager;
 		protected DDSCommLayer dds;
-		private RoundedPanel configPanel;
-
+		protected RoundedPanel configPanel;
+		protected ArrayList<Object> objectsToTrack;
+		protected ViewController viewController;
 		/**
 		 * 
 		 */
 		public GaeaAppFrame() {
 
+			objectsToTrack = new ArrayList<Object>();
+			this.viewController = new ViewController(this.getWwd());
+			
 			confManager = new ConfigurationManager();
 			// Autenticamos la app contra el proxy
 			Authenticator.setDefault(new ProxyAuthenticator(confManager
@@ -197,6 +205,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 					new ContextMenuItemInfo("Do the Other Thing"), };
 			airSymbol.setValue(TacticalSymbolContextMenu.CONTEXT_MENU_INFO, new ContextMenuInfo("Placemark A", itemActionNames));
 			this.symbolLayer.addRenderable(airSymbol);
+			objectsToTrack.add(airSymbol);
 
 			// Create a ground tactical symbol for the MIL-STD-2525 symbology
 			// set. This symbol identifier specifies
@@ -227,7 +236,8 @@ public class BMSAppFrame extends ApplicationTemplate {
 					.setModifier(SymbologyConstants.SPEED_LEADER_SCALE, 0.5);
 			groundSymbol.setShowLocation(false);
 			this.symbolLayer.addRenderable(groundSymbol);
-
+			objectsToTrack.add(groundSymbol);
+			
 			// Create a ground tactical symbol for the MIL-STD-2525 symbology
 			// set. This symbol identifier specifies a
 			// MIL-STD-2525 friendly Heavy Machine Gun that's currently
@@ -257,10 +267,14 @@ public class BMSAppFrame extends ApplicationTemplate {
 			machineGunSymbol.setModifier(SymbologyConstants.DATE_TIME_GROUP,
 					"30140000ZSEP97");
 			this.symbolLayer.addRenderable(machineGunSymbol);
-
+			objectsToTrack.add(machineGunSymbol);
+			
+			
+			this.viewController.setObjectsToTrack(this.objectsToTrack);
+			
 			// Add a dragging controller to enable user click-and-drag control
 			// over tactical symbols.
-			this.dragger = new DDSDragger(this.getWwd(), true, dds);
+			this.dragger = new DDSDragger(this.getWwd(), true, dds, viewController);
 			this.getWwd().addSelectListener(this.dragger);
 
 			// Create a Swing control panel that provides user control over the
@@ -275,11 +289,23 @@ public class BMSAppFrame extends ApplicationTemplate {
 				this.getLayerPanel().update(this.getWwd());
 			}
 
+			
 			Dimension size = new Dimension(1800, 1000);
 			this.setPreferredSize(size);
 			this.pack();
 			WWUtil.alignComponent(null, this, AVKey.CENTER);
 
+			// Set up a one-shot timer to zoom to the objects once the app launches.
+            Timer timer = new Timer(1000, new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    viewController.gotoScene();
+                }
+            });
+            timer.setRepeats(false);
+            timer.start();
+            
 			// Delete resources before exit
 			addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent e) {
@@ -288,6 +314,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 					System.exit(0);
 				}
 			});
+
 
 		}
 

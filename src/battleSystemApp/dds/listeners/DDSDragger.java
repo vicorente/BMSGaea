@@ -1,19 +1,11 @@
 package battleSystemApp.dds.listeners;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-
-import javax.swing.AbstractAction;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-
 import battleSystemApp.components.ContextMenuInfo;
-import battleSystemApp.components.ContextMenuItemInfo;
 import battleSystemApp.components.TacticalSymbolContextMenu;
 import battleSystemApp.dds.DDSCommLayer;
 import battleSystemApp.dds.idl.Msg;
+import battleSystemApp.views.ViewController;
 import gov.nasa.worldwind.Movable;
 import gov.nasa.worldwind.View;
 import gov.nasa.worldwind.WorldWindow;
@@ -39,6 +31,7 @@ import gov.nasa.worldwind.util.Logging;
 public class DDSDragger extends BasicDragger {
 
 	private DDSCommLayer dds;
+	private ViewController viewController;
 
 	public DDSDragger(WorldWindow wwd, DDSCommLayer _dds) {
 		super(wwd);
@@ -46,9 +39,11 @@ public class DDSDragger extends BasicDragger {
 		// TODO Auto-generated constructor stub
 	}
 
-	public DDSDragger(WorldWindow wwd, boolean useTerrain, DDSCommLayer _dds) {
+	public DDSDragger(WorldWindow wwd, boolean useTerrain, DDSCommLayer _dds,
+			ViewController _viewController) {
 		super(wwd, useTerrain);
 		dds = _dds;
+		viewController = _viewController;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -80,18 +75,20 @@ public class DDSDragger extends BasicDragger {
 				// ground when below max elevation.
 
 				Vec4 refPoint = globe.computePointFromPosition(refPos);
-				// Prepare DDS message to publish
 
+				viewController.sceneChanged();
+				
+				// Prepare DDS message to publish
 				Msg message = new Msg(dragObject.getIdentifier(), dragObject
 						.getPosition().getLatitude().getDegrees(), dragObject
 						.getPosition().getLongitude().getDegrees(), dragObject
 						.getPosition().getAltitude());
 				this.dds.publish(message);
-
+				
 				this.dragging = false;
 				event.consume();
 			}
-			// TODO: INTRODUCIR AQUI LOS DATOS DE COMUNICACION DDS
+
 		} else if (event.getEventAction().equals(SelectEvent.DRAG)) {
 			DragSelectEvent dragEvent = (DragSelectEvent) event;
 			Object topObject = dragEvent.getTopObject();
@@ -151,7 +148,7 @@ public class DDSDragger extends BasicDragger {
 				Position p = new Position(pickPos, dragObject
 						.getReferencePosition().getElevation());
 				dragObject.moveTo(p);
-			}
+			}			
 			this.dragging = true;
 			event.consume();
 		} else if (event.getEventAction().equals(SelectEvent.RIGHT_PRESS)) {
