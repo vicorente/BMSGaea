@@ -252,8 +252,9 @@ public class BMSAppFrame extends ApplicationTemplate {
 			this.getWwd().getModel().getLayers().add(symbolLayer);
 			
 			 // Update the layer panel to display the symbol layer.
-            this.getLayerPanel().update(this.getWwd());
-            
+            if (this.getLayerPanel()!=null){
+            	this.getLayerPanel().update(this.getWwd());
+            }
             Dimension size = new Dimension(1800, 1000);
             this.setPreferredSize(size);
             this.pack();
