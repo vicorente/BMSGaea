@@ -118,7 +118,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 		public GaeaAppFrame() {
 
 			objectsToTrack = new ArrayList<Object>();
-			this.viewController = new ViewController(this.getWwd());
+			
 			
 			confManager = new ConfigurationManager();
 			// Autenticamos la app contra el proxy
@@ -269,7 +269,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 			this.symbolLayer.addRenderable(machineGunSymbol);
 			objectsToTrack.add(machineGunSymbol);
 			
-			
+			this.viewController = new ViewController(this.getWwd());
 			this.viewController.setObjectsToTrack(this.objectsToTrack);
 			
 			// Add a dragging controller to enable user click-and-drag control

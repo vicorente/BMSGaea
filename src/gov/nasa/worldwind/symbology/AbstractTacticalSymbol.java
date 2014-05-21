@@ -1797,7 +1797,7 @@ public abstract class AbstractTacticalSymbol extends WWObjectImpl implements Tac
         return new Rectangle((int) x, (int) y, (int) Math.ceil(width), (int) Math.ceil(height));
     }
 
-    protected Rectangle computeScreenExtent()
+    public Rectangle computeScreenExtent()
     {
         double width;
         double height;
