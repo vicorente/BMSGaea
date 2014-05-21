@@ -29,8 +29,7 @@ public class InterfaceLayer extends RenderableLayer {
     protected final static String IMAGE_VE_UP = "images/view-elevation-up-32x32.png";
     protected final static String IMAGE_VE_DOWN = "images/view-elevation-down-32x32.png";
     // mis imagenes
-    protected final static String IMAGE_NEW_UNIT = "icons/arrow_up.png";
-   // protected final static String CONTROL_NEW_UNIT = "battleSystemApp.controlNewUnit";
+    protected final static String IMAGE_NEW_UNIT = "images/view-pan-64x64.png";
     // The annotations used to display the controls.
     protected ScreenAnnotation controlPan;
     protected ScreenAnnotation controlLook;
@@ -493,12 +492,13 @@ public class InterfaceLayer extends RenderableLayer {
         ca.setScale(scale);
         
         final String NOTEXT = "";
+        // origen del texto con respecto al componente
         final Point ORIGIN = new Point(0, 0);
         if (this.showPanControls)
         {
             // Pan
             controlPan = new ScreenAnnotation(NOTEXT, ORIGIN, ca);
-            controlPan.setValue(AVKey.VIEW_OPERATION, AVKey.VIEW_PAN);
+            controlPan.setValue(AVKey.ACTION_OPERATION, AVKey.VIEW_PAN);
             controlPan.getAttributes().setImageSource(getImageSource(AVKey.VIEW_PAN));
             controlPan.getAttributes().setSize(new Dimension(panSize, panSize));
             this.addRenderable(controlPan);
@@ -507,7 +507,7 @@ public class InterfaceLayer extends RenderableLayer {
         {
             // Look
             controlLook = new ScreenAnnotation(NOTEXT, ORIGIN, ca);
-            controlLook.setValue(AVKey.VIEW_OPERATION, AVKey.VIEW_LOOK);
+            controlLook.setValue(AVKey.ACTION_OPERATION, AVKey.VIEW_LOOK);
             controlLook.getAttributes().setImageSource(getImageSource(AVKey.VIEW_LOOK));
             controlLook.getAttributes().setSize(new Dimension(panSize, panSize));
             this.addRenderable(controlLook);
@@ -577,7 +577,7 @@ public class InterfaceLayer extends RenderableLayer {
         // necesario para que pinte los controles
         if (this.showNewUnitControls){
         	 controlNewUnit =  new ScreenAnnotation(NOTEXT, ORIGIN, ca);
-        	 controlNewUnit.setValue(AVKey.VIEW_OPERATION, AVKey.BUTTON_NEW_UNIT);
+        	 controlNewUnit.setValue(AVKey.ACTION_OPERATION, AVKey.BUTTON_NEW_UNIT);
              controlNewUnit.getAttributes().setImageSource(getImageSource(AVKey.BUTTON_NEW_UNIT));
              controlNewUnit.getAttributes().setSize(new Dimension(panSize, panSize));
              this.addRenderable(controlNewUnit);
@@ -645,7 +645,7 @@ public class InterfaceLayer extends RenderableLayer {
             (showPitchControls ? buttonSize : 0) +
             (showFovControls ? buttonSize : 0) +
             (showVeControls ? buttonSize : 0) + 
-            (showNewUnitControls ? buttonSize: 0);
+            (showNewUnitControls ? panSize: 0);
         int height = Math.max(panSize, buttonSize * 2);
         width = (int) (width * scale);
         height = (int) (height * scale);
@@ -737,10 +737,10 @@ public class InterfaceLayer extends RenderableLayer {
 
         if (this.showNewUnitControls){
         	if (!horizontalLayout)
-                y -= (int) (buttonSize * scale);
-            controlNewUnit.setScreenPoint(new Point(x + halfButtonSize + xOffset, y + yOffset));
-            if (horizontalLayout)
-                x += (int) (buttonSize * scale);  
+                y -= (int) (panSize * scale);
+        	controlNewUnit.setScreenPoint(new Point(x + halfPanSize, y));
+        	if (horizontalLayout)
+                x += (int) (panSize * scale);
         }
         this.referenceViewport = dc.getView().getViewport();
     }
@@ -820,7 +820,8 @@ public class InterfaceLayer extends RenderableLayer {
         this.controlFovWide = null;
         this.controlVeUp = null;
         this.controlVeDown = null;
-
+        this.controlNewUnit = null;
+        
         this.initialized = false;
     }
 

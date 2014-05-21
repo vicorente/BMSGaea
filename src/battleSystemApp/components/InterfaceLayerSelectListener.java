@@ -277,7 +277,7 @@ public class InterfaceLayerSelectListener implements SelectListener
             || !(event.getTopObject() instanceof AVList))
             return;
 
-        String controlType = ((AVList) event.getTopObject()).getStringValue(AVKey.VIEW_OPERATION);
+        String controlType = ((AVList) event.getTopObject()).getStringValue(AVKey.ACTION_OPERATION);
         if (controlType == null)
             return;
 
@@ -354,7 +354,11 @@ public class InterfaceLayerSelectListener implements SelectListener
         view.stopAnimations();
         view.stopMovement();
 
-        if (controlType.equals(AVKey.VIEW_PAN))
+        if (controlType.equals(AVKey.BUTTON_NEW_UNIT))
+        {
+            // CREAR UNA NUEVA UNIDAD
+        }
+        else if (controlType.equals(AVKey.VIEW_PAN))
         {
             resetOrbitView(view);
             // Go some distance in the control mouse direction

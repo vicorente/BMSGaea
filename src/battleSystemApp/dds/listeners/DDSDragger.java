@@ -1,14 +1,23 @@
 package battleSystemApp.dds.listeners;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
+import javax.swing.AbstractAction;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+
+import battleSystemApp.components.ContextMenuInfo;
+import battleSystemApp.components.ContextMenuItemInfo;
+import battleSystemApp.components.TacticalSymbolContextMenu;
 import battleSystemApp.dds.DDSCommLayer;
-import battleSystemApp.dds.DDSListener;
 import battleSystemApp.dds.idl.Msg;
 import gov.nasa.worldwind.Movable;
 import gov.nasa.worldwind.View;
 import gov.nasa.worldwind.WorldWindow;
+import gov.nasa.worldwind.avlist.AVList;
 import gov.nasa.worldwind.event.DragSelectEvent;
 import gov.nasa.worldwind.event.SelectEvent;
 import gov.nasa.worldwind.geom.Intersection;
@@ -145,6 +154,42 @@ public class DDSDragger extends BasicDragger {
 			}
 			this.dragging = true;
 			event.consume();
+		} else if (event.getEventAction().equals(SelectEvent.RIGHT_PRESS)) {
+			System.out.println("pulsado boton derecho!!!");
+			showContextMenu(event);
+			event.consume();
+		}
+	}
+
+	/**
+	 * Muestra el menu contextual al hacer click con el botón derecho en un
+	 * objeto
+	 * 
+	 * @param event
+	 */
+	protected void showContextMenu(SelectEvent event) {
+		if (!(event.getTopObject() instanceof MilStd2525TacticalSymbol))
+			return;
+
+		// See if the top picked object has context-menu info defined. Show the
+		// menu if it does.
+
+		Object o = event.getTopObject();
+		if (o instanceof AVList) // Uses an AVList in order to be applicable to
+									// all shapes.
+		{
+			AVList params = (AVList) o;
+			ContextMenuInfo menuInfo = (ContextMenuInfo) params
+					.getValue(TacticalSymbolContextMenu.CONTEXT_MENU_INFO);
+			if (menuInfo == null)
+				return;
+
+			if (!(event.getSource() instanceof Component))
+				return;
+
+			TacticalSymbolContextMenu menu = new TacticalSymbolContextMenu(
+					(Component) event.getSource(), menuInfo);
+			menu.show(event.getMouseEvent());
 		}
 	}
 

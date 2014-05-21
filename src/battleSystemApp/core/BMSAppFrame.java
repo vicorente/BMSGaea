@@ -14,6 +14,10 @@ import gov.nasa.worldwind.symbology.TacticalSymbolAttributes;
 import gov.nasa.worldwind.symbology.milstd2525.MilStd2525TacticalSymbol;
 import gov.nasa.worldwind.util.WWUtil;
 import gov.nasa.worldwindx.examples.ApplicationTemplate;
+import gov.nasa.worldwindx.examples.BulkDownloadPanel;
+
+
+
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -42,16 +46,18 @@ import javax.swing.event.ChangeListener;
 import si.xlab.gaea.avlist.AvKeyExt;
 import si.xlab.gaea.core.layers.RenderToTextureLayer;
 import si.xlab.gaea.core.layers.elev.SlopeLayer;
+import battleSystemApp.components.ContextMenuInfo;
+import battleSystemApp.components.ContextMenuItemInfo;
 import battleSystemApp.components.InterfaceLayer;
 import battleSystemApp.components.InterfaceLayerSelectListener;
 import battleSystemApp.components.RoundedPanel;
+import battleSystemApp.components.TacticalSymbolContextMenu;
 import battleSystemApp.dds.DDSCommLayer;
 import battleSystemApp.dds.DDSListener;
 import battleSystemApp.dds.idl.Msg;
 import battleSystemApp.dds.listeners.DDSDragger;
 import battleSystemApp.utils.ConfigurationManager;
 import battleSystemApp.utils.ProxyAuthenticator;
-
 
 /**
  * Aplicación de posicionamiento de unidades militares basada en GAEA+
@@ -61,9 +67,6 @@ import battleSystemApp.utils.ProxyAuthenticator;
  */
 public class BMSAppFrame extends ApplicationTemplate {
 
-	
-
-	
 	private static class MessageItem extends JMenuItem {
 		/**
 		 * 
@@ -90,8 +93,6 @@ public class BMSAppFrame extends ApplicationTemplate {
 			JOptionPane.showMessageDialog(null, message);
 		}
 	}
-
-	
 
 	public static class GaeaAppFrame extends AppFrame implements DDSListener {
 		/**
@@ -120,28 +121,41 @@ public class BMSAppFrame extends ApplicationTemplate {
 			System.getProperties().put("http.proxyPort", "80");
 			System.getProperties().put("https.proxyHost", "10.7.180.112");
 			System.getProperties().put("https.proxyPort", "80");
-			
-//			this.getWwd().getSceneController().firePropertyChange(AvKeyExt.ENABLE_SUNLIGHT, false, true);
-//			this.getWwd().getSceneController().firePropertyChange(AvKeyExt.ENABLE_ATMOSPHERE, false, true);
-//			this.getWwd().getSceneController().firePropertyChange(AvKeyExt.ENABLE_ATMOSPHERE_WITH_AERIAL_PERSPECTIVE, false, true);
-//			this.getWwd().getSceneController().firePropertyChange(AvKeyExt.ENABLE_SHADOWS, false, true);
-			this.getWwd().getSceneController().firePropertyChange(AvKeyExt.ENABLE_POS_EFFECTS, false, true);
 
-			//insertBeforePlacenames(this.getWwd(), new SlopeLayer());
+			// this.getWwd().getSceneController().firePropertyChange(AvKeyExt.ENABLE_SUNLIGHT,
+			// false, true);
+			// this.getWwd().getSceneController().firePropertyChange(AvKeyExt.ENABLE_ATMOSPHERE,
+			// false, true);
+			// this.getWwd().getSceneController().firePropertyChange(AvKeyExt.ENABLE_ATMOSPHERE_WITH_AERIAL_PERSPECTIVE,
+			// false, true);
+			// this.getWwd().getSceneController().firePropertyChange(AvKeyExt.ENABLE_SHADOWS,
+			// false, true);
+			this.getWwd()
+					.getSceneController()
+					.firePropertyChange(AvKeyExt.ENABLE_POS_EFFECTS, false,
+							true);
+
+			// insertBeforePlacenames(this.getWwd(), new SlopeLayer());
 			// Capa de comunicaciones DDS
 			dds = new DDSCommLayer();
 			this.dds.addListener(this);
-			
+
+			// Add the bulk download control panel.
+			this.getLayerPanel().add(new BulkDownloadPanel(this.getWwd()),
+					BorderLayout.SOUTH);
+
 			this.symbolLayer = new RenderableLayer();
 			this.symbolLayer.setName("Simbolos Tacticos");
-			
+
 			// OPERACIONES DE INTERFAZ
-			// Create and install the view controls layer and register a controller for it with the World Window.
-            InterfaceLayer interfaceLayer = new InterfaceLayer();
-            insertBeforeCompass(this.getWwd(), interfaceLayer);
-            this.getWwd().addSelectListener(new InterfaceLayerSelectListener(this.getWwd(), interfaceLayer));
-            
-			
+			// Create and install the view controls layer and register a
+			// controller for it with the World Window.
+			InterfaceLayer interfaceLayer = new InterfaceLayer();
+			insertBeforeCompass(this.getWwd(), interfaceLayer);
+			this.getWwd().addSelectListener(
+					new InterfaceLayerSelectListener(this.getWwd(),
+							interfaceLayer));
+
 			// Create normal and highlight attribute bundles that are shared by
 			// all tactical symbols. Changes to these
 			// attribute bundles are reflected in all symbols. We specify both
@@ -177,6 +191,11 @@ public class BMSAppFrame extends ApplicationTemplate {
 			airSymbol.setModifier(SymbologyConstants.DIRECTION_OF_MOVEMENT,
 					Angle.fromDegrees(235));
 			airSymbol.setShowLocation(false);
+			ContextMenuItemInfo[] itemActionNames = new ContextMenuItemInfo[] {
+					new ContextMenuItemInfo("Do This"),
+					new ContextMenuItemInfo("Do That"),
+					new ContextMenuItemInfo("Do the Other Thing"), };
+			airSymbol.setValue(TacticalSymbolContextMenu.CONTEXT_MENU_INFO, new ContextMenuInfo("Placemark A", itemActionNames));
 			this.symbolLayer.addRenderable(airSymbol);
 
 			// Create a ground tactical symbol for the MIL-STD-2525 symbology
@@ -243,23 +262,24 @@ public class BMSAppFrame extends ApplicationTemplate {
 			// over tactical symbols.
 			this.dragger = new DDSDragger(this.getWwd(), true, dds);
 			this.getWwd().addSelectListener(this.dragger);
-			
+
 			// Create a Swing control panel that provides user control over the
 			// symbol's appearance.
-			//this.addSymbolControls();
+			// this.addSymbolControls();
 
 			// Add the symbol layer to the World Wind model.
 			this.getWwd().getModel().getLayers().add(symbolLayer);
-			
-			 // Update the layer panel to display the symbol layer.
-            if (this.getLayerPanel()!=null){
-            	this.getLayerPanel().update(this.getWwd());
-            }
-            Dimension size = new Dimension(1800, 1000);
-            this.setPreferredSize(size);
-            this.pack();
-            WWUtil.alignComponent(null, this, AVKey.CENTER);
-            
+
+			// Update the layer panel to display the symbol layer.
+			if (this.getLayerPanel() != null) {
+				this.getLayerPanel().update(this.getWwd());
+			}
+
+			Dimension size = new Dimension(1800, 1000);
+			this.setPreferredSize(size);
+			this.pack();
+			WWUtil.alignComponent(null, this, AVKey.CENTER);
+
 			// Delete resources before exit
 			addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent e) {
@@ -268,16 +288,12 @@ public class BMSAppFrame extends ApplicationTemplate {
 					System.exit(0);
 				}
 			});
-			
-			
 
 		}
 
 		public DDSCommLayer getDDSCommLayer() {
 			return this.dds;
 		}
-
-		
 
 		protected void addSymbolControls() {
 			Box box = Box.createVerticalBox();
@@ -434,18 +450,19 @@ public class BMSAppFrame extends ApplicationTemplate {
 			box.add(cb);
 
 			this.getLayerPanel().add(box, BorderLayout.SOUTH);
-			
+
 		}
-		
+
 		/**
 		 * Añade los controles sobre el mapa
 		 */
-		protected void addInMapControls(){
-			
+		protected void addInMapControls() {
+
 		}
+
 		/**
-		 * Implementación de la interfaz DDSListener.
-		 * Llamado cuando llega un mensaje
+		 * Implementación de la interfaz DDSListener. Llamado cuando llega un
+		 * mensaje
 		 */
 		@Override
 		public void receivedMessage(Msg message) {
@@ -465,7 +482,6 @@ public class BMSAppFrame extends ApplicationTemplate {
 		}
 	}
 
-	
 	private static GaeaAppFrame appFrame = null;
 
 	public static void main(String[] args) {
@@ -481,21 +497,22 @@ public class BMSAppFrame extends ApplicationTemplate {
 					"ERROR al fijar el look and feel de la aplicación", e);
 			e.printStackTrace();
 		}
-		  // Configure the initial view parameters so that this example starts looking at the symbols.
-        Configuration.setValue(AVKey.INITIAL_LATITUDE, 32.49);
-        Configuration.setValue(AVKey.INITIAL_LONGITUDE, 63.455);
-        Configuration.setValue(AVKey.INITIAL_HEADING, 22);
-        Configuration.setValue(AVKey.INITIAL_PITCH, 82);
-        Configuration.setValue(AVKey.INITIAL_ALTITUDE, 20000);
+		// Configure the initial view parameters so that this example starts
+		// looking at the symbols.
+		Configuration.setValue(AVKey.INITIAL_LATITUDE, 32.49);
+		Configuration.setValue(AVKey.INITIAL_LONGITUDE, 63.455);
+		Configuration.setValue(AVKey.INITIAL_HEADING, 22);
+		Configuration.setValue(AVKey.INITIAL_PITCH, 82);
+		Configuration.setValue(AVKey.INITIAL_ALTITUDE, 20000);
 
-//        start("World Wind Tactical Symbols", GaeaAppFrame.class);
-//		Configuration
-//				.insertConfigurationDocument("si/xlab/gaea/examples/gaea-example-config.xml");
+		// start("World Wind Tactical Symbols", GaeaAppFrame.class);
+		// Configuration
+		// .insertConfigurationDocument("si/xlab/gaea/examples/gaea-example-config.xml");
 		appFrame = (GaeaAppFrame) start(
 				"Gaea+ Open Source Example Application", GaeaAppFrame.class);
 		insertBeforeCompass(appFrame.getWwd(),
 				RenderToTextureLayer.getInstance());
-	
+
 	}
 
 }
