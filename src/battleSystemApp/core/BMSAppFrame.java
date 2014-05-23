@@ -28,7 +28,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.Authenticator;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -99,7 +101,8 @@ public class BMSAppFrame extends ApplicationTemplate {
 		}
 	}
 
-	public static class GaeaAppFrame extends AppFrame implements DDSListener, SymbolListener {
+	public static class GaeaAppFrame extends AppFrame implements DDSListener,
+			SymbolListener {
 		/**
 		 * 
 		 */
@@ -111,16 +114,16 @@ public class BMSAppFrame extends ApplicationTemplate {
 		protected ConfigurationManager confManager;
 		protected DDSCommLayer dds;
 		protected RoundedPanel configPanel;
-		protected ArrayList<Object> objectsToTrack;
+		protected ArrayList<AbstractTacticalSymbol> objectsToTrack;
 		protected ViewController viewController;
+
 		/**
 		 * 
 		 */
 		public GaeaAppFrame() {
 
-			objectsToTrack = new ArrayList<Object>();
-			
-			
+			objectsToTrack = new ArrayList<AbstractTacticalSymbol>();
+
 			confManager = new ConfigurationManager();
 			// Autenticamos la app contra el proxy
 			Authenticator.setDefault(new ProxyAuthenticator(confManager
@@ -204,8 +207,8 @@ public class BMSAppFrame extends ApplicationTemplate {
 					new ContextMenuItemInfo("Do This"),
 					new ContextMenuItemInfo("Do That"),
 					new ContextMenuItemInfo("Do the Other Thing"), };
-			airSymbol.setValue(TacticalSymbolContextMenu.CONTEXT_MENU_INFO, new ContextMenuInfo("Placemark A", itemActionNames));
-			airSymbol.addSymbolListener(this);
+			airSymbol.setValue(TacticalSymbolContextMenu.CONTEXT_MENU_INFO,
+					new ContextMenuInfo("Placemark A", itemActionNames));
 			this.symbolLayer.addRenderable(airSymbol);
 			objectsToTrack.add(airSymbol);
 
@@ -237,10 +240,9 @@ public class BMSAppFrame extends ApplicationTemplate {
 			groundSymbol
 					.setModifier(SymbologyConstants.SPEED_LEADER_SCALE, 0.5);
 			groundSymbol.setShowLocation(false);
-			groundSymbol.addSymbolListener(this);
 			this.symbolLayer.addRenderable(groundSymbol);
 			objectsToTrack.add(groundSymbol);
-			
+
 			// Create a ground tactical symbol for the MIL-STD-2525 symbology
 			// set. This symbol identifier specifies a
 			// MIL-STD-2525 friendly Heavy Machine Gun that's currently
@@ -267,15 +269,21 @@ public class BMSAppFrame extends ApplicationTemplate {
 					"ADDED SUPPORT FOR JJ");
 			machineGunSymbol
 					.setModifier(SymbologyConstants.TYPE, "MACHINE GUN");
+			// formato de hora del STANAG
+			String newString = new SimpleDateFormat("ddHHmmss'Z'MMMYYYY")
+					.format(new Date()).toUpperCase(); // 9:00
 			machineGunSymbol.setModifier(SymbologyConstants.DATE_TIME_GROUP,
-					"30140000ZSEP97");
-			machineGunSymbol.addSymbolListener(this);
+					newString);
+
 			this.symbolLayer.addRenderable(machineGunSymbol);
 			objectsToTrack.add(machineGunSymbol);
-			
+
 			this.viewController = new ViewController(this.getWwd());
 			this.viewController.setObjectsToTrack(this.objectsToTrack);
-			
+			for (AbstractTacticalSymbol abs : this.objectsToTrack) {
+				abs.addSymbolListener(this);
+			}
+
 			// Add a dragging controller to enable user click-and-drag control
 			// over tactical symbols.
 			this.dragger = new DDSDragger(this.getWwd(), true, dds);
@@ -293,23 +301,21 @@ public class BMSAppFrame extends ApplicationTemplate {
 				this.getLayerPanel().update(this.getWwd());
 			}
 
-			
 			Dimension size = new Dimension(1800, 1000);
 			this.setPreferredSize(size);
 			this.pack();
 			WWUtil.alignComponent(null, this, AVKey.CENTER);
 
-			// Set up a one-shot timer to zoom to the objects once the app launches.
-            Timer timer = new Timer(1000, new ActionListener()
-            {
-                public void actionPerformed(ActionEvent e)
-                {
-                    viewController.gotoScene();
-                }
-            });
-            timer.setRepeats(false);
-            timer.start();
-            
+			// Set up a one-shot timer to zoom to the objects once the app
+			// launches.
+			Timer timer = new Timer(1000, new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					viewController.gotoScene();
+				}
+			});
+			timer.setRepeats(false);
+			timer.start();
+
 			// Delete resources before exit
 			addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent e) {
@@ -318,7 +324,6 @@ public class BMSAppFrame extends ApplicationTemplate {
 					System.exit(0);
 				}
 			});
-
 
 		}
 
@@ -502,23 +507,28 @@ public class BMSAppFrame extends ApplicationTemplate {
 					"Recibido mensaje DDS -" + message.unitID + "- Lat: "
 							+ message.lat + " Lon: " + message.lon + " Alt: "
 							+ message.alt);
-			
+
 			for (Renderable r : symbolLayer.getRenderables()) {
 				AbstractTacticalSymbol C2Symbol = (AbstractTacticalSymbol) r;
 				if (C2Symbol.getIdentifier().equals(message.unitID)) {
 					// Set new symbol position
 					C2Symbol.moveTo(Position.fromDegrees(message.lat,
 							message.lon, message.alt));
+					String newString = new SimpleDateFormat("ddHHmmss'Z'MMMYYYY").format(new Date()).toUpperCase(); // 9:00
+					C2Symbol.setModifier(SymbologyConstants.DATE_TIME_GROUP,
+							newString);
 				}
 			}
-			
+
 		}
-		
+
 		/**
 		 * Llamado cuando somos SymbolListener y se mueve un símbolo
 		 */
 		@Override
-		public void moved() {			
+		public void moved() {
+			// Unicamente realizamos el segumiento de los objetos marcados como
+			// tal
 			viewController.sceneChanged();
 		}
 	}
