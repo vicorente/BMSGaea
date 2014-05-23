@@ -498,6 +498,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 					"Recibido mensaje DDS -" + message.unitID + "- Lat: "
 							+ message.lat + " Lon: " + message.lon + " Alt: "
 							+ message.alt);
+			
 			for (Renderable r : symbolLayer.getRenderables()) {
 				TacticalSymbol C2Symbol = (TacticalSymbol) r;
 				if (C2Symbol.getIdentifier().equals(message.unitID)) {
@@ -506,6 +507,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 							message.lon, message.alt));
 				}
 			}
+			viewController.sceneChanged();
 		}
 	}
 
