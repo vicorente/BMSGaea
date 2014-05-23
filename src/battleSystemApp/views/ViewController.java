@@ -10,6 +10,7 @@ import gov.nasa.worldwind.geom.Vec4;
 import gov.nasa.worldwind.globes.Globe;
 import gov.nasa.worldwind.symbology.AbstractTacticalSymbol;
 import gov.nasa.worldwind.symbology.TacticalSymbol;
+import gov.nasa.worldwind.symbology.TacticalSymbolAttributes;
 import gov.nasa.worldwind.symbology.milstd2525.MilStd2525TacticalSymbol;
 import gov.nasa.worldwind.view.orbit.OrbitView;
 import gov.nasa.worldwindx.examples.util.ExtentVisibilitySupport;
@@ -125,12 +126,12 @@ public class ViewController {
 				extentHolders.add((ExtentHolder) o);
 			} else if (o instanceof AbstractTacticalSymbol) {
 				AbstractTacticalSymbol avl = (AbstractTacticalSymbol) o;
+				Rectangle screenExtent = avl.computeScreenExtent();
 				
 				screenExtents
 						.add(new ExtentVisibilitySupport.ScreenExtent(
-								new Vec4(avl.getPosition().latitude.degrees, avl.getPosition().longitude.degrees, avl.getPosition().elevation),
-								avl.computeScreenExtent()));
-
+								avl.getScreenPoint(),
+								screenExtent));
 			}
 		}
 
