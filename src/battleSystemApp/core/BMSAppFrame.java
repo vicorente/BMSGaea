@@ -9,6 +9,7 @@ import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.layers.RenderableLayer;
 import gov.nasa.worldwind.render.Material;
 import gov.nasa.worldwind.render.Renderable;
+import gov.nasa.worldwind.symbology.AbstractTacticalSymbol;
 import gov.nasa.worldwind.symbology.BasicTacticalSymbolAttributes;
 import gov.nasa.worldwind.symbology.SymbologyConstants;
 import gov.nasa.worldwind.symbology.TacticalGraphic;
@@ -98,7 +99,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 		}
 	}
 
-	public static class GaeaAppFrame extends AppFrame implements DDSListener {
+	public static class GaeaAppFrame extends AppFrame implements DDSListener, SymbolListener {
 		/**
 		 * 
 		 */
@@ -188,7 +189,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 			// symbol identifier ("GI"). The Direction of Movement is specified
 			// by calling TacticalSymbol.setModifier
 			// with the appropriate key and value.
-			TacticalSymbol airSymbol = new MilStd2525TacticalSymbol(
+			AbstractTacticalSymbol airSymbol = new MilStd2525TacticalSymbol(
 					"SHAPMFQM--GIUSA", Position.fromDegrees(32.4520, 63.44553,
 							3000));
 			airSymbol.setValue(AVKey.DISPLAY_NAME,
@@ -204,6 +205,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 					new ContextMenuItemInfo("Do That"),
 					new ContextMenuItemInfo("Do the Other Thing"), };
 			airSymbol.setValue(TacticalSymbolContextMenu.CONTEXT_MENU_INFO, new ContextMenuInfo("Placemark A", itemActionNames));
+			airSymbol.addSymbolListener(this);
 			this.symbolLayer.addRenderable(airSymbol);
 			objectsToTrack.add(airSymbol);
 
@@ -223,7 +225,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 			// effect of scaling the Direction of Movement's
 			// line segment. In this example, we've scaled the line to 50% of
 			// its original length.
-			TacticalSymbol groundSymbol = new MilStd2525TacticalSymbol(
+			AbstractTacticalSymbol groundSymbol = new MilStd2525TacticalSymbol(
 					"SHGXUCFRMS----G",
 					Position.fromDegrees(32.4014, 63.3894, 0));
 			groundSymbol.setValue(AVKey.DISPLAY_NAME,
@@ -235,6 +237,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 			groundSymbol
 					.setModifier(SymbologyConstants.SPEED_LEADER_SCALE, 0.5);
 			groundSymbol.setShowLocation(false);
+			groundSymbol.addSymbolListener(this);
 			this.symbolLayer.addRenderable(groundSymbol);
 			objectsToTrack.add(groundSymbol);
 			
@@ -249,7 +252,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 			// 11-12 of the symbol identifier ("MT"). The text modifiers are
 			// specified by calling
 			// TacticalSymbol.setModifier with the appropriate keys and values.
-			TacticalSymbol machineGunSymbol = new MilStd2525TacticalSymbol(
+			AbstractTacticalSymbol machineGunSymbol = new MilStd2525TacticalSymbol(
 					"SFGPEWRH--MTUSG",
 					Position.fromDegrees(32.3902, 63.4161, 0));
 			machineGunSymbol.setValue(AVKey.DISPLAY_NAME,
@@ -266,6 +269,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 					.setModifier(SymbologyConstants.TYPE, "MACHINE GUN");
 			machineGunSymbol.setModifier(SymbologyConstants.DATE_TIME_GROUP,
 					"30140000ZSEP97");
+			machineGunSymbol.addSymbolListener(this);
 			this.symbolLayer.addRenderable(machineGunSymbol);
 			objectsToTrack.add(machineGunSymbol);
 			
@@ -274,7 +278,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 			
 			// Add a dragging controller to enable user click-and-drag control
 			// over tactical symbols.
-			this.dragger = new DDSDragger(this.getWwd(), true, dds, viewController);
+			this.dragger = new DDSDragger(this.getWwd(), true, dds);
 			this.getWwd().addSelectListener(this.dragger);
 
 			// Create a Swing control panel that provides user control over the
@@ -500,13 +504,21 @@ public class BMSAppFrame extends ApplicationTemplate {
 							+ message.alt);
 			
 			for (Renderable r : symbolLayer.getRenderables()) {
-				TacticalSymbol C2Symbol = (TacticalSymbol) r;
+				AbstractTacticalSymbol C2Symbol = (AbstractTacticalSymbol) r;
 				if (C2Symbol.getIdentifier().equals(message.unitID)) {
 					// Set new symbol position
-					C2Symbol.setPosition(Position.fromDegrees(message.lat,
+					C2Symbol.moveTo(Position.fromDegrees(message.lat,
 							message.lon, message.alt));
 				}
 			}
+			
+		}
+		
+		/**
+		 * Llamado cuando somos SymbolListener y se mueve un símbolo
+		 */
+		@Override
+		public void moved() {			
 			viewController.sceneChanged();
 		}
 	}

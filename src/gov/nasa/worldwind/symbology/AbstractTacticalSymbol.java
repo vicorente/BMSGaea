@@ -6,9 +6,12 @@
 
 package gov.nasa.worldwind.symbology;
 
+import battleSystemApp.core.SymbolListener;
+
 import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.texture.*;
 import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
+
 import gov.nasa.worldwind.*;
 import gov.nasa.worldwind.avlist.*;
 import gov.nasa.worldwind.geom.*;
@@ -18,6 +21,7 @@ import gov.nasa.worldwind.render.*;
 import gov.nasa.worldwind.util.*;
 
 import javax.media.opengl.*;
+
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.*;
@@ -31,6 +35,8 @@ import java.util.List;
  */
 public abstract class AbstractTacticalSymbol extends WWObjectImpl implements
 		TacticalSymbol, OrderedRenderable, Movable {
+	protected ArrayList<SymbolListener> positionListeners = null;
+
 	protected static class IconSource {
 		protected IconRetriever retriever;
 		protected String symbolId;
@@ -864,6 +870,25 @@ public abstract class AbstractTacticalSymbol extends WWObjectImpl implements
 		this.moveTo(refPos.add(delta));
 	}
 
+	public void addSymbolListener(SymbolListener sl) {
+		if (positionListeners == null) {
+			positionListeners = new ArrayList<SymbolListener>();
+		}
+		positionListeners.add(sl);
+	}
+
+	public boolean removeSymbolListener(SymbolListener sl) {
+		if (positionListeners != null) {
+			return positionListeners.remove(sl);
+		} else
+			return false;
+	}
+
+	public void removeAllSymbolListeners() {
+		if (positionListeners != null)
+			positionListeners.clear();
+	}
+
 	/** {@inheritDoc} */
 	public void moveTo(Position position) {
 		if (position == null) {
@@ -873,6 +898,11 @@ public abstract class AbstractTacticalSymbol extends WWObjectImpl implements
 		}
 
 		this.setPosition(position);
+		if (positionListeners != null) {
+			for (SymbolListener sl : positionListeners) {
+				sl.moved();
+			}
+		}
 	}
 
 	/**
@@ -2313,7 +2343,7 @@ public abstract class AbstractTacticalSymbol extends WWObjectImpl implements
 		Object owner = this.getDelegateOwner();
 		return new PickedObject(colorCode, owner != null ? owner : this);
 	}
-	
+
 	// Modificado para que funcione el seguimiento de blancos
 	public Vec4 getScreenPoint() {
 		return this.placePoint;

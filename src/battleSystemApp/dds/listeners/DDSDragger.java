@@ -31,7 +31,6 @@ import gov.nasa.worldwind.util.Logging;
 public class DDSDragger extends BasicDragger {
 
 	private DDSCommLayer dds;
-	private ViewController viewController;
 
 	public DDSDragger(WorldWindow wwd, DDSCommLayer _dds) {
 		super(wwd);
@@ -39,11 +38,9 @@ public class DDSDragger extends BasicDragger {
 		// TODO Auto-generated constructor stub
 	}
 
-	public DDSDragger(WorldWindow wwd, boolean useTerrain, DDSCommLayer _dds,
-			ViewController _viewController) {
+	public DDSDragger(WorldWindow wwd, boolean useTerrain, DDSCommLayer _dds) {
 		super(wwd, useTerrain);
 		dds = _dds;
-		viewController = _viewController;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -76,7 +73,7 @@ public class DDSDragger extends BasicDragger {
 
 				Vec4 refPoint = globe.computePointFromPosition(refPos);
 
-				viewController.sceneChanged();
+				//viewController.sceneChanged();
 				
 				// Prepare DDS message to publish
 				Msg message = new Msg(dragObject.getIdentifier(), dragObject
