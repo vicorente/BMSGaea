@@ -17,20 +17,20 @@ import gov.nasa.worldwind.avlist.AVKey;
 
 public class InterfaceLayer extends RenderableLayer {
 	// The default images
-    protected final static String IMAGE_PAN = "images/view-pan-64x64.png";
-    protected final static String IMAGE_LOOK = "images/view-look-64x64.png";
-    protected final static String IMAGE_HEADING_LEFT = "images/view-heading-left-32x32.png";
-    protected final static String IMAGE_HEADING_RIGHT = "images/view-heading-right-32x32.png";
-    protected final static String IMAGE_ZOOM_IN = "images/view-zoom-in-32x32.png";
-    protected final static String IMAGE_ZOOM_OUT = "images/view-zoom-out-32x32.png";
-    protected final static String IMAGE_PITCH_UP = "images/view-pitch-up-32x32.png";
-    protected final static String IMAGE_PITCH_DOWN = "images/view-pitch-down-32x32.png";
-    protected final static String IMAGE_FOV_NARROW = "images/view-fov-narrow-32x32.png";
-    protected final static String IMAGE_FOV_WIDE = "images/view-fov-wide-32x32.png";
-    protected final static String IMAGE_VE_UP = "images/view-elevation-up-32x32.png";
-    protected final static String IMAGE_VE_DOWN = "images/view-elevation-down-32x32.png";
+    protected final static String IMAGE_PAN = "resources/images/view-pan-64x64.png";
+    protected final static String IMAGE_LOOK = "resources/images/view-look-64x64.png";
+    protected final static String IMAGE_HEADING_LEFT = "resources/images/view-heading-left-32x32.png";
+    protected final static String IMAGE_HEADING_RIGHT = "resources/images/view-heading-right-32x32.png";
+    protected final static String IMAGE_ZOOM_IN = "resources/images/view-zoom-in-32x32.png";
+    protected final static String IMAGE_ZOOM_OUT = "resources/images/view-zoom-out-32x32.png";
+    protected final static String IMAGE_PITCH_UP = "resources/images/view-pitch-up-32x32.png";
+    protected final static String IMAGE_PITCH_DOWN = "resources/images/view-pitch-down-32x32.png";
+    protected final static String IMAGE_FOV_NARROW = "resources/images/view-fov-narrow-32x32.png";
+    protected final static String IMAGE_FOV_WIDE = "resources/images/view-fov-wide-32x32.png";
+    protected final static String IMAGE_VE_UP = "resources/images/view-elevation-up-32x32.png";
+    protected final static String IMAGE_VE_DOWN = "resources/images/view-elevation-down-32x32.png";
     // mis imagenes
-    protected final static String IMAGE_NEW_UNIT = "icons/nueva_unidad.png";
+    protected final static String IMAGE_NEW_UNIT = "resources/images/coordinates-64x64.png";
     // The annotations used to display the controls.
     protected ScreenAnnotation controlPan;
     protected ScreenAnnotation controlLook;

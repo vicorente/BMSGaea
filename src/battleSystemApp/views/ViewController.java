@@ -3,15 +3,11 @@ package battleSystemApp.views;
 import gov.nasa.worldwind.View;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.avlist.AVKey;
-import gov.nasa.worldwind.avlist.AVList;
 import gov.nasa.worldwind.geom.ExtentHolder;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.Vec4;
 import gov.nasa.worldwind.globes.Globe;
 import gov.nasa.worldwind.symbology.AbstractTacticalSymbol;
-import gov.nasa.worldwind.symbology.TacticalSymbol;
-import gov.nasa.worldwind.symbology.TacticalSymbolAttributes;
-import gov.nasa.worldwind.symbology.milstd2525.MilStd2525TacticalSymbol;
 import gov.nasa.worldwind.view.orbit.OrbitView;
 import gov.nasa.worldwindx.examples.util.ExtentVisibilitySupport;
 
