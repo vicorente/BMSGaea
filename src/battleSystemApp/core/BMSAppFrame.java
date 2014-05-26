@@ -22,6 +22,8 @@ import gov.nasa.worldwindx.examples.util.HotSpotController;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -576,6 +578,8 @@ public class BMSAppFrame extends ApplicationTemplate {
 
 		try {
 			appFrame = new GaeaAppFrame();
+		    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		    gd.setFullScreenWindow(appFrame);
 			appFrame.setTitle("BMS");
 			appFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			java.awt.EventQueue.invokeLater(new Runnable() {
