@@ -1,6 +1,7 @@
 /bin
-/milstd2525-symbols.zip
+resources/milstd2525-symbols.zip
 *.DS_Store
+*.log
 /.settings
 /.classpath
 
