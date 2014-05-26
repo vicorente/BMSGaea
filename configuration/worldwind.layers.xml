@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <LayerList> <Layer className="gov.nasa.worldwind.layers.StarsLayer"> 
+	<Property name="Name" value="Stars"/> </Layer> <Layer className="gov.nasa.worldwind.layers.SkyGradientLayer"/> 
+	<Layer className="gov.nasa.worldwind.layers.Earth.BMNGOneImage"> <Property 
+	name="MinActiveAltitude" value="3e6"/> </Layer> <Layer href="config/Earth/BMNGWMSLayer2.xml" 
+	actuate="onLoad"/> <Layer href="config/Earth/LandsatI3WMSLayer2.xml" actuate="onLoad"/> 
+	<Layer href="config/Earth/USDANAIPWMSImageLayer.xml" actuate="onRequest"/> 
+	<Layer href="config/Earth/USDANAIPUSGSWMSImageLayer.xml" actuate="onRequest"/> 
+	<Layer href="config/Earth/MSVirtualEarthAerialLayer.xml" actuate="onRequest"/> 
+	<Layer href="config/Earth/BingImagery.xml" actuate="onRequest"/> <Layer href="config/Earth/USGSTopoLowResLayer.xml" 
+	actuate="onRequest"/> <Layer href="config/Earth/USGSTopoMedResLayer.xml" 
+	actuate="onRequest"/> <Layer href="config/Earth/USGSTopoHighResLayer.xml" 
+	actuate="onRequest"/> <Layer href="config/Earth/USGSUrbanAreaOrthoLayer.xml" 
+	actuate="onRequest"/> <Layer className="gov.nasa.worldwind.layers.Earth.OSMMapnikLayer" 
+	actuate="onRequest"/> <Layer className="gov.nasa.worldwind.layers.Earth.OSMCycleMapLayer" 
+	actuate="onRequest"/> <Layer className="gov.nasa.worldwind.layers.Earth.CountryBoundariesLayer" 
+	actuate="onRequest"/> <Layer href="config/Earth/OpenStreetMap.xml" actuate="onRequest"/> 
+	<Layer href="config/Earth/EarthAtNightLayer.xml" actuate="onRequest"/> <Layer 
+	className="gov.nasa.worldwind.layers.Earth.NASAWFSPlaceNameLayer"/> <Layer 
+	className="gov.nasa.worldwind.layers.WorldMapLayer"/> <Layer className="gov.nasa.worldwind.layers.ScalebarLayer"/> 
+	<Layer className="gov.nasa.worldwind.layers.CompassLayer"/> </LayerList> -->
+
+<LayerList>
+	<Layer className="gov.nasa.worldwind.layers.SkyGradientLayer" />
+	<Layer className="gov.nasa.worldwind.layers.Earth.BMNGOneImage">
+		<Property name="MinActiveAltitude" value="1e6" />
+	</Layer>
+	<Layer href="config/Earth/BMNGWMSLayer2.xml" actuate="onLoad" />
+	<Layer href="config/Earth/LandsatI3WMSLayer2.xml" actuate="onLoad" />
+	<Layer href="config/Earth/BingImagery.xml" actuate="onRequest" />
+
+	<Layer className="si.xlab.gaea.core.layers.elev.ElevationLayer"
+		actuate="onRequest">
+		<Property name="Name" value="Height-map (run-time calculated)" />
+	</Layer>
+
+	<Layer className="gov.nasa.worldwind.layers.Earth.CountryBoundariesLayer"
+		actuate="onRequest" />
+	<Layer href="config/Earth/OpenStreetMap.xml" actuate="onRequest" />
+
+	<Layer className="si.xlab.gaea.examples.layers.SurfaceWatersSlovenia"
+		actuate="onRequest" />
+	<Layer className="si.xlab.gaea.examples.layers.FloodingSlovenia"
+		actuate="onRequest" />
+	<Layer className="si.xlab.gaea.examples.layers.HikingPathsSlovenia"
+		actuate="onRequest" />
+	<Layer className="si.xlab.gaea.examples.layers.ProtectedAreasSlovenia"
+		actuate="onRequest" />
+	<Layer className="si.xlab.gaea.examples.layers.EnglandRoads"
+		actuate="onRequest" />
+
+	<Layer className="si.xlab.gaea.examples.layers.KmlBuildingsLayer"
+		actuate="onRequest">
+		<Property name="Name" value="Buildings in Torrent, Spain" />
+	</Layer>
+
+	<Layer className="si.xlab.gaea.core.layers.elev.SlopeLayer"
+		actuate="onRequest">
+		<Property name="Name" value="Steep Areas (run-time calculated)" />
+	</Layer>
+
+
+	<Layer className="gov.nasa.worldwind.layers.Earth.NASAWFSPlaceNameLayer" />
+	<Layer className="gov.nasa.worldwind.layers.WorldMapLayer" />
+	<Layer className="gov.nasa.worldwind.layers.ScalebarLayer" />
+	<Layer className="gov.nasa.worldwind.layers.CompassLayer" />
+</LayerList>

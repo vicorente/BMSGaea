@@ -308,7 +308,6 @@ public class InterfaceLayerSelectListener implements SelectListener
             // Handle left press on controls
             this.pressedControl = selectedObject;
             this.pressedControlType = controlType;
-
             // Consume drag events, but do not consume left press events. It is not necessary to consume left press
             // events here, and doing so prevents the WorldWindow from gaining focus.
             if (event.getEventAction().equals(SelectEvent.DRAG))
@@ -318,7 +317,7 @@ public class InterfaceLayerSelectListener implements SelectListener
             || event.getEventAction().equals(SelectEvent.LEFT_DOUBLE_CLICK)
             || event.getEventAction().equals(SelectEvent.DRAG_END))
         {
-            // Release pressed control
+            // Release pressed control    	
             this.pressedControl = null;
             resetOrbitView(view);
             view.firePropertyChange(AVKey.VIEW, null, view);
@@ -356,7 +355,8 @@ public class InterfaceLayerSelectListener implements SelectListener
 
         if (controlType.equals(AVKey.BUTTON_NEW_UNIT))
         {
-            // CREAR UNA NUEVA UNIDAD
+        	
+            // TODO CREAR UNA NUEVA UNIDAD
         }
         else if (controlType.equals(AVKey.VIEW_PAN))
         {

@@ -2,24 +2,23 @@ package battleSystemApp.core;
 
 import gov.nasa.worldwind.Configuration;
 import gov.nasa.worldwind.avlist.AVKey;
-import gov.nasa.worldwind.event.SelectEvent;
-import gov.nasa.worldwind.event.SelectListener;
 import gov.nasa.worldwind.geom.Angle;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.layers.RenderableLayer;
 import gov.nasa.worldwind.render.Material;
+import gov.nasa.worldwind.render.Offset;
 import gov.nasa.worldwind.render.Renderable;
 import gov.nasa.worldwind.symbology.AbstractTacticalSymbol;
 import gov.nasa.worldwind.symbology.BasicTacticalSymbolAttributes;
 import gov.nasa.worldwind.symbology.SymbologyConstants;
-import gov.nasa.worldwind.symbology.TacticalGraphic;
 import gov.nasa.worldwind.symbology.TacticalSymbol;
 import gov.nasa.worldwind.symbology.TacticalSymbolAttributes;
 import gov.nasa.worldwind.symbology.milstd2525.MilStd2525TacticalSymbol;
-import gov.nasa.worldwind.util.BasicDragger;
 import gov.nasa.worldwind.util.WWUtil;
+import gov.nasa.worldwind.util.dashboard.DashboardController;
+import gov.nasa.worldwind.util.layertree.LayerTree;
 import gov.nasa.worldwindx.examples.ApplicationTemplate;
-import gov.nasa.worldwindx.examples.BulkDownloadPanel;
+import gov.nasa.worldwindx.examples.util.HotSpotController;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -39,11 +38,14 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.JSlider;
 import javax.swing.Timer;
+import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
@@ -51,7 +53,6 @@ import javax.swing.event.ChangeListener;
 
 import si.xlab.gaea.avlist.AvKeyExt;
 import si.xlab.gaea.core.layers.RenderToTextureLayer;
-import si.xlab.gaea.core.layers.elev.SlopeLayer;
 import battleSystemApp.components.ContextMenuInfo;
 import battleSystemApp.components.ContextMenuItemInfo;
 import battleSystemApp.components.InterfaceLayer;
@@ -74,38 +75,17 @@ import battleSystemApp.views.ViewController;
  */
 public class BMSAppFrame extends ApplicationTemplate {
 
-	private static class MessageItem extends JMenuItem {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -6016671095079453916L;
-		private final String message;
-
-		public MessageItem(String message, String caption) {
-			this.message = message;
-			setAction(new AbstractAction(caption) {
-				/**
-				 * 
-				 */
-				private static final long serialVersionUID = -4750875727415359231L;
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					showMessage();
-				}
-			});
-		}
-
-		public void showMessage() {
-			JOptionPane.showMessageDialog(null, message);
-		}
-	}
-
 	public static class GaeaAppFrame extends AppFrame implements DDSListener,
 			SymbolListener {
 		/**
 		 * 
 		 */
+		static
+	    {
+	        // The following is required to use Swing menus with the heavyweight canvas used by World Wind.
+	        ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
+	        JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+	    }
 		private static final long serialVersionUID = 6059677693262885004L;
 		protected RenderableLayer symbolLayer;
 		protected TacticalSymbolAttributes sharedAttrs;
@@ -116,12 +96,37 @@ public class BMSAppFrame extends ApplicationTemplate {
 		protected RoundedPanel configPanel;
 		protected ArrayList<AbstractTacticalSymbol> objectsToTrack;
 		protected ViewController viewController;
-
+		protected LayerTree layerTree;
+		protected RenderableLayer hiddenLayer;
+		protected HotSpotController hotSpotController;
 		/**
 		 * 
 		 */
 		public GaeaAppFrame() {
 
+			super(true, false, false);
+
+			
+			this.layerTree = new LayerTree(new Offset(20d, 160d, AVKey.PIXELS,
+					AVKey.INSET_PIXELS));
+			this.layerTree.getModel().refresh(
+					this.getWwd().getModel().getLayers());
+
+			
+			// Set up a layer to display the on-screen layer tree in the
+			// WorldWindow. This layer is not displayed in
+			// the layer tree's model. Doing so would enable the user to hide
+			// the layer tree display with no way of
+			// bringing it back.
+			this.hiddenLayer = new RenderableLayer();
+			this.hiddenLayer.addRenderable(this.layerTree);
+			this.getWwd().getModel().getLayers().add(this.hiddenLayer);
+
+			// Add a controller to handle input events on the layer selector and
+			// on browser balloons.
+			this.hotSpotController = new HotSpotController(this.getWwd());
+
+			// elementos a seguir
 			objectsToTrack = new ArrayList<AbstractTacticalSymbol>();
 
 			confManager = new ConfigurationManager();
@@ -153,8 +158,8 @@ public class BMSAppFrame extends ApplicationTemplate {
 			this.dds.addListener(this);
 
 			// Add the bulk download control panel.
-			this.getLayerPanel().add(new BulkDownloadPanel(this.getWwd()),
-					BorderLayout.SOUTH);
+			// this.getLayerPanel().add(new BulkDownloadPanel(this.getWwd()),
+			// BorderLayout.SOUTH);
 
 			this.symbolLayer = new RenderableLayer();
 			this.symbolLayer.setName("Simbolos Tacticos");
@@ -514,7 +519,9 @@ public class BMSAppFrame extends ApplicationTemplate {
 					// Set new symbol position
 					C2Symbol.moveTo(Position.fromDegrees(message.lat,
 							message.lon, message.alt));
-					String newString = new SimpleDateFormat("ddHHmmss'Z'MMMYYYY").format(new Date()).toUpperCase(); // 9:00
+					String newString = new SimpleDateFormat(
+							"ddHHmmss'Z'MMMYYYY").format(new Date())
+							.toUpperCase(); // 9:00
 					C2Symbol.setModifier(SymbologyConstants.DATE_TIME_GROUP,
 							newString);
 				}
@@ -559,8 +566,28 @@ public class BMSAppFrame extends ApplicationTemplate {
 		// start("World Wind Tactical Symbols", GaeaAppFrame.class);
 		// Configuration
 		// .insertConfigurationDocument("si/xlab/gaea/examples/gaea-example-config.xml");
-		appFrame = (GaeaAppFrame) start(
-				"Gaea+ Open Source Example Application", GaeaAppFrame.class);
+		// appFrame = (GaeaAppFrame) start(
+		// "BMS", GaeaAppFrame.class);
+
+		if (Configuration.isMacOS()) {
+			System.setProperty(
+					"com.apple.mrj.application.apple.menu.about.name", "BMS");
+		}
+
+		try {
+			appFrame = new GaeaAppFrame();
+			appFrame.setTitle("BMS");
+			appFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			java.awt.EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					appFrame.setVisible(true);
+				}
+			});
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		insertBeforeCompass(appFrame.getWwd(),
 				RenderToTextureLayer.getInstance());
 

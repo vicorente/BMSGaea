@@ -2,6 +2,7 @@ package battleSystemApp.components;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -29,7 +30,7 @@ public class InterfaceLayer extends RenderableLayer {
     protected final static String IMAGE_VE_UP = "images/view-elevation-up-32x32.png";
     protected final static String IMAGE_VE_DOWN = "images/view-elevation-down-32x32.png";
     // mis imagenes
-    protected final static String IMAGE_NEW_UNIT = "images/view-pan-64x64.png";
+    protected final static String IMAGE_NEW_UNIT = "icons/nueva_unidad.png";
     // The annotations used to display the controls.
     protected ScreenAnnotation controlPan;
     protected ScreenAnnotation controlLook;
@@ -454,9 +455,11 @@ public class InterfaceLayer extends RenderableLayer {
         if (control != null && control instanceof ScreenAnnotation)
         {
             this.currentControl = (ScreenAnnotation) control;
+            this.currentControl.getAttributes().setVisible(true);
             this.currentControl.getAttributes().setImageOpacity(1);
         }
     }
+
 
     @Override
     public void doRender(DrawContext dc)
@@ -491,6 +494,7 @@ public class InterfaceLayer extends RenderableLayer {
         ca.setImageOpacity(.5);
         ca.setScale(scale);
         
+       
         final String NOTEXT = "";
         // origen del texto con respecto al componente
         final Point ORIGIN = new Point(0, 0);
