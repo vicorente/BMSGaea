@@ -12,10 +12,14 @@ import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
 import gov.nasa.worldwind.event.RenderingExceptionListener;
 import gov.nasa.worldwind.exception.WWAbsentRequirementException;
 import gov.nasa.worldwind.layers.*;
+import gov.nasa.worldwind.render.Offset;
+import gov.nasa.worldwind.util.layertree.LayerTree;
+import gov.nasa.worldwindx.examples.util.HotSpotController;
 import battleSystemApp.features.AbstractFeature;
 import battleSystemApp.utils.Util;
 
 import javax.swing.*;
+
 import java.awt.*;
 
 /**
@@ -26,10 +30,13 @@ public class WWPanelImpl extends AbstractFeature implements WWPanel
 {
     private JPanel panel;
     private WorldWindowGLCanvas wwd;
-
+    private LayerTree layerTree;
+    private RenderableLayer hiddenLayer;
+	private HotSpotController hotSpotController;
+    
     public WWPanelImpl(Registry registry)
     {
-        super("World Wind Panel", Constants.WW_PANEL, registry);
+        super("BMS ET", Constants.WW_PANEL, registry);
 
         this.panel = new JPanel(new BorderLayout());
         this.wwd = new WorldWindowGLCanvas();
@@ -55,8 +62,14 @@ public class WWPanelImpl extends AbstractFeature implements WWPanel
         // Disable screen credits.
         this.wwd.getSceneController().getScreenCreditController().setEnabled(false);
 
+        // Necesario para controlar los elementos flotantes sobre la ventana WW
+     	this.hotSpotController = new HotSpotController(this.wwd);
+		
+		
         this.wwd.setPreferredSize(new Dimension(1024, 768));
         this.panel.add(this.wwd, BorderLayout.CENTER);
+        
+        
     }
 
     public void initialize(Controller controller)

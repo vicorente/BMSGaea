@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2012 United States Government as represented by the Administrator of the
+  ~ National Aeronautics and Space Administration.
+  ~ All Rights Reserved.
+  -->
+
+<Configuration version="1">
+    <!-- Order matters in the instantiation of some of these -->
+    <!-- Core infrastructure classes must be instantiated first, and in the order given here -->
+    <!--<Feature className="battleSystemApp.core.MenuBarImpl"/>-->
+    <Feature className="battleSystemApp.core.ToolBarImpl"/>
+    <Feature className="battleSystemApp.core.WWPanelImpl"/>
+    <Feature className="battleSystemApp.features.swinglayermanager.ControlsPanelImpl"/>
+    <Feature className="battleSystemApp.core.AppPanelImpl"/>
+    <Feature className="battleSystemApp.features.NetworkActivitySignal"/>
+    <Feature className="battleSystemApp.features.StatusPanelImpl"/>
+    <Feature className="battleSystemApp.core.AppFrameImpl"/>
+    <Feature className="battleSystemApp.core.ExternalLinkController"/>
+    <Feature className="battleSystemApp.core.IconController"/>
+    <Feature className="battleSystemApp.core.ToolTipController"/>
+    <Feature className="battleSystemApp.core.InfoPanelController"/>
+    <!-- Features should and in some cases must be instantiated before the menus that refer to them -->
+    <Feature className="battleSystemApp.features.ScaleBar"/>
+    <Feature className="battleSystemApp.features.Compass"/>
+    <Feature className="battleSystemApp.features.ScreenLayerTree"/>
+    <Feature className="battleSystemApp.features.swinglayermanager.LayerManagerDialog"/>
+    <Feature className="battleSystemApp.features.CoordinatesDisplay"/>
+    <Feature className="battleSystemApp.features.Crosshair"/>
+    <!--<Feature className="battleSystemApp.features.ExportImage" accelerator="control P"/>-->
+    <Feature className="battleSystemApp.features.GazetteerPanel"/>
+    <Feature className="battleSystemApp.features.swinglayermanager.ActiveLayersPanel"/>
+    <Feature className="battleSystemApp.features.swinglayermanager.LayerManagerPanel"/>
+    <!--<Feature className="battleSystemApp.features.Measurement"/>-->
+    <!--<Feature className="battleSystemApp.features.WMS"/>-->
+    <Feature className="battleSystemApp.features.WMSDialog"/>
+    <Feature className="battleSystemApp.features.YahooGazetteer"/>
+    <!--<Feature className="battleSystemApp.features.MeasurementDialog" featureID="battleSystemApp.feature.MeasurementDialog" actuate="onDemand"/>-->
+    <!--<Feature className="battleSystemApp.features.NASACopyrightDialog"/> -->
+    <Feature className="battleSystemApp.features.Navigation"/>
+    <Feature className="battleSystemApp.features.Graticule"/>
+    <Feature className="battleSystemApp.features.LatLonGraticule"/>
+    <Feature className="battleSystemApp.features.UTMGraticule"/>
+    <!-- Menus just point to other things, so instantiate them last -->
+    <Feature className="battleSystemApp.core.MenuBarImpl"/>
+</Configuration>
