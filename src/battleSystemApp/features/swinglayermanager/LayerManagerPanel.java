@@ -36,7 +36,7 @@ public class LayerManagerPanel extends AbstractFeaturePanel implements LayerMana
 {
     private static final String TOOL_TIP = "Select layers to add to the active layer list.";
     private static final String ICON_PATH
-        = "gov/nasa/worldwindx/applications/worldwindow/images/layer-manager-64x64.png";
+        = "images/layer-manager-64x64.png";
     private LayerTree layerTree;
     private boolean on = false;
 

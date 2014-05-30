@@ -61,7 +61,7 @@ import battleSystemApp.dds.DDSCommLayer;
 import battleSystemApp.dds.DDSListener;
 import battleSystemApp.dds.idl.Msg;
 import battleSystemApp.dds.listeners.DDSDragger;
-import battleSystemApp.utils.ConfigurationManager;
+import battleSystemApp.utils.ProxyConfigurationManager;
 import battleSystemApp.utils.ProxyAuthenticator;
 import battleSystemApp.views.ViewController;
 
@@ -89,7 +89,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 		protected TacticalSymbolAttributes sharedAttrs;
 		protected TacticalSymbolAttributes sharedHighlightAttrs;
 		protected DDSDragger dragger;
-		protected ConfigurationManager confManager;
+		protected ProxyConfigurationManager confManager;
 		protected DDSCommLayer dds;
 		protected RoundedPanel configPanel;
 		protected ArrayList<AbstractTacticalSymbol> objectsToTrack;
@@ -127,7 +127,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 			// elementos a seguir
 			objectsToTrack = new ArrayList<AbstractTacticalSymbol>();
 
-			confManager = new ConfigurationManager();
+			confManager = new ProxyConfigurationManager();
 			// Autenticamos la app contra el proxy
 			Authenticator.setDefault(new ProxyAuthenticator(confManager
 					.getProperty(confManager.PROXY_USERNAME), confManager

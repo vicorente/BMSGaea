@@ -55,6 +55,7 @@ public interface Constants
     static final String FEATURE_ACTIVE_LAYERS_PANEL
         = "battleSystemApp.feature.ActiveLayersPanel";
     static final String FEATURE_COMPASS = "battleSystemApp.feature.Compass";
+    static final String FEATURE_MIL_STD = "battleSystemApp.feature.MilSymbolFeatureLayer";
     static final String FEATURE_SCREEN_LAYER_TREE = "battleSystemApp.feature.ScreenLayerTree";
     static final String FEATURE_CROSSHAIR = "battleSystemApp.feature.Crosshair";
     static final String FEATURE_COORDINATES_DISPLAY

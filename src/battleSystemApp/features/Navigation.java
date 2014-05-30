@@ -17,15 +17,15 @@ import java.beans.PropertyChangeEvent;
  */
 public class Navigation extends AbstractFeatureLayer
 {
-    public static final String POSITION_PROPERTY = "gov.nasa.worldwindowx.applications.features.Navegacion.PostionProperty";
-    public static final String ORIENTATION_PROPERTY = "gov.nasa.worldwindowx.applications.features.Navegacion.OrientationProperty";
-    public static final String SIZE_PROPERTY = "gov.nasa.worldwindowx.applications.features.Navegacion.SizeProperty";
-    public static final String OPACITY_PROPERTY = "gov.nasa.worldwindowx.applications.features.Navegacion.OpacityProperty";
+    public static final String POSITION_PROPERTY = "battleSystemApp.features.Navegacion.PostionProperty";
+    public static final String ORIENTATION_PROPERTY = "gbattleSystemApp.features.Navegacion.OrientationProperty";
+    public static final String SIZE_PROPERTY = "battleSystemApp.features.Navegacion.SizeProperty";
+    public static final String OPACITY_PROPERTY = "battleSystemApp.features.Navegacion.OpacityProperty";
 
-    public static final String PAN_CONTROLS_PROPERTY = "gov.nasa.worldwindowx.applications.features.Navegacion.PanControlS";
-    public static final String ZOOM_CONTROLS_PROPERTY = "gov.nasa.worldwindowx.applications.features.Navegacion.ZoomControlS";
-    public static final String TILT_CONTROLS_PROPERTY = "gov.nasa.worldwindowx.applications.features.Navegacion.TiltControlS";
-    public static final String HEADING_CONTROLS_PROPERTY = "gov.nasa.worldwindowx.applications.features.Navegacion.HeadingControlS";
+    public static final String PAN_CONTROLS_PROPERTY = "battleSystemApp.features.Navegacion.PanControlS";
+    public static final String ZOOM_CONTROLS_PROPERTY = "battleSystemApp.features.Navegacion.ZoomControlS";
+    public static final String TILT_CONTROLS_PROPERTY = "battleSystemApp.features.Navegacion.TiltControlS";
+    public static final String HEADING_CONTROLS_PROPERTY = "battleSystemApp.features.Navegacion.HeadingControlS";
 
     public Navigation()
     {

@@ -36,7 +36,7 @@ public class CoordinatesDisplay extends AbstractOnDemandLayerFeature
     public CoordinatesDisplay(Registry registry)
     {
         super("Coordinates", Constants.FEATURE_COORDINATES_DISPLAY,
-            "gov/nasa/worldwindx/applications/worldwindow/images/coordinates-64x64.png", null, registry);
+            "images/coordinates-64x64.png", null, registry);
     }
 
     @Override

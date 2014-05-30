@@ -20,6 +20,8 @@ import battleSystemApp.utils.Util;
 
 import javax.swing.*;
 
+import si.xlab.gaea.avlist.AvKeyExt;
+
 import java.awt.*;
 
 /**
@@ -62,6 +64,10 @@ public class WWPanelImpl extends AbstractFeature implements WWPanel
         // Disable screen credits.
         this.wwd.getSceneController().getScreenCreditController().setEnabled(false);
 
+        //this.wwd.getSceneController().firePropertyChange(AvKeyExt.ENABLE_SUNLIGHT, false, true);
+        
+        this.wwd.getSceneController().firePropertyChange(AvKeyExt.ENABLE_POS_EFFECTS, false, true);
+        
         // Necesario para controlar los elementos flotantes sobre la ventana WW
      	this.hotSpotController = new HotSpotController(this.wwd);
 		

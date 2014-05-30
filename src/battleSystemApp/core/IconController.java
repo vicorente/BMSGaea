@@ -6,11 +6,14 @@
 
 package battleSystemApp.core;
 
+import battleSystemApp.components.ContextMenuInfo;
+import battleSystemApp.components.TacticalSymbolContextMenu;
 import battleSystemApp.features.AbstractFeature;
 import battleSystemApp.utils.Util;
 import gov.nasa.worldwind.Disposable;
 import gov.nasa.worldwind.event.*;
 import gov.nasa.worldwind.render.WWIcon;
+import gov.nasa.worldwind.symbology.AbstractTacticalSymbol;
 
 
 /**
@@ -75,19 +78,27 @@ public class IconController extends AbstractFeature implements SelectListener, D
             this.lastPickedIcon = (WWIcon) o;
             this.lastPickedIcon.setHighlighted(true);
         }
+        
+        if (o != null && o instanceof AbstractTacticalSymbol)
+        {
+        	//((AbstractTacticalSymbol) o).setHighlighted(true);
+        	
+        }
     }
 
     protected void showContextMenu(SelectEvent event)
     {
-//        if (!(event.getTopObject() instanceof UserFacingIcon))
-//            return;
+       if (!(event.getTopObject() instanceof AbstractTacticalSymbol))
+           return;
+       AbstractTacticalSymbol icon = (AbstractTacticalSymbol) event.getTopObject(); 
 //
 //        UserFacingIcon icon = (UserFacingIcon) event.getTopObject();
-//        ContextMenuInfo menuInfo = (ContextMenuInfo) icon.getValue(Constants.CONTEXT_MENU_INFO);
-//        if (menuInfo == null)
-//            return;
-//
-//        ContextMenu menu = new ContextMenu(this.controller, menuInfo);
-//        menu.show(event.getMouseEvent());
+        ContextMenuInfo menuInfo = (ContextMenuInfo) icon.getValue(TacticalSymbolContextMenu.CONTEXT_MENU_INFO);
+        System.out.println ("segundo boton");
+        if (menuInfo == null)
+            return;
+        
+
+ 
     }
 }

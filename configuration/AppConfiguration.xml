@@ -9,6 +9,7 @@
     <!-- Order matters in the instantiation of some of these -->
     <!-- Core infrastructure classes must be instantiated first, and in the order given here -->
     <!--<Feature className="battleSystemApp.core.MenuBarImpl"/>-->
+   
     <Feature className="battleSystemApp.core.ToolBarImpl"/>
     <Feature className="battleSystemApp.core.WWPanelImpl"/>
     <Feature className="battleSystemApp.features.swinglayermanager.ControlsPanelImpl"/>
@@ -22,9 +23,11 @@
     <Feature className="battleSystemApp.core.InfoPanelController"/>
     <!-- Features should and in some cases must be instantiated before the menus that refer to them -->
     <Feature className="battleSystemApp.features.ScaleBar"/>
-    <Feature className="battleSystemApp.features.Compass"/>
+    
+    <!--<Feature className="battleSystemApp.features.Compass"/>-->
     <Feature className="battleSystemApp.features.ScreenLayerTree"/>
     <Feature className="battleSystemApp.features.swinglayermanager.LayerManagerDialog"/>
+    
     <Feature className="battleSystemApp.features.CoordinatesDisplay"/>
     <Feature className="battleSystemApp.features.Crosshair"/>
     <!--<Feature className="battleSystemApp.features.ExportImage" accelerator="control P"/>-->
@@ -43,4 +46,6 @@
     <Feature className="battleSystemApp.features.UTMGraticule"/>
     <!-- Menus just point to other things, so instantiate them last -->
     <Feature className="battleSystemApp.core.MenuBarImpl"/>
+     <Feature className="battleSystemApp.features.MilSymbolFeatureLayer"/>
+    
 </Configuration>

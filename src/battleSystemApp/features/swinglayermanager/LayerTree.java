@@ -8,6 +8,9 @@ package battleSystemApp.features.swinglayermanager;
 
 import javax.swing.*;
 import javax.swing.tree.*;
+
+import battleSystemApp.core.ImageLibrary;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.EventObject;
@@ -43,9 +46,8 @@ public class LayerTree extends JTree
     /** This is the component displayed by the individual tree entries. It's a panel with icon, check box and name. */
     protected static class CellPanel extends JPanel
     {
-        private static final ImageIcon EARTH_ICON =
-            new ImageIcon(LayerNodeTreeCellRenderer.class.getResource("/images/16x16-icon-earth.png"));
-
+        private static final ImageIcon EARTH_ICON = ImageLibrary.getIcon("images/16x16-icon-earth.png");
+        
         protected JCheckBox checkBox;
         protected JLabel layerTitle = new JLabel(EARTH_ICON);
 

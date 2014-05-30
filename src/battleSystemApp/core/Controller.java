@@ -19,6 +19,8 @@ import javax.swing.*;
 
 import battleSystemApp.core.layermanager.LayerManager;
 import battleSystemApp.features.NetworkActivitySignal;
+import battleSystemApp.utils.ProxyAuthenticator;
+import battleSystemApp.utils.ProxyConfigurationManager;
 import battleSystemApp.utils.Util;
 import battleSystemApp.utils.WWOUnitsFormat;
 
@@ -66,6 +68,22 @@ public class Controller {
 		Configuration.setValue(AVKey.INITIAL_HEADING, 22);
 		Configuration.setValue(AVKey.INITIAL_PITCH, 82);
 		Configuration.setValue(AVKey.INITIAL_ALTITUDE, 20000);
+		ProxyConfigurationManager proxyConfigurationManager = new ProxyConfigurationManager();
+		// Autenticamos la app contra el proxy
+		Authenticator
+				.setDefault(new ProxyAuthenticator(
+						proxyConfigurationManager
+								.getProperty(proxyConfigurationManager.PROXY_USERNAME),
+						proxyConfigurationManager
+								.getProperty(proxyConfigurationManager.PROXY_PASSWORD)));
+		System.getProperties().put("http.proxyHost", proxyConfigurationManager
+				.getProperty(proxyConfigurationManager.PROXY_HOST));
+		System.getProperties().put("http.proxyPort", proxyConfigurationManager
+				.getProperty(proxyConfigurationManager.PROXY_PORT));
+		System.getProperties().put("https.proxyHost", proxyConfigurationManager
+				.getProperty(proxyConfigurationManager.PROXY_HOST));
+		System.getProperties().put("https.proxyPort",proxyConfigurationManager
+				.getProperty(proxyConfigurationManager.PROXY_PORT));
 
 		this.unitsFormat = new WWOUnitsFormat();
 		this.unitsFormat.setShowUTM(true);
@@ -190,7 +208,7 @@ public class Controller {
 		return addLayer(layer, Constants.INTERNAL_LAYER);
 	}
 
-	private Layer addLayer(Layer layer, String layerType) {
+	public Layer addLayer(Layer layer, String layerType) {
 		if (layer != null) {
 			layer.setValue(layerType, true);
 			this.getWWPanel().addLayer(layer);
