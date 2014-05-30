@@ -12,6 +12,7 @@ import battleSystemApp.features.AbstractFeature;
 import battleSystemApp.utils.Util;
 import gov.nasa.worldwind.Disposable;
 import gov.nasa.worldwind.event.*;
+import gov.nasa.worldwind.render.Highlightable;
 import gov.nasa.worldwind.render.WWIcon;
 import gov.nasa.worldwind.symbology.AbstractTacticalSymbol;
 
@@ -22,7 +23,7 @@ import gov.nasa.worldwind.symbology.AbstractTacticalSymbol;
  */
 public class IconController extends AbstractFeature implements SelectListener, Disposable
 {
-    protected WWIcon lastPickedIcon = null;
+    protected Highlightable lastPickedIcon = null;
 
     public IconController(Registry registry)
     {
@@ -75,7 +76,7 @@ public class IconController extends AbstractFeature implements SelectListener, D
         // Turn on highlight if object selected.
         if (o != null && o instanceof WWIcon)
         {
-            this.lastPickedIcon = (WWIcon) o;
+            this.lastPickedIcon = (Highlightable) o;
             this.lastPickedIcon.setHighlighted(true);
         }
         

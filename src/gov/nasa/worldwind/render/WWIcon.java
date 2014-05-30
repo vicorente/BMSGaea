@@ -20,7 +20,7 @@ import java.awt.*;
  * @author tag
  * @version $Id: WWIcon.java 1171 2013-02-11 21:45:02Z dcollins $
  */
-public interface WWIcon extends AVList, Restorable
+public interface WWIcon extends AVList, Restorable, Highlightable
 {
     /**
      * Specifies the source image for the icon. Implementations of this interface determine the allowed source types,
