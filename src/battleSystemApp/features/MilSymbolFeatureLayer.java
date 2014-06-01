@@ -30,7 +30,7 @@ public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
 	}
 
 	public MilSymbolFeatureLayer(Registry registry) {
-		super("MIL-STD SYMBOL LAYER", Constants.FEATURE_MIL_STD,"images/warning64.png", null, registry);
+		super("MIL-STD SYMBOL LAYER", Constants.FEATURE_MIL_STD,"images/wms-64x64.png", null, registry);
 	}
     @Override
     public void initialize(Controller controller)

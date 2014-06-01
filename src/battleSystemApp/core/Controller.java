@@ -68,22 +68,7 @@ public class Controller {
 		Configuration.setValue(AVKey.INITIAL_HEADING, 22);
 		Configuration.setValue(AVKey.INITIAL_PITCH, 82);
 		Configuration.setValue(AVKey.INITIAL_ALTITUDE, 20000);
-		ProxyConfigurationManager proxyConfigurationManager = new ProxyConfigurationManager();
-		// Autenticamos la app contra el proxy
-		Authenticator
-				.setDefault(new ProxyAuthenticator(
-						proxyConfigurationManager
-								.getProperty(proxyConfigurationManager.PROXY_USERNAME),
-						proxyConfigurationManager
-								.getProperty(proxyConfigurationManager.PROXY_PASSWORD)));
-		System.getProperties().put("http.proxyHost", proxyConfigurationManager
-				.getProperty(proxyConfigurationManager.PROXY_HOST));
-		System.getProperties().put("http.proxyPort", proxyConfigurationManager
-				.getProperty(proxyConfigurationManager.PROXY_PORT));
-		System.getProperties().put("https.proxyHost", proxyConfigurationManager
-				.getProperty(proxyConfigurationManager.PROXY_HOST));
-		System.getProperties().put("https.proxyPort",proxyConfigurationManager
-				.getProperty(proxyConfigurationManager.PROXY_PORT));
+		
 
 		this.unitsFormat = new WWOUnitsFormat();
 		this.unitsFormat.setShowUTM(true);

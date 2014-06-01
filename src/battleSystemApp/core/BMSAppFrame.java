@@ -574,8 +574,8 @@ public class BMSAppFrame extends ApplicationTemplate {
 
 		try {
 			appFrame = new GaeaAppFrame();
-		    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		    gd.setFullScreenWindow(appFrame);
+		    //GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		    //gd.setFullScreenWindow(appFrame);
 			appFrame.setTitle("BMS");
 			appFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			java.awt.EventQueue.invokeLater(new Runnable() {

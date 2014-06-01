@@ -17,7 +17,7 @@ import java.beans.*;
 public class Graticule extends AbstractFeature
 {
     private static final String FEATURE_TITLE = "Graticule";
-    private static final String ICON_PATH = "gov/nasa/worldwindx/applications/worldwindow/images/lat-long-64x64.png";
+    private static final String ICON_PATH = "images/lat-long-64x64.png";
 
     public Graticule(Registry registry)
     {

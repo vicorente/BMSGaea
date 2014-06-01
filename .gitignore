@@ -4,5 +4,5 @@ resources/milstd2525-symbols.zip
 *.log
 /.settings
 /.classpath
-
+configuration/configuration.properties
 /MyCache/

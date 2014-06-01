@@ -10,6 +10,7 @@ import gov.nasa.worldwind.Configuration;
 import battleSystemApp.utils.*;
 
 import java.awt.*;
+import java.net.Authenticator;
 import java.util.logging.Level;
 
 /**
@@ -29,11 +30,25 @@ public class BMS
             System.setProperty("apple.laf.useScreenMenuBar", "true");
             System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
             String s = Configuration.getStringValue(Constants.APPLICATION_DISPLAY_NAME);
-            System.setProperty("com.apple.mrj.application.apple.menu.about.name",
-                Configuration.getStringValue(Constants.APPLICATION_DISPLAY_NAME));//"World Window");
         }
         else if (Configuration.isWindowsOS())
         {
+        	ProxyConfigurationManager proxyConfigurationManager = new ProxyConfigurationManager();
+    		// Autenticamos la app contra el proxy
+    		Authenticator
+    				.setDefault(new ProxyAuthenticator(
+    						proxyConfigurationManager
+    								.getProperty(proxyConfigurationManager.PROXY_USERNAME),
+    						proxyConfigurationManager
+    								.getProperty(proxyConfigurationManager.PROXY_PASSWORD)));
+    		System.getProperties().put("http.proxyHost", proxyConfigurationManager
+    				.getProperty(proxyConfigurationManager.PROXY_HOST));
+    		System.getProperties().put("http.proxyPort", proxyConfigurationManager
+    				.getProperty(proxyConfigurationManager.PROXY_PORT));
+    		System.getProperties().put("https.proxyHost", proxyConfigurationManager
+    				.getProperty(proxyConfigurationManager.PROXY_HOST));
+    		System.getProperties().put("https.proxyPort",proxyConfigurationManager
+    				.getProperty(proxyConfigurationManager.PROXY_PORT));
             System.setProperty("sun.awt.noerasebackground", "true"); // prevents flashing during window resizing
         }
     }

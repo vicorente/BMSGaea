@@ -28,10 +28,10 @@ public class ImageLibrary
     // These images are available for situation where a desired image is not available.
     private static final String[] WARNING_IMAGES = new String[]
         {
-            "images/warning16.png",
-            "images/warning24.png",
-            "images/warning32.png",
-            "images/warning64.png"
+            "resources/images/warning16.png",
+            "resources/images/warning24.png",
+            "resources/images/warning32.png",
+            "resources/images/warning64.png"
         };
 
     private static ImageLibrary instance;
