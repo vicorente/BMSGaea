@@ -25,8 +25,6 @@ import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.Vec4;
 import gov.nasa.worldwind.globes.Globe;
 import gov.nasa.worldwind.render.Highlightable;
-import gov.nasa.worldwind.render.WWIcon;
-import gov.nasa.worldwind.symbology.AbstractTacticalSymbol;
 import gov.nasa.worldwind.symbology.milstd2525.MilStd2525TacticalSymbol;
 import gov.nasa.worldwind.util.Logging;
 
@@ -34,6 +32,7 @@ import gov.nasa.worldwind.util.Logging;
  * @author vgonllo
  * @version $Id: IconController.java 1171 2013-02-11 21:45:02Z dcollins $
  */
+@SuppressWarnings("serial")
 public class IconController extends AbstractFeature implements SelectListener,
 		Disposable {
 	protected Highlightable lastPickedIcon = null;
@@ -174,6 +173,8 @@ public class IconController extends AbstractFeature implements SelectListener,
 				}
 				this.dragging = true;
 				event.consume();
+				// movemos la vista de la cámara si está activado
+				controller.getTrackingView().sceneChanged();
 			} else if (event.getEventAction().equals(SelectEvent.RIGHT_PRESS)) {
 				System.out.println("pulsado boton derecho!!!");
 				showContextMenu(event);

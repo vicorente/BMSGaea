@@ -165,6 +165,10 @@ public class Controller {
 				.getRegisteredObject(Constants.NETWORK_STATUS_SIGNAL);
 	}
 
+	public TrackingView getTrackingView(){
+		return (TrackingView) this.getRegisteredObject(Constants.FEATURE_TRACKING_VIEW);
+	}
+	
 	public void redraw() {
 		if (this.getWWd() != null) {
 			this.getWWd().redraw();

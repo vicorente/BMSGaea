@@ -18,7 +18,8 @@ import java.util.ArrayList;
 //********************  View Controller  ***********************//
 //**************************************************************//
 
-public class ViewController {
+public class ViewController
+{
 	protected static final double SMOOTHING_FACTOR = 0.96;
 
 	protected boolean enabled = true;

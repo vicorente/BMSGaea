@@ -90,7 +90,7 @@ public interface Constants
     static final String FEATURE_UTM_GRATICULE = "battleSystemApp.feature.UTMGraticule";
     static final String FEATURE_WMS_PANEL = "battleSystemApp.feature.WMSPanel";
     static final String FEATURE_WMS_DIALOG = "battleSystemApp.feature.WMSDialog";
-
+    static final String FEATURE_TRACKING_VIEW = "battleSystemApp.core.TrackingView";
     // Specific properties
     static final String FEATURE_OWNER_PROPERTY = "battleSystemApp.FeatureOwnerProperty";
     static final String TOOL_BAR_ICON_SIZE_PROPERTY

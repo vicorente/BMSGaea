@@ -1,6 +1,7 @@
 package battleSystemApp.features;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import gov.nasa.worldwind.avlist.AVKey;
@@ -25,6 +26,7 @@ import battleSystemApp.core.layermanager.LayerPath;
 
 @SuppressWarnings("serial")
 public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
+	protected ArrayList<AbstractTacticalSymbol> objectsToTrack;
 
 	public MilSymbolFeatureLayer() {
 		this(null);
@@ -129,7 +131,13 @@ public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
 		layer.addRenderable(machineGunSymbol);
 		layer.setValue(Constants.SCREEN_LAYER, true);
 		
-
+		// unidades a seguir por el Tracking View
+		objectsToTrack = new ArrayList<AbstractTacticalSymbol>();
+		objectsToTrack.add(groundSymbol);
+		objectsToTrack.add(machineGunSymbol);
+		objectsToTrack.add(airSymbol);
+		controller.getTrackingView().setObjectsToTrack(objectsToTrack);
+		
 		return layer;
 	}
 
