@@ -23,6 +23,7 @@ import battleSystemApp.core.Controller;
 import battleSystemApp.core.Registry;
 import battleSystemApp.core.layermanager.LayerPath;
 
+@SuppressWarnings("serial")
 public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
 
 	public MilSymbolFeatureLayer() {
@@ -126,8 +127,6 @@ public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
 				newString);
 
 		layer.addRenderable(machineGunSymbol);
-		BasicDragger dragger = new BasicDragger(controller.getWWd());
-        controller.getWWd().addSelectListener(dragger);
 		layer.setValue(Constants.SCREEN_LAYER, true);
 		
 
