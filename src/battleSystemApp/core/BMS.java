@@ -29,6 +29,7 @@ public class BMS
 					"com.apple.mrj.application.apple.menu.about.name", "BMS");
             System.setProperty("apple.laf.useScreenMenuBar", "true");
             System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
+            System.setProperty("com.apple.mrj.application.live-resize", "true");
             String s = Configuration.getStringValue(Constants.APPLICATION_DISPLAY_NAME);
         }
         else if (Configuration.isWindowsOS())

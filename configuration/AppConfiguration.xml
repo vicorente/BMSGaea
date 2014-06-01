@@ -21,13 +21,13 @@
     <Feature className="battleSystemApp.core.IconController"/>
     <Feature className="battleSystemApp.core.ToolTipController"/>
     <Feature className="battleSystemApp.core.InfoPanelController"/>
+    <Feature className="battleSystemApp.features.MilSymbolFeatureLayer"/>
+    
     <!-- Features should and in some cases must be instantiated before the menus that refer to them -->
     <Feature className="battleSystemApp.features.ScaleBar"/>
-    
     <!--<Feature className="battleSystemApp.features.Compass"/>-->
     <Feature className="battleSystemApp.features.ScreenLayerTree"/>
     <Feature className="battleSystemApp.features.swinglayermanager.LayerManagerDialog"/>
-    
     <Feature className="battleSystemApp.features.CoordinatesDisplay"/>
     <Feature className="battleSystemApp.features.Crosshair"/>
     <!--<Feature className="battleSystemApp.features.ExportImage" accelerator="control P"/>-->
@@ -46,6 +46,5 @@
     <Feature className="battleSystemApp.features.UTMGraticule"/>
     <!-- Menus just point to other things, so instantiate them last -->
     <Feature className="battleSystemApp.core.MenuBarImpl"/>
-     <Feature className="battleSystemApp.features.MilSymbolFeatureLayer"/>
     
 </Configuration>
