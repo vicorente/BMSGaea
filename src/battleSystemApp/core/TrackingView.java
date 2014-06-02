@@ -2,8 +2,10 @@ package battleSystemApp.core;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import gov.nasa.worldwind.Disposable;
+import gov.nasa.worldwind.Movable;
 import gov.nasa.worldwind.View;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.animation.BasicAnimator;
@@ -22,19 +24,20 @@ import gov.nasa.worldwind.util.WWMath;
 import gov.nasa.worldwind.view.orbit.OrbitView;
 import gov.nasa.worldwindx.examples.util.ExtentVisibilitySupport;
 import battleSystemApp.features.AbstractFeature;
+import battleSystemApp.utils.Util;
 
 public class TrackingView extends AbstractFeature implements Disposable {
-	
+
 	protected static final double SMOOTHING_FACTOR = 0.96;
 
 	protected boolean enabled = true;
-	protected ViewAnimator animator;
-	protected Iterable<?> objectsToTrack;
+	protected ViewAnimator animator = null;
+	protected ArrayList<Movable> objectsToTrack=null;
 
 	public TrackingView(Registry registry) {
 		super("Tracking View", Constants.FEATURE_TRACKING_VIEW, registry);
 	}
-	
+
 	protected TrackingView(String s, String featureID, Registry registry) {
 		super(s, featureID, registry);
 		// TODO Auto-generated constructor stub
@@ -42,12 +45,13 @@ public class TrackingView extends AbstractFeature implements Disposable {
 
 	public void initialize(Controller controller) {
 		super.initialize(controller);
-
+		this.objectsToTrack = new ArrayList<Movable>();
 	}
-	
+
 	@Override
 	public void dispose() {
-		//TODO eliminar recursos
+		Util.getLogger().logp(Level.INFO, this.getClass().getName(), "dispose()", "Eliminando objetos a seguir..");	
+		this.objectsToTrack.clear();			
 	}
 
 	public boolean isEnabled() {
@@ -67,8 +71,20 @@ public class TrackingView extends AbstractFeature implements Disposable {
 		return this.objectsToTrack;
 	}
 
-	public void setObjectsToTrack(Iterable<?> iterable) {
-		this.objectsToTrack = iterable;
+	public void setObjectsToTrack(Iterable<Movable> iterable) {
+		this.objectsToTrack = (ArrayList<Movable>) iterable;
+	}
+
+	public boolean addMovableToTrack(Movable o) {
+		return this.objectsToTrack.add(o);
+	}
+	
+	public boolean isTracked(Movable o){
+		return this.objectsToTrack.contains(o);
+	}
+	
+	public boolean removeMovableFromTrack(Movable o){
+		return this.objectsToTrack.remove(o);
 	}
 
 	public boolean isSceneContained(View view) {
@@ -80,7 +96,8 @@ public class TrackingView extends AbstractFeature implements Disposable {
 
 	public Vec4[] computeViewLookAtForScene(View view) {
 		Globe globe = controller.getWWd().getModel().getGlobe();
-		double ve = controller.getWWd().getSceneController().getVerticalExaggeration();
+		double ve = controller.getWWd().getSceneController()
+				.getVerticalExaggeration();
 
 		ExtentVisibilitySupport vs = new ExtentVisibilitySupport();
 		this.addExtents(vs);
@@ -89,12 +106,13 @@ public class TrackingView extends AbstractFeature implements Disposable {
 	}
 
 	public Position computePositionFromPoint(Vec4 point) {
-		return controller.getWWd().getModel().getGlobe().computePositionFromPoint(point);
+		return controller.getWWd().getModel().getGlobe()
+				.computePositionFromPoint(point);
 	}
 
 	public void gotoScene() {
-		Vec4[] lookAtPoints = this
-				.computeViewLookAtForScene(controller.getWWd().getView());
+		Vec4[] lookAtPoints = this.computeViewLookAtForScene(controller
+				.getWWd().getView());
 		if (lookAtPoints == null || lookAtPoints.length != 3)
 			return;
 
@@ -143,17 +161,16 @@ public class TrackingView extends AbstractFeature implements Disposable {
 			} else if (o instanceof AbstractTacticalSymbol) {
 				AbstractTacticalSymbol avl = (AbstractTacticalSymbol) o;
 				Rectangle screenExtent = avl.computeScreenExtent();
-				
-				screenExtents
-						.add(new ExtentVisibilitySupport.ScreenExtent(
-								avl.getScreenPoint(),
-								screenExtent));
+
+				screenExtents.add(new ExtentVisibilitySupport.ScreenExtent(avl
+						.getScreenPoint(), screenExtent));
 			}
 		}
 
 		if (!extentHolders.isEmpty()) {
 			Globe globe = controller.getWWd().getModel().getGlobe();
-			double ve = controller.getWWd().getSceneController().getVerticalExaggeration();
+			double ve = controller.getWWd().getSceneController()
+					.getVerticalExaggeration();
 			vs.setExtents(ExtentVisibilitySupport.extentsFromExtentHolders(
 					extentHolders, globe, ve));
 		}
@@ -164,91 +181,85 @@ public class TrackingView extends AbstractFeature implements Disposable {
 	}
 
 	/**********************************************************/
-	private class ViewAnimator extends BasicAnimator
-	{
+	private class ViewAnimator extends BasicAnimator {
 		private static final double LOCATION_EPSILON = 1.0e-9;
-	    private static final double ALTITUDE_EPSILON = 0.1;
+		private static final double ALTITUDE_EPSILON = 0.1;
 
-	    private OrbitView view;
-	    private boolean haveTargets;
-	    private Position centerPosition;
-	    private double zoom;
+		private OrbitView view;
+		private boolean haveTargets;
+		private Position centerPosition;
+		private double zoom;
 		private TrackingView viewController;
 
-	    public ViewAnimator(final double smoothing, OrbitView view, TrackingView viewController)
-	    {
-	        super(new Interpolator()
-	        {
-	            public double nextInterpolant()
-	            {
-	                return 1d - smoothing;
-	            }
-	        });
+		public ViewAnimator(final double smoothing, OrbitView view,
+				TrackingView viewController) {
+			super(new Interpolator() {
+				public double nextInterpolant() {
+					return 1d - smoothing;
+				}
+			});
 
-	        this.view = view;
-	        this.viewController = viewController;
-	    }
+			this.view = view;
+			this.viewController = viewController;
+		}
 
-	    public void stop()
-	    {
-	        super.stop();
-	        this.haveTargets = false;
-	    }
+		public void stop() {
+			super.stop();
+			this.haveTargets = false;
+		}
 
-	    protected void setImpl(double interpolant)
-	    {
-	        this.updateTargetValues();
+		protected void setImpl(double interpolant) {
+			this.updateTargetValues();
 
-	        if (!this.haveTargets)
-	        {
-	            this.stop();
-	            return;
-	        }
+			if (!this.haveTargets) {
+				this.stop();
+				return;
+			}
 
-	        if (this.valuesMeetCriteria(this.centerPosition, this.zoom))
-	        {
-	            this.view.setCenterPosition(this.centerPosition);
-	            this.view.setZoom(this.zoom);
-	            this.stop();
-	        }
-	        else
-	        {
-	            Position newCenterPos = Position.interpolateGreatCircle(interpolant, this.view.getCenterPosition(),
-	                this.centerPosition);
-	            double newZoom = WWMath.mix(interpolant, this.view.getZoom(), this.zoom);
-	            this.view.setCenterPosition(newCenterPos);
-	            this.view.setZoom(newZoom);
-	        }
+			if (this.valuesMeetCriteria(this.centerPosition, this.zoom)) {
+				this.view.setCenterPosition(this.centerPosition);
+				this.view.setZoom(this.zoom);
+				this.stop();
+			} else {
+				Position newCenterPos = Position.interpolateGreatCircle(
+						interpolant, this.view.getCenterPosition(),
+						this.centerPosition);
+				double newZoom = WWMath.mix(interpolant, this.view.getZoom(),
+						this.zoom);
+				this.view.setCenterPosition(newCenterPos);
+				this.view.setZoom(newZoom);
+			}
 
-	        this.view.firePropertyChange(AVKey.VIEW, null, this);
-	    }
+			this.view.firePropertyChange(AVKey.VIEW, null, this);
+		}
 
-	    protected void updateTargetValues()
-	    {
-	        if (this.viewController.isSceneContained(this.view))
-	            return;
+		protected void updateTargetValues() {
+			if (this.viewController.isSceneContained(this.view))
+				return;
 
-	        Vec4[] lookAtPoints = this.viewController.computeViewLookAtForScene(this.view);
-	        if (lookAtPoints == null || lookAtPoints.length != 3)
-	            return;
+			Vec4[] lookAtPoints = this.viewController
+					.computeViewLookAtForScene(this.view);
+			if (lookAtPoints == null || lookAtPoints.length != 3)
+				return;
 
-	        this.centerPosition = this.viewController.computePositionFromPoint(lookAtPoints[1]);
-	        this.zoom = lookAtPoints[0].distanceTo3(lookAtPoints[1]);
-	        if (this.zoom < view.getZoom())
-	            this.zoom = view.getZoom();
+			this.centerPosition = this.viewController
+					.computePositionFromPoint(lookAtPoints[1]);
+			this.zoom = lookAtPoints[0].distanceTo3(lookAtPoints[1]);
+			if (this.zoom < view.getZoom())
+				this.zoom = view.getZoom();
 
-	        this.haveTargets = true;
-	    }
+			this.haveTargets = true;
+		}
 
-	    protected boolean valuesMeetCriteria(Position centerPos, double zoom)
-	    {
-	        Angle cd = LatLon.greatCircleDistance(this.view.getCenterPosition(), centerPos);
-	        double ed = Math.abs(this.view.getCenterPosition().getElevation() - centerPos.getElevation());
-	        double zd = Math.abs(this.view.getZoom() - zoom);
+		protected boolean valuesMeetCriteria(Position centerPos, double zoom) {
+			Angle cd = LatLon.greatCircleDistance(
+					this.view.getCenterPosition(), centerPos);
+			double ed = Math.abs(this.view.getCenterPosition().getElevation()
+					- centerPos.getElevation());
+			double zd = Math.abs(this.view.getZoom() - zoom);
 
-	        return cd.degrees < LOCATION_EPSILON
-	            && ed < ALTITUDE_EPSILON
-	            && zd < ALTITUDE_EPSILON;
-	    }
+			return cd.degrees < LOCATION_EPSILON && ed < ALTITUDE_EPSILON
+					&& zd < ALTITUDE_EPSILON;
+		}
 	}
 }

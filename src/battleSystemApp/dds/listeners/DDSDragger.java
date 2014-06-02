@@ -1,8 +1,10 @@
 package battleSystemApp.dds.listeners;
 
 import java.awt.Component;
+
 import battleSystemApp.components.ContextMenuInfo;
-import battleSystemApp.components.TacticalSymbolContextMenu;
+//import battleSystemApp.components.TacticalSymbolContextMenu;
+import battleSystemApp.core.Constants;
 import battleSystemApp.dds.DDSCommLayer;
 import battleSystemApp.dds.idl.Msg;
 import battleSystemApp.views.ViewController;
@@ -174,16 +176,16 @@ public class DDSDragger extends BasicDragger {
 		{
 			AVList params = (AVList) o;
 			ContextMenuInfo menuInfo = (ContextMenuInfo) params
-					.getValue(TacticalSymbolContextMenu.CONTEXT_MENU_INFO);
+					.getValue(Constants.CONTEXT_MENU_INFO);
 			if (menuInfo == null)
 				return;
 
 			if (!(event.getSource() instanceof Component))
 				return;
 
-			TacticalSymbolContextMenu menu = new TacticalSymbolContextMenu(
-					(Component) event.getSource(), menuInfo);
-			menu.show(event.getMouseEvent());
+//			TacticalSymbolContextMenu menu = new TacticalSymbolContextMenu(
+//					(Component) event.getSource(), menuInfo);
+//			menu.show(event.getMouseEvent());
 		}
 	}
 

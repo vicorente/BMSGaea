@@ -1,7 +1,6 @@
 package battleSystemApp.features;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import gov.nasa.worldwind.avlist.AVKey;
@@ -15,10 +14,8 @@ import gov.nasa.worldwind.symbology.BasicTacticalSymbolAttributes;
 import gov.nasa.worldwind.symbology.SymbologyConstants;
 import gov.nasa.worldwind.symbology.TacticalSymbolAttributes;
 import gov.nasa.worldwind.symbology.milstd2525.MilStd2525TacticalSymbol;
-import gov.nasa.worldwind.util.BasicDragger;
 import battleSystemApp.components.ContextMenuInfo;
 import battleSystemApp.components.ContextMenuItemInfo;
-import battleSystemApp.components.TacticalSymbolContextMenu;
 import battleSystemApp.core.Constants;
 import battleSystemApp.core.Controller;
 import battleSystemApp.core.Registry;
@@ -26,7 +23,6 @@ import battleSystemApp.core.layermanager.LayerPath;
 
 @SuppressWarnings("serial")
 public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
-	protected ArrayList<AbstractTacticalSymbol> objectsToTrack;
 
 	public MilSymbolFeatureLayer() {
 		this(null);
@@ -71,7 +67,14 @@ public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
 		RenderableLayer layer = new RenderableLayer();
 		layer.setName("MILSTD");
 
-		TacticalSymbolAttributes sharedAttrs = new BasicTacticalSymbolAttributes();
+		ContextMenuItemInfo[] itemActionNames = new ContextMenuItemInfo[] {
+				new ContextMenuItemInfo(Constants.CONTEXT_MENU_ACTION_FOLLOW),
+				new ContextMenuItemInfo("Do That"),
+				new ContextMenuItemInfo("Do the Other Thing") };
+		
+		TacticalSymbolAttributes airAttrs = new BasicTacticalSymbolAttributes();
+		TacticalSymbolAttributes groundAttrs = new BasicTacticalSymbolAttributes();
+		TacticalSymbolAttributes machineAttrs = new BasicTacticalSymbolAttributes();
 		TacticalSymbolAttributes sharedHighlightAttrs = new BasicTacticalSymbolAttributes();
 		sharedHighlightAttrs.setInteriorMaterial(Material.WHITE);
 		sharedHighlightAttrs.setOpacity(1.0);
@@ -80,28 +83,24 @@ public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
 		AbstractTacticalSymbol airSymbol = new MilStd2525TacticalSymbol(
 				"SHAPMFQM--GIUSA",
 				Position.fromDegrees(32.4520, 63.44553, 3000));
-		airSymbol.setValue(AVKey.DISPLAY_NAME,
+		airSymbol.setValue(AVKey.HOVER_TEXT,
 				"MIL-STD-2525 Friendly SOF Drone Aircraft"); // Tool tip
 																// text.
-		airSymbol.setAttributes(sharedAttrs);
+		airSymbol.setAttributes(airAttrs);
 		airSymbol.setHighlightAttributes(sharedHighlightAttrs);
 		airSymbol.setModifier(SymbologyConstants.DIRECTION_OF_MOVEMENT,
 				Angle.fromDegrees(235));
 		airSymbol.setShowLocation(false);
-		ContextMenuItemInfo[] itemActionNames = new ContextMenuItemInfo[] {
-				new ContextMenuItemInfo("Do This"),
-				new ContextMenuItemInfo("Do That"),
-				new ContextMenuItemInfo("Do the Other Thing") };
-		airSymbol.setValue(TacticalSymbolContextMenu.CONTEXT_MENU_INFO,
-				new ContextMenuInfo("Placemark A", itemActionNames));
+		
+		
 		layer.addRenderable(airSymbol);
 
 		// GROUND SYMBOL
 		AbstractTacticalSymbol groundSymbol = new MilStd2525TacticalSymbol(
 				"SHGXUCFRMS----G", Position.fromDegrees(32.4014, 63.3894, 0));
-		groundSymbol.setValue(AVKey.DISPLAY_NAME,
+		groundSymbol.setValue(AVKey.HOVER_TEXT,
 				"MIL-STD-2525 Hostile Self-Propelled Rocket Launchers");
-		groundSymbol.setAttributes(sharedAttrs);
+		groundSymbol.setAttributes(groundAttrs);
 		groundSymbol.setHighlightAttributes(sharedHighlightAttrs);
 		groundSymbol.setModifier(SymbologyConstants.DIRECTION_OF_MOVEMENT,
 				Angle.fromDegrees(90));
@@ -112,9 +111,9 @@ public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
 		// GROUND SYMBOL
 		AbstractTacticalSymbol machineGunSymbol = new MilStd2525TacticalSymbol(
 				"SFGPEWRH--MTUSG", Position.fromDegrees(32.3902, 63.4161, 0));
-		machineGunSymbol.setValue(AVKey.DISPLAY_NAME,
+		machineGunSymbol.setValue(AVKey.HOVER_TEXT,
 				"MIL-STD-2525 Friendly Heavy Machine Gun");
-		machineGunSymbol.setAttributes(sharedAttrs);
+		machineGunSymbol.setAttributes(machineAttrs);
 		machineGunSymbol.setHighlightAttributes(sharedHighlightAttrs);
 		machineGunSymbol.setModifier(SymbologyConstants.QUANTITY, 200);
 		machineGunSymbol.setModifier(SymbologyConstants.STAFF_COMMENTS,
@@ -131,13 +130,18 @@ public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
 		layer.addRenderable(machineGunSymbol);
 		layer.setValue(Constants.SCREEN_LAYER, true);
 		
-		// unidades a seguir por el Tracking View
-		objectsToTrack = new ArrayList<AbstractTacticalSymbol>();
-		objectsToTrack.add(groundSymbol);
-		objectsToTrack.add(machineGunSymbol);
-		objectsToTrack.add(airSymbol);
-		controller.getTrackingView().setObjectsToTrack(objectsToTrack);
 		
+		
+//		controller.getTrackingView().addMovableToTrack(machineGunSymbol);
+//		controller.getTrackingView().addMovableToTrack(groundSymbol);
+//		controller.getTrackingView().addMovableToTrack(airSymbol);
+		
+		airSymbol.setValue(Constants.CONTEXT_MENU_INFO,
+				new ContextMenuInfo("Acciones", itemActionNames));
+		groundSymbol.setValue(Constants.CONTEXT_MENU_INFO,
+				new ContextMenuInfo("Acciones", itemActionNames));
+		machineGunSymbol.setValue(Constants.CONTEXT_MENU_INFO,
+				new ContextMenuInfo("Acciones", itemActionNames));
 		return layer;
 	}
 

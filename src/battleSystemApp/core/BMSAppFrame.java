@@ -56,7 +56,7 @@ import battleSystemApp.components.ContextMenuItemInfo;
 import battleSystemApp.components.InterfaceLayer;
 import battleSystemApp.components.InterfaceLayerSelectListener;
 import battleSystemApp.components.RoundedPanel;
-import battleSystemApp.components.TacticalSymbolContextMenu;
+//import battleSystemApp.components.TacticalSymbolContextMenu;
 import battleSystemApp.dds.DDSCommLayer;
 import battleSystemApp.dds.DDSListener;
 import battleSystemApp.dds.idl.Msg;
@@ -78,12 +78,12 @@ public class BMSAppFrame extends ApplicationTemplate {
 		/**
 		 * 
 		 */
-		static
-	    {
-	        // The following is required to use Swing menus with the heavyweight canvas used by World Wind.
-	        ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
-	        JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-	    }
+		static {
+			// The following is required to use Swing menus with the heavyweight
+			// canvas used by World Wind.
+			ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
+			JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+		}
 		private static final long serialVersionUID = 6059677693262885004L;
 		protected RenderableLayer symbolLayer;
 		protected TacticalSymbolAttributes sharedAttrs;
@@ -97,6 +97,7 @@ public class BMSAppFrame extends ApplicationTemplate {
 		protected LayerTree layerTree;
 		protected RenderableLayer hiddenLayer;
 		protected HotSpotController hotSpotController;
+
 		/**
 		 * 
 		 */
@@ -104,13 +105,11 @@ public class BMSAppFrame extends ApplicationTemplate {
 
 			super(true, false, false);
 
-			
 			this.layerTree = new LayerTree(new Offset(20d, 160d, AVKey.PIXELS,
 					AVKey.INSET_PIXELS));
 			this.layerTree.getModel().refresh(
 					this.getWwd().getModel().getLayers());
 
-			
 			// Set up a layer to display the on-screen layer tree in the
 			// WorldWindow. This layer is not displayed in
 			// the layer tree's model. Doing so would enable the user to hide
@@ -210,8 +209,8 @@ public class BMSAppFrame extends ApplicationTemplate {
 					new ContextMenuItemInfo("Do This"),
 					new ContextMenuItemInfo("Do That"),
 					new ContextMenuItemInfo("Do the Other Thing"), };
-			airSymbol.setValue(TacticalSymbolContextMenu.CONTEXT_MENU_INFO,
-					new ContextMenuInfo("Placemark A", itemActionNames));
+			// airSymbol.setValue(TacticalSymbolContextMenu.CONTEXT_MENU_INFO,
+			// new ContextMenuInfo("Placemark A", itemActionNames));
 			this.symbolLayer.addRenderable(airSymbol);
 			objectsToTrack.add(airSymbol);
 
@@ -574,8 +573,9 @@ public class BMSAppFrame extends ApplicationTemplate {
 
 		try {
 			appFrame = new GaeaAppFrame();
-		    //GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		    //gd.setFullScreenWindow(appFrame);
+			// GraphicsDevice gd =
+			// GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+			// gd.setFullScreenWindow(appFrame);
 			appFrame.setTitle("BMS");
 			appFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			java.awt.EventQueue.invokeLater(new Runnable() {

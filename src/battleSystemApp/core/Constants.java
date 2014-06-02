@@ -95,4 +95,8 @@ public interface Constants
     static final String FEATURE_OWNER_PROPERTY = "battleSystemApp.FeatureOwnerProperty";
     static final String TOOL_BAR_ICON_SIZE_PROPERTY
         = "battleSystemApp.ToolBarIconSizeProperty";
+    
+    // Acciones
+    static final String CONTEXT_MENU_ACTION_FOLLOW="Seguir";
+    static final String CONTEXT_MENU_ACTION_UNFOLLOW="No Seguir";
 }

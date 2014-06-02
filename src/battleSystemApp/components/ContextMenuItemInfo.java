@@ -13,4 +13,8 @@ public class ContextMenuItemInfo {
 	public String displayString(){
 		return displayString;
 	}
+	
+	public void setDisplayString(String stringToDisplay){
+		this.displayString = stringToDisplay;
+	}
 }

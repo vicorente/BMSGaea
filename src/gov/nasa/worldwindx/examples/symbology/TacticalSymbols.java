@@ -54,7 +54,7 @@ public class TacticalSymbols extends ApplicationTemplate
             // order to keep a symbol's scale constant when it's highlighted, and change only its opacity.
             this.sharedAttrs = new BasicTacticalSymbolAttributes();
             this.sharedHighlightAttrs = new BasicTacticalSymbolAttributes();
-            this.sharedHighlightAttrs.setInteriorMaterial(Material.WHITE);
+            this.sharedHighlightAttrs.setInteriorMaterial(Material.WHITE);       
             this.sharedHighlightAttrs.setOpacity(1.0);
 
             // Create an air tactical symbol for the MIL-STD-2525 symbology set. This symbol identifier specifies a

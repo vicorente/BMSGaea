@@ -18,6 +18,7 @@ import gov.nasa.worldwind.view.orbit.*;
 import javax.swing.*;
 
 import battleSystemApp.core.layermanager.LayerManager;
+import battleSystemApp.features.AbstractFeature;
 import battleSystemApp.features.NetworkActivitySignal;
 import battleSystemApp.utils.ProxyAuthenticator;
 import battleSystemApp.utils.ProxyConfigurationManager;
@@ -68,7 +69,6 @@ public class Controller {
 		Configuration.setValue(AVKey.INITIAL_HEADING, 22);
 		Configuration.setValue(AVKey.INITIAL_PITCH, 82);
 		Configuration.setValue(AVKey.INITIAL_ALTITUDE, 20000);
-		
 
 		this.unitsFormat = new WWOUnitsFormat();
 		this.unitsFormat.setShowUTM(true);
@@ -165,10 +165,11 @@ public class Controller {
 				.getRegisteredObject(Constants.NETWORK_STATUS_SIGNAL);
 	}
 
-	public TrackingView getTrackingView(){
-		return (TrackingView) this.getRegisteredObject(Constants.FEATURE_TRACKING_VIEW);
+	public TrackingView getTrackingView() {
+		return (TrackingView) this
+				.getRegisteredObject(Constants.FEATURE_TRACKING_VIEW);
 	}
-	
+
 	public void redraw() {
 		if (this.getWWd() != null) {
 			this.getWWd().redraw();
@@ -489,5 +490,26 @@ public class Controller {
 		return JOptionPane.showConfirmDialog(this.getFrame(),
 				"Replace existing file\n" + outFile.getName() + "?",
 				"Overwrite Existing File?", JOptionPane.YES_NO_CANCEL_OPTION);
+	}
+
+	/**
+	 * @author vgonllo
+	 * 
+	 *         Des-registra todos los objetos registrados llamando a sus métodos
+	 *         dispose
+	 */
+	public void disposeRegisteredObjects() {
+		try {
+			Object[] objects = this.registry.getObjectsOfType(Disposable.class.getName());
+			for (Object o : objects) {
+				// hacemos la comprobacion, aunque no es necesario
+				if (o instanceof Disposable) {
+					((Disposable) o).dispose();
+				}
+			}
+		} catch (Exception e) {
+			Util.getLogger().log(Level.SEVERE,
+					"Error al desregistrar objetos " + e.getMessage());
+		}
 	}
 }

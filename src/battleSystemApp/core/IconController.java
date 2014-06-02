@@ -6,11 +6,22 @@
 
 package battleSystemApp.core;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 import battleSystemApp.components.ContextMenuInfo;
-import battleSystemApp.components.TacticalSymbolContextMenu;
+import battleSystemApp.components.ContextMenuItemInfo;
 import battleSystemApp.dds.idl.Msg;
 import battleSystemApp.features.AbstractFeature;
 import battleSystemApp.utils.Util;
@@ -25,6 +36,9 @@ import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.Vec4;
 import gov.nasa.worldwind.globes.Globe;
 import gov.nasa.worldwind.render.Highlightable;
+import gov.nasa.worldwind.render.Material;
+import gov.nasa.worldwind.render.PatternFactory;
+import gov.nasa.worldwind.symbology.AbstractTacticalSymbol;
 import gov.nasa.worldwind.symbology.milstd2525.MilStd2525TacticalSymbol;
 import gov.nasa.worldwind.util.Logging;
 
@@ -176,7 +190,6 @@ public class IconController extends AbstractFeature implements SelectListener,
 				// movemos la vista de la cámara si está activado
 				controller.getTrackingView().sceneChanged();
 			} else if (event.getEventAction().equals(SelectEvent.RIGHT_PRESS)) {
-				System.out.println("pulsado boton derecho!!!");
 				showContextMenu(event);
 				event.consume();
 			}
@@ -225,18 +238,123 @@ public class IconController extends AbstractFeature implements SelectListener,
 		if (o instanceof AVList) // Uses an AVList in order to be applicable to
 									// all shapes.
 		{
-			AVList params = (AVList) o;
-			ContextMenuInfo menuInfo = (ContextMenuInfo) params
-					.getValue(TacticalSymbolContextMenu.CONTEXT_MENU_INFO);
-			if (menuInfo == null)
-				return;
 
 			if (!(event.getSource() instanceof Component))
 				return;
 
 			TacticalSymbolContextMenu menu = new TacticalSymbolContextMenu(
-					(Component) event.getSource(), menuInfo);
+					(AVList) o, (Component) event.getSource());
 			menu.show(event.getMouseEvent());
+		}
+	}
+
+	 // Create a blurred pattern bitmap
+    private BufferedImage createBitmap(String pattern, Color color)
+    {
+        // Create bitmap with pattern
+        BufferedImage image = PatternFactory.createPattern(pattern, new Dimension(128, 128), 0.7f,
+            color, new Color(color.getRed(), color.getGreen(), color.getBlue(), 0));
+        // Blur a lot to get a fuzzy edge
+        image = PatternFactory.blur(image, 13);
+        image = PatternFactory.blur(image, 13);
+        image = PatternFactory.blur(image, 13);
+        image = PatternFactory.blur(image, 13);
+        return image;
+    }
+    
+    
+    
+	private class TacticalSymbolContextMenu {
+		protected Component sourceComponent;
+		protected JMenuItem menuTitleItem;
+		protected ArrayList<JMenuItem> menuItems = new ArrayList<JMenuItem>();
+		protected AVList topObject;
+		protected ContextMenuInfo menuInfo;
+
+		public TacticalSymbolContextMenu(AVList topObject,
+				Component sourceComponent) {
+
+			this.menuInfo = (ContextMenuInfo) topObject
+					.getValue(Constants.CONTEXT_MENU_INFO);
+
+			this.sourceComponent = sourceComponent;
+			this.topObject = topObject;
+
+			if (this.menuInfo != null) {
+				this.makeMenuTitle();
+				this.makeMenuItems();
+			}
+		}
+
+		protected void makeMenuTitle() {
+			this.menuTitleItem = new JMenuItem(menuInfo.getMenuTitle());
+		}
+
+		protected void makeMenuItems() {
+			for (ContextMenuItemInfo itemInfo : menuInfo.getMenuItems()) {
+				this.menuItems.add(new JMenuItem(new ContextMenuItemAction(
+						itemInfo)));
+			}
+		}
+
+		public void show(final MouseEvent event) {
+			JPopupMenu popup = new JPopupMenu();
+
+			popup.add(this.menuTitleItem);
+
+			popup.addSeparator();
+
+			for (JMenuItem subMenu : this.menuItems) {
+				popup.add(subMenu);
+			}
+
+			popup.show(sourceComponent, event.getX(), event.getY());
+		}
+
+		/**
+		 * The ContextMenuItemAction responds to user selection of a context
+		 * menu item.
+		 */
+		private class ContextMenuItemAction extends AbstractAction {
+			/**
+		 * 
+		 */
+			private static final long serialVersionUID = -1585214756119587446L;
+			protected ContextMenuItemInfo itemInfo;
+			
+			public ContextMenuItemAction(ContextMenuItemInfo itemInfo) {
+				super(itemInfo.displayString());
+
+				this.itemInfo = itemInfo;
+			}
+
+			public void actionPerformed(ActionEvent event) {
+
+				if (itemInfo.displayString().equals(
+						Constants.CONTEXT_MENU_ACTION_FOLLOW)) {
+					if (controller.getTrackingView().isTracked(
+							(Movable) topObject)) {
+						controller.getTrackingView().removeMovableFromTrack(
+								(Movable) topObject);						
+						((MilStd2525TacticalSymbol) topObject).getAttributes().setInteriorMaterial(null);
+						controller.getTrackingView().sceneChanged();
+					} else if (!controller.getTrackingView().isTracked(
+							(Movable) topObject)) {
+						controller.getTrackingView().addMovableToTrack(
+								(Movable) topObject);					
+						Color specular = new Color(100, 100, 100);
+						Color diffuse = new Color(100, 100, 3);;
+						Color ambient = new Color(100, 2, 100);;
+						Color emission = new Color(100, 100, 0);;
+						//BufferedImage circleYellow = createBitmap(PatternFactory.PATTERN_CIRCLE, Color.YELLOW);		
+						//Material material = ((MilStd2525TacticalSymbol) topObject).getAttributes().getInteriorMaterial();
+						Material mat = new Material(specular, diffuse, ambient, emission, 1);
+						((MilStd2525TacticalSymbol) topObject).getAttributes().setInteriorMaterial(mat);
+						controller.getTrackingView().sceneChanged();
+					}
+				}
+			}
+
 		}
 	}
 }
