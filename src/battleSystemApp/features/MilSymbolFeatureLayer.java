@@ -145,5 +145,6 @@ public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
 		return layer;
 	}
 
+	
 
 }

@@ -16,7 +16,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -38,7 +37,7 @@ import gov.nasa.worldwind.globes.Globe;
 import gov.nasa.worldwind.render.Highlightable;
 import gov.nasa.worldwind.render.Material;
 import gov.nasa.worldwind.render.PatternFactory;
-import gov.nasa.worldwind.symbology.AbstractTacticalSymbol;
+import gov.nasa.worldwind.render.UserFacingIcon;
 import gov.nasa.worldwind.symbology.milstd2525.MilStd2525TacticalSymbol;
 import gov.nasa.worldwind.util.Logging;
 
@@ -321,6 +320,7 @@ public class IconController extends AbstractFeature implements SelectListener,
 		 */
 			private static final long serialVersionUID = -1585214756119587446L;
 			protected ContextMenuItemInfo itemInfo;
+			private UserFacingIcon icon;
 			
 			public ContextMenuItemAction(ContextMenuItemInfo itemInfo) {
 				super(itemInfo.displayString());
@@ -341,19 +341,21 @@ public class IconController extends AbstractFeature implements SelectListener,
 					} else if (!controller.getTrackingView().isTracked(
 							(Movable) topObject)) {
 						controller.getTrackingView().addMovableToTrack(
-								(Movable) topObject);					
-						Color specular = new Color(100, 100, 100);
-						Color diffuse = new Color(100, 100, 3);;
-						Color ambient = new Color(100, 2, 100);;
-						Color emission = new Color(100, 100, 0);;
-						//BufferedImage circleYellow = createBitmap(PatternFactory.PATTERN_CIRCLE, Color.YELLOW);		
+								(Movable) topObject);		
+												
+						Color diffuse = new Color(20, 100, 3);
+						Color specular = new Color(255, 255, 255, diffuse.getAlpha());
+						Color ambient = new Color(100, 2, 100);
+						Color emission = new Color(0, 0, 0, diffuse.getAlpha());												
 						//Material material = ((MilStd2525TacticalSymbol) topObject).getAttributes().getInteriorMaterial();
-						Material mat = new Material(specular, diffuse, ambient, emission, 1);
-						((MilStd2525TacticalSymbol) topObject).getAttributes().setInteriorMaterial(mat);
+						Material mat = new Material(specular, diffuse, ambient, emission, 80.0f);
+						((MilStd2525TacticalSymbol) topObject).getAttributes().setInteriorMaterial(mat);						
 						controller.getTrackingView().sceneChanged();
 					}
 				}
 			}
+			
+			
 
 		}
 	}
