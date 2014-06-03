@@ -87,6 +87,7 @@ public class AppFrameImpl extends AbstractFeature implements AppFrame {
 			});
 		} catch (Exception e) {
 			String msg = "Unable to initialize the application.";
+			controller.disposeRegisteredObjects();
 			Util.getLogger().log(Level.SEVERE, msg, e);
 			this.controller.showErrorDialogLater(null, "Initialization Error",
 					msg);

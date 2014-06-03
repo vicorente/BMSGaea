@@ -69,7 +69,7 @@ public class WWPanelImpl extends AbstractFeature implements WWPanel
         this.wwd.getSceneController().firePropertyChange(AvKeyExt.ENABLE_POS_EFFECTS, false, true);
         
         // Necesario para controlar los elementos flotantes sobre la ventana WW
-     	this.hotSpotController = new HotSpotController(this.wwd);
+     	// this.hotSpotController = new HotSpotController(this.wwd);
 		
 		
         this.wwd.setPreferredSize(new Dimension(1024, 768));
