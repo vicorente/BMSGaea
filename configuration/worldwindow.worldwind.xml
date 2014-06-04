@@ -13,7 +13,7 @@
 <WorldWindConfiguration version="1">
     <!--The initial layer list can be embedded here or linked as below. To change the set of initial layers,-->
     <!--modify the file identified by the href or replace the link with your own-->
-    <LayerList href="config/worldwind.layers.xml"/>
+    <LayerList href="configuration/worldwind.layers.xml"/>
     <!--Most configuration information is defined in attribute-value pairs-->
     <Property name="gov.nasa.worldwindx.applications.worldwindow.ApplicationDisplayName" value="BMS ET"/>
     <Property name="gov.nasa.worldwind.avkey.ModelClassName" value="gov.nasa.worldwind.BasicModel"/>
@@ -47,7 +47,7 @@
     <Property name="gov.nasa.worldwind.render.PointPlacemarkAttributes.DefaultImagePath"
               value="images/plain-yellow.png"/>
     <Property name="gov.nasa.worldwind.render.PointPlacemarkAttributes.DefaultLabelFont"
-              value="Arial-BOLD-14"/>
+              value="Arial-BOLD-14"/>  
     <!-- The following lists the sites to test for public network access. Specify an empty string, "", for no sites.-->
     <!-- Don't specify the property at all to use the default list. -->
     <Property name="gov.nasa.worldwind.avkey.NetworkStatusTestSites"
@@ -60,6 +60,7 @@
     <Property name="gov.nasa.worldwind.avkey.DataFileStoreConfigurationFileName" value="configuration/DataFileStore.xml"/>
     <Property name="gov.nasa.worldwind.avkey.WorldMapImagePath" value="images/earth-map-512x256.dds"/>
     <Property name="gov.nasa.worldwind.StarsLayer.StarsFileName" value="configuration/Hipparcos_Stars_Mag6x5044.dat"/>
+    
     <!--The following are tuning parameters for various World Wind internals-->
     <Property name="gov.nasa.worldwind.avkey.RetrievalPoolSize" value="4"/>
     <Property name="gov.nasa.worldwind.avkey.RetrievalQueueSize" value="200"/>
@@ -82,10 +83,13 @@
     <Property name="gov.nasa.worldwind.avkey.RectangularTessellatorMaxLevel" value="30"/>
     <Property name="gov.nasa.worldwind.StereoFocusAngle" value="1.6"/>
     <Property name="gov.nasa.worldwind.avkey.ForceRedrawOnMousePressed" value="f"/>
+   
+   
     <!-- Here's one way to specify proxy settings -->
     <!--<Property name="gov.nasa.worldwind.avkey.UrlProxyHost" value="100.215.10.20"/>-->
     <!--<Property name="gov.nasa.worldwind.avkey.UrlProxyPort" value="8080"/>-->
     <!--<Property name="gov.nasa.worldwind.avkey.UrlProxyType" value="Proxy.Type.Http"/>-->
+    <Property name="gov.nasa.worldwindx.applications.worldwindow.ToolBarIconSizeProperty" value="52"/>
 
     <!-- Location of icons for MIL-STD-2525C symbol set. This can be a URL to a web server, to a local zip or jar archive.
          See http://goworldwind.org/developers-guide/symbology/tactical-symbols/#offline-use for more information on how

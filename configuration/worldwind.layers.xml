@@ -29,16 +29,16 @@
 	<Layer href="config/Earth/LandsatI3WMSLayer2.xml" actuate="onLoad" />
 	<Layer href="config/Earth/BingImagery.xml" actuate="onRequest" />
 
-	<Layer className="si.xlab.gaea.core.layers.elev.ElevationLayer"
+	<!-- <Layer className="si.xlab.gaea.core.layers.elev.ElevationLayer"
 		actuate="onRequest">
 		<Property name="Name" value="Height-map (run-time calculated)" />
-	</Layer>
+	</Layer> -->
 
 	<Layer className="gov.nasa.worldwind.layers.Earth.CountryBoundariesLayer"
 		actuate="onRequest" />
 	<Layer href="config/Earth/OpenStreetMap.xml" actuate="onRequest" />
 
-	<Layer className="si.xlab.gaea.examples.layers.SurfaceWatersSlovenia"
+	<!-- <Layer className="si.xlab.gaea.examples.layers.SurfaceWatersSlovenia"
 		actuate="onRequest" />
 	<Layer className="si.xlab.gaea.examples.layers.FloodingSlovenia"
 		actuate="onRequest" />
@@ -52,12 +52,12 @@
 	<Layer className="si.xlab.gaea.examples.layers.KmlBuildingsLayer"
 		actuate="onRequest">
 		<Property name="Name" value="Buildings in Torrent, Spain" />
-	</Layer>
+	</Layer>-->
 
-	<Layer className="si.xlab.gaea.core.layers.elev.SlopeLayer"
+	<!--  <Layer className="si.xlab.gaea.core.layers.elev.SlopeLayer"
 		actuate="onRequest">
 		<Property name="Name" value="Steep Areas (run-time calculated)" />
-	</Layer>
+	</Layer> -->
 
 
 	<Layer className="gov.nasa.worldwind.layers.Earth.NASAWFSPlaceNameLayer" />

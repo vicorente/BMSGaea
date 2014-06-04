@@ -29,9 +29,9 @@ public class ScreenLayerTree extends AbstractFeatureLayer
         layerTree.getModel().refresh(this.controller.getWWd().getModel().getLayers());
         RenderableLayer hiddenLayer = new RenderableLayer();
         hiddenLayer.addRenderable(layerTree);
-        hiddenLayer.setValue(Constants.SCREEN_LAYER, true);
+        hiddenLayer.setValue(Constants.ACTIVE_LAYER, true);
         
-        this.controller.addInternalLayer(hiddenLayer);
+        this.controller.addInternalActiveLayer(hiddenLayer);
 
         return hiddenLayer;
     }

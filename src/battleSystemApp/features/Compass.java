@@ -31,7 +31,7 @@ public class Compass extends AbstractFeatureLayer
         CompassLayer layer = new CompassLayer();
         layer.setIconScale(0.3);
 
-        layer.setPosition(AVKey.NORTHEAST);
+        layer.setPosition(AVKey.NORTHWEST);
         layer.setValue(Constants.SCREEN_LAYER, true);
 
         this.controller.addInternalLayer(layer);
