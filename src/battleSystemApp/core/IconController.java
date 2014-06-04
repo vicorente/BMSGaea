@@ -39,7 +39,6 @@ import gov.nasa.worldwind.render.Material;
 import gov.nasa.worldwind.render.PatternFactory;
 import gov.nasa.worldwind.render.UserFacingIcon;
 import gov.nasa.worldwind.symbology.milstd2525.MilStd2525TacticalSymbol;
-import gov.nasa.worldwind.util.Logging;
 
 /**
  * @author vgonllo
@@ -76,9 +75,8 @@ public class IconController extends AbstractFeature implements SelectListener,
 		try {
 
 			if (event == null) {
-				String msg = Logging.getMessage("nullValue.EventIsNull");
-				Logging.logger().severe(msg);
-				throw new IllegalArgumentException(msg);
+				Util.getLogger().severe("null event");
+				throw new IllegalArgumentException("null event");
 			} else if (event.getEventAction().equals(SelectEvent.ROLLOVER))
 				highlight(event, event.getTopObject());
 
