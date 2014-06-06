@@ -47,6 +47,7 @@ public interface Constants
         // force display in active layers
     static final String USER_LAYER = "battleSystemApp.UserLayer"; // User-generated layers
     static final String SCREEN_LAYER = "battleSystemApp.ScreenLayer";
+
     // in-screen application controls, etc.
 
     // Feature IDs
@@ -67,7 +68,8 @@ public interface Constants
     static final String FEATURE_GRATICULE = "battleSystemApp.feature.Graticule";
     static final String FEATURE_ICON_CONTROLLER = "battleSystemApp.feature.IconController";
     static final String FEATURE_HOTSPOT_CONTROLLER = "battleSystemApp.feature.BMSHotSpotController";
-
+    static final String FEATURE_MESSAGE_WINDOW = "battleSystemApp.feature.MessageWindow";
+    
     static final String FEATURE_IMPORT_IMAGERY = "battleSystemApp.feature.ImportImagery";
     static final String FEATURE_INFO_PANEL_CONTROLLER
         = "battleSystemApp.feature.InfoPanelController";

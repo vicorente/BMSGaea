@@ -12,7 +12,12 @@ import battleSystemApp.core.*;
  */
 public class ScreenLayerTree extends AbstractFeatureLayer
 {
-    public ScreenLayerTree()
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4936919279441381934L;
+
+	public ScreenLayerTree()
     {
         this(null);
     }

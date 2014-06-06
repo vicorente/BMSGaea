@@ -30,6 +30,7 @@
     <Feature className="battleSystemApp.features.ScaleBar"/>
     <Feature className="battleSystemApp.features.Compass"/>
     <Feature className="battleSystemApp.features.ScreenLayerTree"/>
+    <Feature className="battleSystemApp.features.MessageWindow"/>
     
     <!--<Feature className="battleSystemApp.features.swinglayermanager.LayerManagerDialog"/>-->
     <Feature className="battleSystemApp.features.CoordinatesDisplay"/>

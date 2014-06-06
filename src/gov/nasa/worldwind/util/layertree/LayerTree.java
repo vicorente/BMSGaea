@@ -30,7 +30,7 @@ public class LayerTree extends BasicTree
     /** The default frame image. Appears to the left of the frame title. */
     protected static final String DEFAULT_FRAME_IMAGE = "images/layer-manager-64x64.png";
     /** The default frame title: "Layers". */
-    protected static final String DEFAULT_FRAME_TITLE = "Layers";
+    protected static final String DEFAULT_FRAME_TITLE = "Capas";
 
     /**
      * Creates a new <code>LayerTree</code> with an empty <code>LayerTreeModel</code> and the default screen location.
