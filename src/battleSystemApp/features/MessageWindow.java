@@ -32,7 +32,7 @@ public class MessageWindow extends AbstractFeatureLayer
         RenderableLayer hiddenLayer = new RenderableLayer();
         hiddenLayer.addRenderable(msgTree);
         hiddenLayer.setValue(Constants.ACTIVE_LAYER, true);
-        msgTree.addMessage("hola");
+        msgTree.addMessage("YO-> hola");
         
         this.controller.addInternalActiveLayer(hiddenLayer);
 

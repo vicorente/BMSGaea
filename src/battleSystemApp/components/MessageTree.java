@@ -1,8 +1,12 @@
 package battleSystemApp.components;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.util.Map.Entry;
 
+import battleSystemApp.core.ImageLibrary;
 import gov.nasa.worldwind.avlist.AVKey;
+import gov.nasa.worldwind.render.BasicWWTexture;
 import gov.nasa.worldwind.render.Offset;
 import gov.nasa.worldwind.util.layertree.LayerTreeModel;
 import gov.nasa.worldwind.util.tree.BasicFrameAttributes;
@@ -24,6 +28,8 @@ public class MessageTree extends BasicTree {
     protected static final String DEFAULT_FRAME_IMAGE = "images/info-20x20.png";  
     protected static final String DEFAULT_FRAME_TITLE = "Mensajes";
     protected BasicTreeLayout layout=null;
+    protected final static String IMAGE_MESSAGE = "resources/images/info-20x20.png";
+    
     public MessageTree(){
     	this.initialize(null);
     }
@@ -58,6 +64,8 @@ public class MessageTree extends BasicTree {
 
         BasicTreeAttributes attributes = new BasicTreeAttributes();
         attributes.setRootVisible(false);
+        attributes.setColor(new Color(0, 128, 255));
+        attributes.setFont(Font.decode("Verdana-12"));
         layout.setAttributes(attributes);
 
         BasicFrameAttributes frameAttributes = new BasicFrameAttributes();
@@ -82,7 +90,8 @@ public class MessageTree extends BasicTree {
     }
     
     public void addMessage(String message){
-    	BasicTreeNode mensaje = new BasicTreeNode(message);
+    	BasicTreeNode mensaje = new BasicTreeNode(message, IMAGE_MESSAGE);
+    	
     	this.getModel().getRoot().addChild(mensaje);
     }
 }
