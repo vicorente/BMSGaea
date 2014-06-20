@@ -1,5 +1,7 @@
 package battleSystemApp.components;
 
+import java.util.Map.Entry;
+
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.render.Offset;
 import gov.nasa.worldwind.util.layertree.LayerTreeModel;
@@ -7,6 +9,8 @@ import gov.nasa.worldwind.util.tree.BasicFrameAttributes;
 import gov.nasa.worldwind.util.tree.BasicTree;
 import gov.nasa.worldwind.util.tree.BasicTreeAttributes;
 import gov.nasa.worldwind.util.tree.BasicTreeLayout;
+import gov.nasa.worldwind.util.tree.BasicTreeModel;
+import gov.nasa.worldwind.util.tree.BasicTreeNode;
 import gov.nasa.worldwind.util.tree.TreeLayout;
 
 /**
@@ -19,7 +23,7 @@ public class MessageTree extends BasicTree {
     protected static final Offset DEFAULT_OFFSET = Offset.fromFraction(0.85, 0.74);
     protected static final String DEFAULT_FRAME_IMAGE = "images/info-20x20.png";  
     protected static final String DEFAULT_FRAME_TITLE = "Mensajes";
-    
+    protected BasicTreeLayout layout=null;
     public MessageTree(){
     	this.initialize(null);
     }
@@ -48,7 +52,7 @@ public class MessageTree extends BasicTree {
         if (offset == null)
             offset = DEFAULT_OFFSET;
 
-        BasicTreeLayout layout = new BasicTreeLayout(this, offset);
+        layout = new BasicTreeLayout(this, offset);
         layout.getFrame().setFrameTitle(DEFAULT_FRAME_TITLE);
         layout.getFrame().setIconImageSource(DEFAULT_FRAME_IMAGE);
 
@@ -72,8 +76,13 @@ public class MessageTree extends BasicTree {
     }
     
     /** {@inheritDoc} */
-    public LayerTreeModel getModel()
+    public BasicTreeModel getModel()
     {
-        return (LayerTreeModel) super.getModel();
+        return (BasicTreeModel) super.getModel();
+    }
+    
+    public void addMessage(String message){
+    	BasicTreeNode mensaje = new BasicTreeNode(message);
+    	this.getModel().getRoot().addChild(mensaje);
     }
 }

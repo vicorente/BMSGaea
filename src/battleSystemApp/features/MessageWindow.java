@@ -28,10 +28,11 @@ public class MessageWindow extends AbstractFeatureLayer
     protected Layer doAddLayer()
     {
         MessageTree msgTree= new  MessageTree();
-        msgTree.getModel().refresh(this.controller.getWWd().getModel().getLayers());
+//        msgTree.getModel().refresh(this.controller.getWWd().getModel().getLayers());
         RenderableLayer hiddenLayer = new RenderableLayer();
         hiddenLayer.addRenderable(msgTree);
         hiddenLayer.setValue(Constants.ACTIVE_LAYER, true);
+        msgTree.addMessage("hola");
         
         this.controller.addInternalActiveLayer(hiddenLayer);
 
