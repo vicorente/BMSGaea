@@ -126,7 +126,7 @@ public class StatusPanelImpl extends AbstractFeature implements StatusPanel, Sel
     private JLabel makeNetworkLabel()
     {
         NetworkActivitySignal nas = this.controller.getNetworkActivitySignal();
-        return nas != null ? nas.getLabel() : new JLabel("");
+        return nas != null ? nas.getLabel() : new JLabel("NO CONECTADO");
     }
 
     private JComponent makeClock()

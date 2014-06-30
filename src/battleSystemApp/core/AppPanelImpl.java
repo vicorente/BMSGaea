@@ -19,7 +19,11 @@ import java.awt.*;
  */
 public class AppPanelImpl extends AbstractFeature implements AppPanel
 {
-    private JPanel panel;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4703645550367910482L;
+	private JPanel panel;
 
     public AppPanelImpl(Registry registry)
     {
@@ -40,6 +44,7 @@ public class AppPanelImpl extends AbstractFeature implements AppPanel
         WWPanel wwPanel = controller.getWWPanel();
         if (wwPanel != null)
             this.panel.add(wwPanel.getJPanel(), BorderLayout.CENTER);
+        
     }
 
     public JPanel getJPanel()

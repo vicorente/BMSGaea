@@ -24,7 +24,6 @@
     <Feature className="battleSystemApp.core.InfoPanelController"/>
     <Feature className="battleSystemApp.core.TrackingView"/>
     <Feature className="battleSystemApp.features.MilSymbolFeatureLayer"/>
-    <Feature className="battleSystemApp.core.BMSHotSpotController"/>
     
     <!-- Features should and in some cases must be instantiated before the menus that refer to them -->
     <Feature className="battleSystemApp.features.ScaleBar"/>

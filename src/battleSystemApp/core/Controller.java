@@ -169,6 +169,8 @@ public class Controller {
 		return (TrackingView) this
 				.getRegisteredObject(Constants.FEATURE_TRACKING_VIEW);
 	}
+	
+
 
 	public void redraw() {
 		if (this.getWWd() != null) {

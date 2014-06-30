@@ -25,7 +25,7 @@ import gov.nasa.worldwind.util.tree.TreeLayout;
 public class MessageTree extends BasicTree {
     /** La localización por defecto es la zona derecha de la pantalla */
     protected static final Offset DEFAULT_OFFSET = Offset.fromFraction(0.85, 0.74);
-    protected static final String DEFAULT_FRAME_IMAGE = "images/info-20x20.png";  
+    protected static final String DEFAULT_FRAME_IMAGE = "resources/images/info-20x20.png";  
     protected static final String DEFAULT_FRAME_TITLE = "Mensajes";
     protected BasicTreeLayout layout=null;
     protected final static String IMAGE_MESSAGE = "resources/images/info-20x20.png";
@@ -63,7 +63,7 @@ public class MessageTree extends BasicTree {
         layout.setDrawSelectedSymbol(false);
         layout.setShowDescription(false);
         layout.getFrame().setFrameTitle(DEFAULT_FRAME_TITLE);
-        //layout.getFrame().setIconImageSource(DEFAULT_FRAME_IMAGE);
+        layout.getFrame().setIconImageSource(DEFAULT_FRAME_IMAGE);
 
         BasicTreeAttributes attributes = new BasicTreeAttributes();
         attributes.setRootVisible(false);
@@ -93,8 +93,7 @@ public class MessageTree extends BasicTree {
     }
     
     public void addMessage(String message){
-    	BasicTreeNode mensaje = new BasicTreeNode(message, IMAGE_MESSAGE);
-    	mensaje.setImageSource(DEFAULT_FRAME_IMAGE);    	
+    	BasicTreeNode mensaje = new BasicTreeNode(message, IMAGE_MESSAGE);  	
     	this.getModel().getRoot().addChild(mensaje);
     }
 }

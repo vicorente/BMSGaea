@@ -43,6 +43,7 @@ import gov.nasa.worldwind.symbology.milstd2525.MilStd2525TacticalSymbol;
 /**
  * @author vgonllo
  * @version $Id: IconController.java 1171 2013-02-11 21:45:02Z dcollins $
+ * Controlador de los iconos de pantalla
  */
 @SuppressWarnings("serial")
 public class IconController extends AbstractFeature implements SelectListener,
@@ -188,6 +189,9 @@ public class IconController extends AbstractFeature implements SelectListener,
 				controller.getTrackingView().sceneChanged();
 			} else if (event.getEventAction().equals(SelectEvent.RIGHT_PRESS)) {
 				showContextMenu(event);
+				event.consume();
+			} else if (event.getEventAction().equals(SelectEvent.LEFT_PRESS)) {
+				controller.setStatusMessage("Seleccionado");
 				event.consume();
 			}
 		} catch (Exception e) {
