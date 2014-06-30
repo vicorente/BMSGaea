@@ -59,8 +59,11 @@ public class MessageTree extends BasicTree {
             offset = DEFAULT_OFFSET;
 
         layout = new BasicTreeLayout(this, offset);
+        layout.setDrawNodeStateSymbol(false);
+        layout.setDrawSelectedSymbol(false);
+        layout.setShowDescription(false);
         layout.getFrame().setFrameTitle(DEFAULT_FRAME_TITLE);
-        layout.getFrame().setIconImageSource(DEFAULT_FRAME_IMAGE);
+        //layout.getFrame().setIconImageSource(DEFAULT_FRAME_IMAGE);
 
         BasicTreeAttributes attributes = new BasicTreeAttributes();
         attributes.setRootVisible(false);
@@ -91,7 +94,7 @@ public class MessageTree extends BasicTree {
     
     public void addMessage(String message){
     	BasicTreeNode mensaje = new BasicTreeNode(message, IMAGE_MESSAGE);
-    	
+    	mensaje.setImageSource(DEFAULT_FRAME_IMAGE);    	
     	this.getModel().getRoot().addChild(mensaje);
     }
 }

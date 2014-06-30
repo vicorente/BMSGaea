@@ -21,6 +21,10 @@ import java.util.logging.Level;
  * @version $Id: AppFrameImpl.java 1171 2013-02-11 21:45:02Z dcollins $
  */
 public class AppFrameImpl extends AbstractFeature implements AppFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4680598977461194590L;
 	// only one of these will be non-null
 	protected JFrame frame;
 	protected JApplet applet;
@@ -59,6 +63,7 @@ public class AppFrameImpl extends AbstractFeature implements AppFrame {
 			if (menuBar != null)
 				frame.setJMenuBar(menuBar.getJMenuBar());
 
+			
 			frame.pack();
 
 			ToolTipManager.sharedInstance().setDismissDelay(60000);
@@ -85,6 +90,8 @@ public class AppFrameImpl extends AbstractFeature implements AppFrame {
 					System.exit(0);
 				}
 			});
+			
+			
 		} catch (Exception e) {
 			String msg = "Unable to initialize the application.";
 			controller.disposeRegisteredObjects();
