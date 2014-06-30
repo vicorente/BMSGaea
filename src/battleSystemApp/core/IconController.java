@@ -78,9 +78,9 @@ public class IconController extends AbstractFeature implements SelectListener,
 			if (event == null) {
 				Util.getLogger().severe("null event");
 				throw new IllegalArgumentException("null event");
-			} else if (event.getEventAction().equals(SelectEvent.ROLLOVER))
+			} else if (event.getEventAction().equals(SelectEvent.ROLLOVER)){
 				highlight(event, event.getTopObject());
-
+			}
 			else if (event.getEventAction().equals(SelectEvent.DRAG_END)) {
 				DragSelectEvent dragEvent = (DragSelectEvent) event;
 				Object topObject = dragEvent.getTopObject();
@@ -190,10 +190,7 @@ public class IconController extends AbstractFeature implements SelectListener,
 			} else if (event.getEventAction().equals(SelectEvent.RIGHT_PRESS)) {
 				showContextMenu(event);
 				event.consume();
-			} else if (event.getEventAction().equals(SelectEvent.LEFT_PRESS)) {
-				controller.setStatusMessage("Seleccionado");
-				event.consume();
-			}
+			} 
 		} catch (Exception e) {
 			// Wrap the handler in a try/catch to keep exceptions from bubbling
 			// up
@@ -212,12 +209,15 @@ public class IconController extends AbstractFeature implements SelectListener,
 		if (this.lastPickedIcon != null) {
 			this.lastPickedIcon.setHighlighted(false);
 			this.lastPickedIcon = null;
+			controller.setStatusMessage("");
+
 		}
 
 		// Turn on highlight if object selected.
 		if (o != null && o instanceof Highlightable) {
 			this.lastPickedIcon = (Highlightable) o;
 			this.lastPickedIcon.setHighlighted(true);
+			controller.setStatusMessage("Seleccionado");
 		}
 
 	}
