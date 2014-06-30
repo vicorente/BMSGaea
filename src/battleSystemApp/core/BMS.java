@@ -30,6 +30,7 @@ public class BMS
             System.setProperty("apple.laf.useScreenMenuBar", "true");
             System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
             System.setProperty("com.apple.mrj.application.live-resize", "true");
+            System.setProperty("apple.awt.fakefullscreen", "true");
             String s = Configuration.getStringValue(Constants.APPLICATION_DISPLAY_NAME);
         }
         else if (Configuration.isWindowsOS())

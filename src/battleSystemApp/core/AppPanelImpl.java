@@ -45,8 +45,10 @@ public class AppPanelImpl extends AbstractFeature implements AppPanel
         if (wwPanel != null)
             this.panel.add(wwPanel.getJPanel(), BorderLayout.CENTER);
         
+       
+        
     }
-
+    
     public JPanel getJPanel()
     {
         return this.panel;

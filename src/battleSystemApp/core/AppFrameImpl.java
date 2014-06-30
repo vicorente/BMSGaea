@@ -6,6 +6,8 @@
 
 package battleSystemApp.core;
 
+import gov.nasa.worldwind.Configuration;
+
 import javax.swing.*;
 
 import battleSystemApp.features.AbstractFeature;
@@ -14,6 +16,7 @@ import battleSystemApp.utils.Util;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.Method;
 import java.util.logging.Level;
 
 /**
@@ -47,6 +50,11 @@ public class AppFrameImpl extends AbstractFeature implements AppFrame {
 	protected void initializeApp() {
 		try {
 			frame = new JFrame();
+			// Configuramos la pantalla completa para Mac
+			if (Configuration.isMacOS()) {
+				enableFullScreenMode(frame);
+			}
+
 			frame.setTitle(controller.getAppTitle());
 			frame.getContentPane().add(controller.getAppPanel().getJPanel(),
 					BorderLayout.CENTER);
@@ -63,10 +71,10 @@ public class AppFrameImpl extends AbstractFeature implements AppFrame {
 			if (menuBar != null)
 				frame.setJMenuBar(menuBar.getJMenuBar());
 
-			
 			frame.pack();
 
 			ToolTipManager.sharedInstance().setDismissDelay(60000);
+
 
 			// Center the application on the screen.
 			Dimension prefSize = frame.getPreferredSize();
@@ -90,8 +98,7 @@ public class AppFrameImpl extends AbstractFeature implements AppFrame {
 					System.exit(0);
 				}
 			});
-			
-			
+
 		} catch (Exception e) {
 			String msg = "Unable to initialize the application.";
 			controller.disposeRegisteredObjects();
@@ -114,5 +121,24 @@ public class AppFrameImpl extends AbstractFeature implements AppFrame {
 	public Frame getFrame() {
 		return this.frame != null ? this.frame : Util
 				.findParentFrame(this.applet);
+	}
+
+	/**
+	 * Activa el modo pantalla completa para Mac
+	 * @param window
+	 */
+	public static void enableFullScreenMode(Window window) {
+		String className = "com.apple.eawt.FullScreenUtilities";
+		String methodName = "setWindowCanFullScreen";
+
+		try {
+			Class<?> clazz = Class.forName(className);
+			Method method = clazz.getMethod(methodName, new Class<?>[] {
+					Window.class, boolean.class });
+			method.invoke(null, window, true);
+		} catch (Throwable t) {
+			System.err.println("Full screen mode is not supported");
+			t.printStackTrace();
+		}
 	}
 }
