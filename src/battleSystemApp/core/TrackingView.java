@@ -7,12 +7,9 @@ import java.util.logging.Level;
 import gov.nasa.worldwind.Disposable;
 import gov.nasa.worldwind.Movable;
 import gov.nasa.worldwind.View;
-import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.animation.BasicAnimator;
 import gov.nasa.worldwind.animation.Interpolator;
 import gov.nasa.worldwind.avlist.AVKey;
-import gov.nasa.worldwind.event.SelectEvent;
-import gov.nasa.worldwind.event.SelectListener;
 import gov.nasa.worldwind.geom.Angle;
 import gov.nasa.worldwind.geom.ExtentHolder;
 import gov.nasa.worldwind.geom.LatLon;
@@ -27,6 +24,11 @@ import battleSystemApp.features.AbstractFeature;
 import battleSystemApp.utils.Util;
 
 public class TrackingView extends AbstractFeature implements Disposable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2981364125807951668L;
 
 	protected static final double SMOOTHING_FACTOR = 0.96;
 

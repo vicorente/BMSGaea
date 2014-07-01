@@ -127,7 +127,7 @@ public class DDSCommLayer extends AbstractFeature implements DataReaderListener<
 	 */
 	public void publish(Msg message) {
 		try {
-			Util.getLogger().logp(Level.INFO, this.getClass().getName(), "publish(msg)", "Enviando mensaje DDS -" + message.unitID);				
+			Util.getLogger().logp(Level.INFO, this.getClass().getName(), "publish(msg)", "Enviando mensaje DDS -" + message.unitID + " "+message.message);				
 			// write the message to DDS
 			dw.write(message);
 		} catch (TimeoutException te) {

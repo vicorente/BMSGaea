@@ -11,6 +11,7 @@ module battleSystemApp
 		      double lat;
 		      double lon;
 		      double alt;
+		      string message;
 		   };
 		   #pragma keylist Msg unitID
 		};

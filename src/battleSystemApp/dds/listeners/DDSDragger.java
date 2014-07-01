@@ -81,7 +81,7 @@ public class DDSDragger extends BasicDragger {
 				Msg message = new Msg(dragObject.getIdentifier(), dragObject
 						.getPosition().getLatitude().getDegrees(), dragObject
 						.getPosition().getLongitude().getDegrees(), dragObject
-						.getPosition().getAltitude());
+						.getPosition().getAltitude(), "");
 				this.dds.publish(message);
 				
 				this.dragging = false;

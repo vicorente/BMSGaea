@@ -132,13 +132,7 @@ public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
 				newString);
 
 		layer.addRenderable(machineGunSymbol);
-		layer.setValue(Constants.SCREEN_LAYER, true);
-		
-		
-		
-//		controller.getTrackingView().addMovableToTrack(machineGunSymbol);
-//		controller.getTrackingView().addMovableToTrack(groundSymbol);
-//		controller.getTrackingView().addMovableToTrack(airSymbol);
+		layer.setValue(Constants.SCREEN_LAYER, true);			
 		
 		airSymbol.setValue(Constants.CONTEXT_MENU_INFO,
 				new ContextMenuInfo("Acciones", itemActionNames));

@@ -62,7 +62,7 @@ public class IconController extends AbstractFeature implements SelectListener,
 	protected boolean dragging = false;
 	private Vec4 dragRefObjectPoint;
 	private Point dragRefCursorPoint;
-	private double dragRefAltitude;	
+	private double dragRefAltitude;
 
 	public boolean isDragging() {
 		return this.dragging;
@@ -120,7 +120,7 @@ public class IconController extends AbstractFeature implements SelectListener,
 							dragObject.getPosition().getLatitude().getDegrees(),
 							dragObject.getPosition().getLongitude()
 									.getDegrees(), dragObject.getPosition()
-									.getAltitude());
+									.getAltitude(), "");
 					// publish info through communication layer
 					this.controller.getCommLayer().publish(message);
 
@@ -228,7 +228,8 @@ public class IconController extends AbstractFeature implements SelectListener,
 			this.lastPickedIcon.setHighlighted(true);
 			if (o instanceof MilStd2525TacticalSymbol) {
 				MilStd2525TacticalSymbol milSymbol = (MilStd2525TacticalSymbol) o;
-				String status = milSymbol.getIdentifier()+" "+milSymbol.getValue(AVKey.HOVER_TEXT);
+				String status = milSymbol.getIdentifier() + " "
+						+ milSymbol.getValue(AVKey.HOVER_TEXT);
 				controller.setStatusMessage(status);
 			}
 		}
@@ -275,41 +276,50 @@ public class IconController extends AbstractFeature implements SelectListener,
 		image = PatternFactory.blur(image, 13);
 		return image;
 	}
-	
+
 	/**
 	 * Implementación de la interfaz DDSListener. Llamado cuando llega un
 	 * mensaje
 	 */
 	@Override
 	public void receivedMessage(Msg message) {
-		String strMsg = "Recibido mensaje DDS -" + message.unitID + "- Lat: "
-				+ message.lat + " Lon: " + message.lon + " Alt: "
-				+ message.alt;
-		Logger.getLogger(DDSCommLayer.class.getName()).log(
-				Level.INFO,
-				strMsg);
-		controller.getMessageWindow().addMessage(strMsg);
-		Boolean moved = false;
-		for (Renderable r : controller.getMilSymbolFeatureLayer().getLayer().getRenderables()) {
-			AbstractTacticalSymbol C2Symbol = (AbstractTacticalSymbol) r;
-			if (C2Symbol.getIdentifier().equals(message.unitID)) {
-				// Set new symbol position
-				C2Symbol.moveTo(Position.fromDegrees(message.lat,
-						message.lon, message.alt));
-				String newString = Util.DATE_FORMAT_MILITARY_ZULU.format(new Date())
-						.toUpperCase(); // 9:00
-				C2Symbol.setModifier(SymbologyConstants.DATE_TIME_GROUP,
-						newString);
-				
-				moved = true;
+
+		// si el campo mensaje está vacío significa que sólo se envía la
+		// posición
+		if (!message.message.equalsIgnoreCase("")) {
+			controller.getMessageWindow().addMessage(message.message);
+		} else {
+			String strMsg = "Recibida posición -" + message.unitID + "- Lat: "
+					+ message.lat + " Lon: " + message.lon + " Alt: "
+					+ message.alt;
+			Logger.getLogger(DDSCommLayer.class.getName()).log(Level.INFO,
+					strMsg);
+			controller.getMessageWindow().addMessage(strMsg);
+
+			Boolean moved = false;
+			for (Renderable r : controller.getMilSymbolFeatureLayer()
+					.getLayer().getRenderables()) {
+				AbstractTacticalSymbol C2Symbol = (AbstractTacticalSymbol) r;
+				if (C2Symbol.getIdentifier().equals(message.unitID)) {
+					// Set new symbol position
+					C2Symbol.moveTo(Position.fromDegrees(message.lat,
+							message.lon, message.alt));
+					String newString = Util.DATE_FORMAT_MILITARY_ZULU.format(
+							new Date()).toUpperCase(); // 9:00
+					C2Symbol.setModifier(SymbologyConstants.DATE_TIME_GROUP,
+							newString);
+
+					moved = true;
+				}
 			}
+			// se realiza en el caso de que tengamos algún simbolo en
+			// seguimiento
+			// y haya sido movido externamente
+			if (moved == true)
+				controller.getTrackingView().sceneChanged();
 		}
-		// se realiza en el caso de que tengamos algún simbolo en seguimiento
-		// y haya sido movido externamente
-		if (moved==true)
-			controller.getTrackingView().sceneChanged();
 	}
-	
+
 	private class TacticalSymbolContextMenu {
 		protected Component sourceComponent;
 		protected JMenuItem menuTitleItem;
