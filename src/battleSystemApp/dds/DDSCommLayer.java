@@ -1,5 +1,7 @@
 package battleSystemApp.dds;
 
+import gov.nasa.worldwind.Disposable;
+
 import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
@@ -25,8 +27,12 @@ import org.omg.dds.sub.Subscriber;
 import org.omg.dds.sub.Sample.Iterator;
 import org.omg.dds.topic.Topic;
 
-import battleSystemApp.core.BMSAppFrame;
+import battleSystemApp.core.Constants;
+import battleSystemApp.core.Controller;
+import battleSystemApp.core.Registry;
 import battleSystemApp.dds.idl.*;
+import battleSystemApp.features.AbstractFeature;
+import battleSystemApp.utils.Util;
 
 /**
  * Capa de comunicaciones DDS
@@ -34,10 +40,14 @@ import battleSystemApp.dds.idl.*;
  * @author vgonllo
  * 
  */
-public class DDSCommLayer implements DataReaderListener<Msg> {
+public class DDSCommLayer extends AbstractFeature implements DataReaderListener<Msg>, Disposable {
 	// Logger.getLogger(BMSAppFrame.class.getName()).log(Level.SEVERE,
 	// "ERROR al fijar el look and feel de la aplicación", e);
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8808218351755341083L;
 	// the DDS DomainParticipant
 	private DomainParticipant dp;
 	// the DDS DataReader for Msg type
@@ -47,10 +57,15 @@ public class DDSCommLayer implements DataReaderListener<Msg> {
 	// active listeners references
 	private ArrayList<DDSListener> listeners;
 
+	public DDSCommLayer(Registry registry) {
+		super("DDSCommLayer", Constants.COMMLAYER, registry);
+	}
+	
 	/**
 	 * Capa de comunicaciones DDS
 	 */
-	public DDSCommLayer() {
+	public void initialize(Controller controller) {
+		super.initialize(controller);
 		listeners = new ArrayList<DDSListener>();
 		// Configure DDS ServiceEnvironment class to be OpenSplice Mobile
 		System.setProperty(
@@ -82,7 +97,12 @@ public class DDSCommLayer implements DataReaderListener<Msg> {
 		
 		dr.setListener(this);
 	}
+	
 
+	public void dispose() {		
+		this.closeDDSEntities();
+	}
+	
 	public DomainParticipant getDp() {
 		return dp;
 	}
@@ -97,21 +117,22 @@ public class DDSCommLayer implements DataReaderListener<Msg> {
 
 	public void closeDDSEntities() {
 		// Close the DDS DomainParticipant and all its child entities
-		Logger.getLogger(DDSCommLayer.class.getName()).log(Level.INFO,
-				"Eliminando DomainParticipants de DDS..");
+		Util.getLogger().logp(Level.INFO, this.getClass().getName(), "dispose()","Eliminando participantes DDS");
 		dp.close();
 		
 	}
-
+	
+	/**
+	 * Publica la información a todos los DataReaders
+	 * @param message
+	 */
 	public void publish(Msg message) {
 		try {
-			Logger.getLogger(DDSCommLayer.class.getName()).log(Level.INFO,
-					"Enviando mensaje DDS -" + message.unitID);
+			Util.getLogger().logp(Level.INFO, this.getClass().getName(), "publish(msg)", "Enviando mensaje DDS -" + message.unitID);				
 			// write the message to DDS
 			dw.write(message);
 		} catch (TimeoutException te) {
-			Logger.getLogger(DDSCommLayer.class.getName()).log(Level.WARNING,
-					"TIMEOUT enviando mensaje DDS", te);
+			Util.getLogger().logp(Level.WARNING, this.getClass().getName(), "publish(msg)", "TIMEOUT enviando mensaje DDS", te);			
 		}
 	}
 
@@ -120,8 +141,7 @@ public class DDSCommLayer implements DataReaderListener<Msg> {
 		// Get a read iterator on all available data
 		final Iterator<Msg> i = dae.getSource().read();
 
-		Logger.getLogger(DDSCommLayer.class.getName()).log(Level.INFO,
-				"Recibidos datos DDS...");
+		Util.getLogger().logp(Level.INFO, this.getClass().getName(), "dispose()","Recibidos datos DDS...");
 
 		while (i.hasNext()) {
 			Sample<Msg> s = i.next();

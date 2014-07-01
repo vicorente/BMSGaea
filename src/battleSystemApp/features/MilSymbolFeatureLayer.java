@@ -40,9 +40,9 @@ public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
     }
 
     @Override
-    protected Layer createLayer()
+    protected RenderableLayer createLayer()
     {
-        Layer layer = this.doCreateLayer();
+    	RenderableLayer layer = this.doCreateLayer();
 
         layer.setPickEnabled(true);
 
@@ -61,8 +61,11 @@ public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
         this.controller.getWWPanel().removeLayer(this.layer);
     }
     
+    public RenderableLayer getLayer(){
+    	return (RenderableLayer) this.layer;
+    }
 	
-	protected Layer doCreateLayer() {
+	protected RenderableLayer doCreateLayer() {
 
 		RenderableLayer layer = new RenderableLayer();
 		layer.setName("MILSTD");

@@ -47,6 +47,7 @@ public interface Constants
         // force display in active layers
     static final String USER_LAYER = "battleSystemApp.UserLayer"; // User-generated layers
     static final String SCREEN_LAYER = "battleSystemApp.ScreenLayer";
+    static final String COMMLAYER = "battleSystemApp.dds.DDSCommLayer";
 
     // in-screen application controls, etc.
 

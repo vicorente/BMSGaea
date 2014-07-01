@@ -13,7 +13,11 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.JMenuItem;
@@ -21,12 +25,15 @@ import javax.swing.JPopupMenu;
 
 import battleSystemApp.components.ContextMenuInfo;
 import battleSystemApp.components.ContextMenuItemInfo;
+import battleSystemApp.dds.DDSCommLayer;
+import battleSystemApp.dds.DDSListener;
 import battleSystemApp.dds.idl.Msg;
 import battleSystemApp.features.AbstractFeature;
 import battleSystemApp.utils.Util;
 import gov.nasa.worldwind.Disposable;
 import gov.nasa.worldwind.Movable;
 import gov.nasa.worldwind.View;
+import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.avlist.AVList;
 import gov.nasa.worldwind.event.*;
 import gov.nasa.worldwind.geom.Intersection;
@@ -37,22 +44,25 @@ import gov.nasa.worldwind.globes.Globe;
 import gov.nasa.worldwind.render.Highlightable;
 import gov.nasa.worldwind.render.Material;
 import gov.nasa.worldwind.render.PatternFactory;
+import gov.nasa.worldwind.render.Renderable;
 import gov.nasa.worldwind.render.UserFacingIcon;
+import gov.nasa.worldwind.symbology.AbstractTacticalSymbol;
+import gov.nasa.worldwind.symbology.SymbologyConstants;
 import gov.nasa.worldwind.symbology.milstd2525.MilStd2525TacticalSymbol;
 
 /**
  * @author vgonllo
  * @version $Id: IconController.java 1171 2013-02-11 21:45:02Z dcollins $
- * Controlador de los iconos de pantalla
+ *          Controlador de los iconos de pantalla
  */
 @SuppressWarnings("serial")
 public class IconController extends AbstractFeature implements SelectListener,
-		Disposable {
+		Disposable, DDSListener {
 	protected Highlightable lastPickedIcon = null;
 	protected boolean dragging = false;
 	private Vec4 dragRefObjectPoint;
 	private Point dragRefCursorPoint;
-	private double dragRefAltitude;
+	private double dragRefAltitude;	
 
 	public boolean isDragging() {
 		return this.dragging;
@@ -64,7 +74,7 @@ public class IconController extends AbstractFeature implements SelectListener,
 
 	public void initialize(Controller controller) {
 		super.initialize(controller);
-
+		this.controller.getCommLayer().addListener(this);
 		this.controller.getWWd().addSelectListener(this);
 	}
 
@@ -78,10 +88,9 @@ public class IconController extends AbstractFeature implements SelectListener,
 			if (event == null) {
 				Util.getLogger().severe("null event");
 				throw new IllegalArgumentException("null event");
-			} else if (event.getEventAction().equals(SelectEvent.ROLLOVER)){
+			} else if (event.getEventAction().equals(SelectEvent.ROLLOVER)) {
 				highlight(event, event.getTopObject());
-			}
-			else if (event.getEventAction().equals(SelectEvent.DRAG_END)) {
+			} else if (event.getEventAction().equals(SelectEvent.DRAG_END)) {
 				DragSelectEvent dragEvent = (DragSelectEvent) event;
 				Object topObject = dragEvent.getTopObject();
 				if (topObject instanceof MilStd2525TacticalSymbol) {
@@ -112,8 +121,8 @@ public class IconController extends AbstractFeature implements SelectListener,
 							dragObject.getPosition().getLongitude()
 									.getDegrees(), dragObject.getPosition()
 									.getAltitude());
-
-					// this.dds.publish(message);
+					// publish info through communication layer
+					this.controller.getCommLayer().publish(message);
 
 					this.dragging = false;
 					event.consume();
@@ -190,7 +199,7 @@ public class IconController extends AbstractFeature implements SelectListener,
 			} else if (event.getEventAction().equals(SelectEvent.RIGHT_PRESS)) {
 				showContextMenu(event);
 				event.consume();
-			} 
+			}
 		} catch (Exception e) {
 			// Wrap the handler in a try/catch to keep exceptions from bubbling
 			// up
@@ -217,7 +226,11 @@ public class IconController extends AbstractFeature implements SelectListener,
 		if (o != null && o instanceof Highlightable) {
 			this.lastPickedIcon = (Highlightable) o;
 			this.lastPickedIcon.setHighlighted(true);
-			controller.setStatusMessage("Seleccionado");
+			if (o instanceof MilStd2525TacticalSymbol) {
+				MilStd2525TacticalSymbol milSymbol = (MilStd2525TacticalSymbol) o;
+				String status = milSymbol.getIdentifier()+" "+milSymbol.getValue(AVKey.HOVER_TEXT);
+				controller.setStatusMessage(status);
+			}
 		}
 
 	}
@@ -249,22 +262,52 @@ public class IconController extends AbstractFeature implements SelectListener,
 		}
 	}
 
-	 // Create a blurred pattern bitmap
-    private BufferedImage createBitmap(String pattern, Color color)
-    {
-        // Create bitmap with pattern
-        BufferedImage image = PatternFactory.createPattern(pattern, new Dimension(128, 128), 0.7f,
-            color, new Color(color.getRed(), color.getGreen(), color.getBlue(), 0));
-        // Blur a lot to get a fuzzy edge
-        image = PatternFactory.blur(image, 13);
-        image = PatternFactory.blur(image, 13);
-        image = PatternFactory.blur(image, 13);
-        image = PatternFactory.blur(image, 13);
-        return image;
-    }
-    
-    
-    
+	// Create a blurred pattern bitmap
+	private BufferedImage createBitmap(String pattern, Color color) {
+		// Create bitmap with pattern
+		BufferedImage image = PatternFactory.createPattern(pattern,
+				new Dimension(128, 128), 0.7f, color, new Color(color.getRed(),
+						color.getGreen(), color.getBlue(), 0));
+		// Blur a lot to get a fuzzy edge
+		image = PatternFactory.blur(image, 13);
+		image = PatternFactory.blur(image, 13);
+		image = PatternFactory.blur(image, 13);
+		image = PatternFactory.blur(image, 13);
+		return image;
+	}
+	
+	/**
+	 * Implementación de la interfaz DDSListener. Llamado cuando llega un
+	 * mensaje
+	 */
+	@Override
+	public void receivedMessage(Msg message) {
+		Logger.getLogger(DDSCommLayer.class.getName()).log(
+				Level.INFO,
+				"Recibido mensaje DDS -" + message.unitID + "- Lat: "
+						+ message.lat + " Lon: " + message.lon + " Alt: "
+						+ message.alt);
+		Boolean moved = false;
+		for (Renderable r : controller.getMilSymbolFeatureLayer().getLayer().getRenderables()) {
+			AbstractTacticalSymbol C2Symbol = (AbstractTacticalSymbol) r;
+			if (C2Symbol.getIdentifier().equals(message.unitID)) {
+				// Set new symbol position
+				C2Symbol.moveTo(Position.fromDegrees(message.lat,
+						message.lon, message.alt));
+				String newString = new SimpleDateFormat(
+						"ddHHmmss'Z'MMMYYYY").format(new Date())
+						.toUpperCase(); // 9:00
+				C2Symbol.setModifier(SymbologyConstants.DATE_TIME_GROUP,
+						newString);
+				moved = true;
+			}
+		}
+		// se realiza en el caso de que tengamos algún simbolo en seguimiento
+		// y haya sido movido externamente
+		if (moved==true)
+			controller.getTrackingView().sceneChanged();
+	}
+	
 	private class TacticalSymbolContextMenu {
 		protected Component sourceComponent;
 		protected JMenuItem menuTitleItem;
@@ -323,7 +366,7 @@ public class IconController extends AbstractFeature implements SelectListener,
 			private static final long serialVersionUID = -1585214756119587446L;
 			protected ContextMenuItemInfo itemInfo;
 			private UserFacingIcon icon;
-			
+
 			public ContextMenuItemAction(ContextMenuItemInfo itemInfo) {
 				super(itemInfo.displayString());
 
@@ -337,27 +380,30 @@ public class IconController extends AbstractFeature implements SelectListener,
 					if (controller.getTrackingView().isTracked(
 							(Movable) topObject)) {
 						controller.getTrackingView().removeMovableFromTrack(
-								(Movable) topObject);						
-						((MilStd2525TacticalSymbol) topObject).getAttributes().setInteriorMaterial(null);
+								(Movable) topObject);
+						((MilStd2525TacticalSymbol) topObject).getAttributes()
+								.setInteriorMaterial(null);
 						controller.getTrackingView().sceneChanged();
 					} else if (!controller.getTrackingView().isTracked(
 							(Movable) topObject)) {
 						controller.getTrackingView().addMovableToTrack(
-								(Movable) topObject);		
-												
+								(Movable) topObject);
+
 						Color diffuse = new Color(20, 100, 3);
-						Color specular = new Color(255, 255, 255, diffuse.getAlpha());
+						Color specular = new Color(255, 255, 255,
+								diffuse.getAlpha());
 						Color ambient = new Color(100, 2, 100);
-						Color emission = new Color(0, 0, 0, diffuse.getAlpha());												
-						//Material material = ((MilStd2525TacticalSymbol) topObject).getAttributes().getInteriorMaterial();
-						Material mat = new Material(specular, diffuse, ambient, emission, 80.0f);
-						((MilStd2525TacticalSymbol) topObject).getAttributes().setInteriorMaterial(mat);						
+						Color emission = new Color(0, 0, 0, diffuse.getAlpha());
+						// Material material = ((MilStd2525TacticalSymbol)
+						// topObject).getAttributes().getInteriorMaterial();
+						Material mat = new Material(specular, diffuse, ambient,
+								emission, 80.0f);
+						((MilStd2525TacticalSymbol) topObject).getAttributes()
+								.setInteriorMaterial(mat);
 						controller.getTrackingView().sceneChanged();
 					}
 				}
 			}
-			
-			
 
 		}
 	}

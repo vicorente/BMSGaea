@@ -9,7 +9,8 @@
     <!-- Order matters in the instantiation of some of these -->
     <!-- Core infrastructure classes must be instantiated first, and in the order given here -->
     <!--<Feature className="battleSystemApp.core.MenuBarImpl"/>-->
-   
+    <Feature className="battleSystemApp.dds.DDSCommLayer"/>
+    
     <Feature className="battleSystemApp.core.ToolBarImpl"/>
     <Feature className="battleSystemApp.core.WWPanelImpl"/>
     <!--<Feature className="battleSystemApp.features.swinglayermanager.ControlsPanelImpl"/>-->

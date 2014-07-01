@@ -18,7 +18,9 @@ import gov.nasa.worldwind.view.orbit.*;
 import javax.swing.*;
 
 import battleSystemApp.core.layermanager.LayerManager;
+import battleSystemApp.dds.DDSCommLayer;
 import battleSystemApp.features.AbstractFeature;
+import battleSystemApp.features.MilSymbolFeatureLayer;
 import battleSystemApp.features.NetworkActivitySignal;
 import battleSystemApp.utils.ProxyAuthenticator;
 import battleSystemApp.utils.ProxyConfigurationManager;
@@ -170,8 +172,13 @@ public class Controller {
 				.getRegisteredObject(Constants.FEATURE_TRACKING_VIEW);
 	}
 	
+	public DDSCommLayer getCommLayer(){
+		return (DDSCommLayer) this.getRegisteredObject(Constants.COMMLAYER);
+	}
 
-
+	public MilSymbolFeatureLayer getMilSymbolFeatureLayer(){
+		return (MilSymbolFeatureLayer) this.getRegisteredObject(Constants.FEATURE_MIL_STD);
+	}
 	public void redraw() {
 		if (this.getWWd() != null) {
 			this.getWWd().redraw();
