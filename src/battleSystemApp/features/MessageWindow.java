@@ -14,7 +14,7 @@ public class MessageWindow extends AbstractFeatureLayer
 	 * 
 	 */
 	private static final long serialVersionUID = 5727249567363991741L;
-
+	private MessageTree msgTree;
 	public MessageWindow()
     {
         this(null);
@@ -27,14 +27,21 @@ public class MessageWindow extends AbstractFeatureLayer
 
     protected Layer doAddLayer()
     {
-        MessageTree msgTree= new  MessageTree();
+        this.msgTree = new MessageTree();
         RenderableLayer hiddenLayer = new RenderableLayer();
         hiddenLayer.addRenderable(msgTree);
         hiddenLayer.setValue(Constants.ACTIVE_LAYER, true);
-        msgTree.addMessage("YO-> hola wedf dsagsdhsdhrwthsdfbf");
-        
+     
         this.controller.addInternalActiveLayer(hiddenLayer);
 
         return hiddenLayer;
+    }
+    
+    /**
+     * Aniade un mensaje a la ventana de mensajes
+     * @param msg
+     */
+    public void addMessage(String msg){
+    	msgTree.addMessage(msg);
     }
 }

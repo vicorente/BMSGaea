@@ -282,11 +282,13 @@ public class IconController extends AbstractFeature implements SelectListener,
 	 */
 	@Override
 	public void receivedMessage(Msg message) {
+		String strMsg = "Recibido mensaje DDS -" + message.unitID + "- Lat: "
+				+ message.lat + " Lon: " + message.lon + " Alt: "
+				+ message.alt;
 		Logger.getLogger(DDSCommLayer.class.getName()).log(
 				Level.INFO,
-				"Recibido mensaje DDS -" + message.unitID + "- Lat: "
-						+ message.lat + " Lon: " + message.lon + " Alt: "
-						+ message.alt);
+				strMsg);
+		controller.getMessageWindow().addMessage(strMsg);
 		Boolean moved = false;
 		for (Renderable r : controller.getMilSymbolFeatureLayer().getLayer().getRenderables()) {
 			AbstractTacticalSymbol C2Symbol = (AbstractTacticalSymbol) r;
@@ -294,11 +296,11 @@ public class IconController extends AbstractFeature implements SelectListener,
 				// Set new symbol position
 				C2Symbol.moveTo(Position.fromDegrees(message.lat,
 						message.lon, message.alt));
-				String newString = new SimpleDateFormat(
-						"ddHHmmss'Z'MMMYYYY").format(new Date())
+				String newString = Util.DATE_FORMAT_MILITARY_ZULU.format(new Date())
 						.toUpperCase(); // 9:00
 				C2Symbol.setModifier(SymbologyConstants.DATE_TIME_GROUP,
 						newString);
+				
 				moved = true;
 			}
 		}

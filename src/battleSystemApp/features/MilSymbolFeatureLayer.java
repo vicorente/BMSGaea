@@ -20,6 +20,7 @@ import battleSystemApp.core.Constants;
 import battleSystemApp.core.Controller;
 import battleSystemApp.core.Registry;
 import battleSystemApp.core.layermanager.LayerPath;
+import battleSystemApp.utils.Util;
 
 @SuppressWarnings("serial")
 public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
@@ -125,7 +126,7 @@ public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
 				"ADDED SUPPORT FOR JJ");
 		machineGunSymbol.setModifier(SymbologyConstants.TYPE, "MACHINE GUN");
 		// formato de hora del STANAG
-		String newString = new SimpleDateFormat("ddHHmmss'Z'MMMYYYY").format(
+		String newString = Util.DATE_FORMAT_MILITARY_ZULU.format(
 				new Date()).toUpperCase(); // 9:00
 		machineGunSymbol.setModifier(SymbologyConstants.DATE_TIME_GROUP,
 				newString);

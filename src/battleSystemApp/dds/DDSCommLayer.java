@@ -5,8 +5,6 @@ import gov.nasa.worldwind.Disposable;
 import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.omg.dds.core.ServiceEnvironment;
 import org.omg.dds.core.event.DataAvailableEvent;
 import org.omg.dds.core.event.LivelinessChangedEvent;
@@ -72,6 +70,7 @@ public class DDSCommLayer extends AbstractFeature implements DataReaderListener<
 				ServiceEnvironment.IMPLEMENTATION_CLASS_NAME_PROPERTY,
 				"org.opensplice.mobile.core.ServiceEnvironmentImpl");
 
+		System.setProperty("opensplice.properties", "configuration/dds.properties");
 		// Create a DDS ServiceEnvironment
 		ServiceEnvironment env = ServiceEnvironment.createInstance(this
 				.getClass().getClassLoader());

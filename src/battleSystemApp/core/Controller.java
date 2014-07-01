@@ -20,6 +20,7 @@ import javax.swing.*;
 import battleSystemApp.core.layermanager.LayerManager;
 import battleSystemApp.dds.DDSCommLayer;
 import battleSystemApp.features.AbstractFeature;
+import battleSystemApp.features.MessageWindow;
 import battleSystemApp.features.MilSymbolFeatureLayer;
 import battleSystemApp.features.NetworkActivitySignal;
 import battleSystemApp.utils.ProxyAuthenticator;
@@ -179,6 +180,11 @@ public class Controller {
 	public MilSymbolFeatureLayer getMilSymbolFeatureLayer(){
 		return (MilSymbolFeatureLayer) this.getRegisteredObject(Constants.FEATURE_MIL_STD);
 	}
+	
+	public MessageWindow getMessageWindow(){
+		return (MessageWindow) this.getRegisteredObject(Constants.FEATURE_MESSAGE_WINDOW);
+	}
+	
 	public void redraw() {
 		if (this.getWWd() != null) {
 			this.getWWd().redraw();
