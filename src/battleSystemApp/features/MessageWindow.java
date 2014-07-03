@@ -41,7 +41,7 @@ public class MessageWindow extends AbstractFeatureLayer
      * Aniade un mensaje a la ventana de mensajes
      * @param msg
      */
-    public void addMessage(String msg){
-    	msgTree.addMessage(msg);
+    public void addMessage(String msg, int messageType){
+    	msgTree.addMessage(msg, messageType);
     }
 }

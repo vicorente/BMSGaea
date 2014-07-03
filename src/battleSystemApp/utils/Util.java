@@ -26,6 +26,10 @@ import java.util.regex.*;
  */
 public class Util
 {
+	public static final int ALARM_MESSAGE = 0;
+	public static final int INFO_MESSAGE = 1;
+	public static final int OWN_MESSAGE = 2;
+	public static final int POSITION_MESSAGE = 3;
     public static final String DECIMAL_SYMBOL = Character.toString(new DecimalFormatSymbols().getDecimalSeparator());
 
     public static Logger getLogger()

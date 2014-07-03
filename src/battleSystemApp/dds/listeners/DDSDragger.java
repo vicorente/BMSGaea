@@ -7,7 +7,6 @@ import battleSystemApp.components.ContextMenuInfo;
 import battleSystemApp.core.Constants;
 import battleSystemApp.dds.DDSCommLayer;
 import battleSystemApp.dds.idl.Msg;
-import battleSystemApp.views.ViewController;
 import gov.nasa.worldwind.Movable;
 import gov.nasa.worldwind.View;
 import gov.nasa.worldwind.WorldWindow;

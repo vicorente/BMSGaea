@@ -13,7 +13,6 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
@@ -284,17 +283,16 @@ public class IconController extends AbstractFeature implements SelectListener,
 	@Override
 	public void receivedMessage(Msg message) {
 
-		// si el campo mensaje está vacío significa que sólo se envía la
-		// posición
+		// si el campo mensaje no está vacío corresponde a un mensaje de texto
 		if (!message.message.equalsIgnoreCase("")) {
-			controller.getMessageWindow().addMessage(message.message);
+			controller.getMessageWindow().addMessage(message.message, Util.INFO_MESSAGE);
 		} else {
 			String strMsg = "Recibida posición -" + message.unitID + "- Lat: "
 					+ message.lat + " Lon: " + message.lon + " Alt: "
 					+ message.alt;
 			Logger.getLogger(DDSCommLayer.class.getName()).log(Level.INFO,
 					strMsg);
-			controller.getMessageWindow().addMessage(strMsg);
+			controller.getMessageWindow().addMessage(strMsg, Util.POSITION_MESSAGE);
 
 			Boolean moved = false;
 			for (Renderable r : controller.getMilSymbolFeatureLayer()

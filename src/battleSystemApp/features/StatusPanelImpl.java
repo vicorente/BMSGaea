@@ -25,11 +25,17 @@ import java.util.Date;
 import java.util.logging.Level;
 
 /**
- * @author tag
- * @version $Id: StatusPanelImpl.java 1171 2013-02-11 21:45:02Z dcollins $
+ * 
+ * @author vgonllo
+ * Representa la barra de estado inferior. Permite realizar búsquedas de localizaciones, 
+ * enviar mensajes, obtener información de los elementos seleccionados y ver la fecha/hora
  */
 public class StatusPanelImpl extends AbstractFeature implements StatusPanel,
 		SelectListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8315133189710313241L;
 	private ShadedPanel panel;
 	private Color panelTextColor = new Color(0x184984);
 	private JLabel statusMessageLabel;
@@ -139,7 +145,9 @@ public class StatusPanelImpl extends AbstractFeature implements StatusPanel,
 						texto = cmb.getSelectedItem().toString();
 						// Prepare DDS message to publish
 						Msg message = new Msg("NULL", 0, 0, 0, texto);
+						controller.getMessageWindow().addMessage(texto, Util.OWN_MESSAGE);
 						controller.getCommLayer().publish(message);
+						
 
 					} catch (NoItemException e) {
 						controller.showMessageDialog("No hay mensaje",

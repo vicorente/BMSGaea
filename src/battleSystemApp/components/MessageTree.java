@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.util.Map.Entry;
 
 import battleSystemApp.core.ImageLibrary;
+import battleSystemApp.utils.Util;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.render.BasicWWTexture;
 import gov.nasa.worldwind.render.Offset;
@@ -28,7 +29,11 @@ public class MessageTree extends BasicTree {
     protected static final String DEFAULT_FRAME_IMAGE = "resources/images/info-20x20.png";  
     protected static final String DEFAULT_FRAME_TITLE = "Mensajes";
     protected BasicTreeLayout layout=null;
-    protected final static String IMAGE_MESSAGE = "resources/images/info-20x20.png";
+    protected final static String INFO_IMAGE_MESSAGE = "resources/images/info-20x20.png";
+    protected final static String ALARM_IMAGE_MESSAGE = "resources/images/warning24.png";
+    protected final static String OWN_MESSAGE_IMAGE_MESSAGE = "resources/images/load-dot.png";
+    protected final static String POSITION_IMAGE_MESSAGE = "resources/images/16x16-icon-earth.png";
+    
     
     public MessageTree(){
     	this.initialize(null);
@@ -92,8 +97,26 @@ public class MessageTree extends BasicTree {
         return (BasicTreeModel) super.getModel();
     }
     
-    public void addMessage(String message){
-    	BasicTreeNode mensaje = new BasicTreeNode(message, IMAGE_MESSAGE);  	
+    public void addMessage(String message,  int messageType){
+    	BasicTreeNode mensaje;
+    	switch (messageType) {
+		case Util.INFO_MESSAGE:
+			mensaje = new BasicTreeNode(message, INFO_IMAGE_MESSAGE); 
+			break;
+		case Util.ALARM_MESSAGE: 
+			mensaje = new BasicTreeNode(message, ALARM_IMAGE_MESSAGE); 
+			break;
+		case Util.POSITION_MESSAGE: 
+			mensaje = new BasicTreeNode(message, POSITION_IMAGE_MESSAGE); 
+			break;
+		case Util.OWN_MESSAGE: 
+			mensaje = new BasicTreeNode(message, OWN_MESSAGE_IMAGE_MESSAGE); 
+			break;
+		default:
+			mensaje = new BasicTreeNode(message, INFO_IMAGE_MESSAGE); 
+			break;
+		}
+	
     	this.getModel().getRoot().addChild(mensaje);
     }
 }
