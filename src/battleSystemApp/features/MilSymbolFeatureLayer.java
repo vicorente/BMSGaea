@@ -96,7 +96,6 @@ public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
 				Angle.fromDegrees(235));
 		airSymbol.setShowLocation(false);
 		
-		
 		layer.addRenderable(airSymbol);
 
 		// GROUND SYMBOL

@@ -300,19 +300,19 @@ public class IconController extends AbstractFeature implements SelectListener,
 				AbstractTacticalSymbol C2Symbol = (AbstractTacticalSymbol) r;
 				if (C2Symbol.getIdentifier().equals(message.unitID)) {
 					// Set new symbol position
+					// TODO mover el icono con animacion
 					C2Symbol.moveTo(Position.fromDegrees(message.lat,
 							message.lon, message.alt));
 					String newString = Util.DATE_FORMAT_MILITARY_ZULU.format(
 							new Date()).toUpperCase(); // 9:00
 					C2Symbol.setModifier(SymbologyConstants.DATE_TIME_GROUP,
 							newString);
-
+					// El simbolo ha sido movido
 					moved = true;
 				}
 			}
 			// se realiza en el caso de que tengamos algún simbolo en
-			// seguimiento
-			// y haya sido movido externamente
+			// seguimiento y haya sido movido externamente
 			if (moved == true)
 				controller.getTrackingView().sceneChanged();
 		}
