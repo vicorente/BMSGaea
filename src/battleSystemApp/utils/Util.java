@@ -6,7 +6,15 @@
 
 package battleSystemApp.utils;
 
+import gov.nasa.worldwind.WorldWind;
+import gov.nasa.worldwind.avlist.AVKey;
+import gov.nasa.worldwind.geom.Position;
+import gov.nasa.worldwind.render.BasicShapeAttributes;
+import gov.nasa.worldwind.render.Material;
+import gov.nasa.worldwind.render.Path;
+import gov.nasa.worldwind.render.ShapeAttributes;
 import gov.nasa.worldwind.util.*;
+import gov.nasa.worldwindx.examples.util.DirectedPath;
 
 import javax.swing.*;
 
@@ -16,6 +24,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 import java.util.regex.*;
@@ -207,5 +216,23 @@ public class Util
                 return (char) ('N' - offsetHours - 1);
             }
         }
+    }
+    
+    public static Path getPath(Position begin, Position end){
+    	ArrayList<Position> pathPositions = new ArrayList<Position>();
+    	// Create and set an attribute bundle.
+        ShapeAttributes attrs = new BasicShapeAttributes();
+        attrs.setOutlineMaterial(Material.RED);
+        attrs.setOutlineWidth(2d);
+        
+    	pathPositions.add(begin);
+    	pathPositions.add(end);
+    	    	
+    	Path path = new DirectedPath(pathPositions);
+        path.setAttributes(attrs);
+        path.setVisible(true);
+        path.setAltitudeMode(WorldWind.RELATIVE_TO_GROUND);
+        path.setPathType(AVKey.GREAT_CIRCLE);
+        return path;
     }
 }

@@ -285,31 +285,40 @@ public class IconController extends AbstractFeature implements SelectListener,
 
 		// si el campo mensaje no está vacío corresponde a un mensaje de texto
 		if (!message.message.equalsIgnoreCase("")) {
-			controller.getMessageWindow().addMessage(message.message, Util.INFO_MESSAGE);
+			controller.getMessageWindow().addMessage(message.message,
+					Util.INFO_MESSAGE);
 		} else {
 			String strMsg = "Recibida posición -" + message.unitID + "- Lat: "
 					+ message.lat + " Lon: " + message.lon + " Alt: "
 					+ message.alt;
 			Logger.getLogger(DDSCommLayer.class.getName()).log(Level.INFO,
 					strMsg);
-			controller.getMessageWindow().addMessage(strMsg, Util.POSITION_MESSAGE);
+			controller.getMessageWindow().addMessage(strMsg,
+					Util.POSITION_MESSAGE);
 
 			Boolean moved = false;
 			for (Renderable r : controller.getMilSymbolFeatureLayer()
 					.getLayer().getRenderables()) {
-				AbstractTacticalSymbol C2Symbol = (AbstractTacticalSymbol) r;
-				if (C2Symbol.getIdentifier().equals(message.unitID)) {
-					// Set new symbol position
-					// TODO mover el icono con animacion
-					C2Symbol.moveTo(Position.fromDegrees(message.lat,
-							message.lon, message.alt));
-					String newString = Util.DATE_FORMAT_MILITARY_ZULU.format(
-							new Date()).toUpperCase(); // 9:00
-					C2Symbol.setModifier(SymbologyConstants.DATE_TIME_GROUP,
-							newString);
-					// El simbolo ha sido movido
-					moved = true;
-				}
+				if (r instanceof AbstractTacticalSymbol) {
+					AbstractTacticalSymbol C2Symbol = (AbstractTacticalSymbol) r;
+					if (C2Symbol.getIdentifier().equals(message.unitID)) {
+						// Set new symbol position
+						// TODO mover el icono con animacion
+						Position begin = C2Symbol.getPosition();
+						Position end = Position.fromDegrees(message.lat,
+								message.lon, message.alt);
+						C2Symbol.moveTo(end);
+						String newString = Util.DATE_FORMAT_MILITARY_ZULU
+								.format(new Date()).toUpperCase(); // 9:00
+						C2Symbol.setModifier(
+								SymbologyConstants.DATE_TIME_GROUP, newString);
+						// Creamos una linea que indique el movimiento
+						controller.getMilSymbolFeatureLayer().getLayer()
+								.addRenderable(Util.getPath(begin, end));
+						// El simbolo ha sido movido
+						moved = true;
+					}
+				} 
 			}
 			// se realiza en el caso de que tengamos algún simbolo en
 			// seguimiento y haya sido movido externamente
