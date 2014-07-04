@@ -11,6 +11,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.Timer;
 
 import battleSystemApp.components.ContextMenuInfo;
 import battleSystemApp.components.ContextMenuItemInfo;
@@ -35,6 +37,7 @@ import gov.nasa.worldwind.View;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.avlist.AVList;
 import gov.nasa.worldwind.event.*;
+import gov.nasa.worldwind.geom.Angle;
 import gov.nasa.worldwind.geom.Intersection;
 import gov.nasa.worldwind.geom.Line;
 import gov.nasa.worldwind.geom.Position;
@@ -300,12 +303,12 @@ public class IconController extends AbstractFeature implements SelectListener,
 			for (Renderable r : controller.getMilSymbolFeatureLayer()
 					.getLayer().getRenderables()) {
 				if (r instanceof AbstractTacticalSymbol) {
-					AbstractTacticalSymbol C2Symbol = (AbstractTacticalSymbol) r;
+					final AbstractTacticalSymbol C2Symbol = (AbstractTacticalSymbol) r;
 					if (C2Symbol.getIdentifier().equals(message.unitID)) {
 						// Set new symbol position
 						// TODO mover el icono con animacion
-						Position begin = C2Symbol.getPosition();
-						Position end = Position.fromDegrees(message.lat,
+						final Position begin = C2Symbol.getPosition();
+						final Position end = Position.fromDegrees(message.lat,
 								message.lon, message.alt);
 						C2Symbol.moveTo(end);
 						String newString = Util.DATE_FORMAT_MILITARY_ZULU
@@ -315,6 +318,7 @@ public class IconController extends AbstractFeature implements SelectListener,
 						// Creamos una linea que indique el movimiento
 						controller.getMilSymbolFeatureLayer().getLayer()
 								.addRenderable(Util.getPath(begin, end));
+						
 						// El simbolo ha sido movido
 						moved = true;
 					}
