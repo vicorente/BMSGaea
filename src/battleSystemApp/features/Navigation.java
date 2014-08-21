@@ -18,7 +18,7 @@ import java.beans.PropertyChangeEvent;
 public class Navigation extends AbstractFeatureLayer
 {
     public static final String POSITION_PROPERTY = "battleSystemApp.features.Navegacion.PostionProperty";
-    public static final String ORIENTATION_PROPERTY = "gbattleSystemApp.features.Navegacion.OrientationProperty";
+    public static final String ORIENTATION_PROPERTY = "battleSystemApp.features.Navegacion.OrientationProperty";
     public static final String SIZE_PROPERTY = "battleSystemApp.features.Navegacion.SizeProperty";
     public static final String OPACITY_PROPERTY = "battleSystemApp.features.Navegacion.OpacityProperty";
 
