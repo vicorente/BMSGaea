@@ -39,8 +39,6 @@ import battleSystemApp.utils.Util;
  * 
  */
 public class DDSCommLayer extends AbstractFeature implements DataReaderListener<Msg>, Disposable {
-	// Logger.getLogger(BMSAppFrame.class.getName()).log(Level.SEVERE,
-	// "ERROR al fijar el look and feel de la aplicación", e);
 
 	/**
 	 * 

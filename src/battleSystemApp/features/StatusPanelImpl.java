@@ -27,6 +27,7 @@ import java.util.logging.Level;
 /**
  * 
  * @author vgonllo
+ * 
  * Representa la barra de estado inferior. Permite realizar búsquedas de localizaciones, 
  * enviar mensajes, obtener información de los elementos seleccionados y ver la fecha/hora
  */
@@ -131,23 +132,23 @@ public class StatusPanelImpl extends AbstractFeature implements StatusPanel,
 		p.add(field, BorderLayout.CENTER);
 		p.add(boton, BorderLayout.EAST);
 
-		// Se envia un mensaje con el contenido de
-		field.addActionListener(new ActionListener() {
-			public void actionPerformed(final ActionEvent actionEvent) {
-				Util.getLogger().logp(Level.INFO, this.getClass().getName(), "actionPerformed()",actionEvent.getActionCommand());
-				// Es necesario comprobar que sólo uno de los eventos produce el envío de un mensaje
-				// ya que se lanzan los eventos ComoBoxEdited y ComboBoxChanged y entra dos veces
-				if (actionEvent.getActionCommand().equalsIgnoreCase(
-						"comboBoxEdited")) {
-					try {
+		field.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() 
+	    {
+	        public void keyPressed(KeyEvent evt)
+	        {
+	            if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+	            {
+	            	try {
 						String texto;
-						JComboBox cmb = ((JComboBox) actionEvent.getSource());
-						texto = cmb.getSelectedItem().toString();
+						JTextField mensaje = ((JTextField) evt.getSource());
+						texto = mensaje.getText();
+						// Se guardan los mensajes que hemos enviado
+						((JComboBox)mensaje.getParent()).addItem(texto);
 						// Prepare DDS message to publish
 						Msg message = new Msg("NULL", 0, 0, 0, texto);
 						controller.getMessageWindow().addMessage(texto, Util.OWN_MESSAGE);
 						controller.getCommLayer().publish(message);
-						
+						((JComboBox)mensaje.getParent()).setSelectedItem(null);
 
 					} catch (NoItemException e) {
 						controller.showMessageDialog("No hay mensaje",
@@ -156,10 +157,9 @@ public class StatusPanelImpl extends AbstractFeature implements StatusPanel,
 						controller.showMessageDialog("No hay mensaje",
 								"No hay mensaje", JOptionPane.ERROR_MESSAGE);
 					}
-				}
-			}
-
-		});
+	            }
+	        }
+	    });		
 
 		return p;
 	}
