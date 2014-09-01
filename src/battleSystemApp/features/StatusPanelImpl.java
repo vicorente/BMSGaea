@@ -28,8 +28,9 @@ import java.util.logging.Level;
  * 
  * @author vgonllo
  * 
- * Representa la barra de estado inferior. Permite realizar búsquedas de localizaciones, 
- * enviar mensajes, obtener información de los elementos seleccionados y ver la fecha/hora
+ *         Representa la barra de estado inferior. Permite realizar búsquedas de
+ *         localizaciones, enviar mensajes, obtener información de los elementos
+ *         seleccionados y ver la fecha/hora
  */
 public class StatusPanelImpl extends AbstractFeature implements StatusPanel,
 		SelectListener {
@@ -116,7 +117,7 @@ public class StatusPanelImpl extends AbstractFeature implements StatusPanel,
 
 		String tt = "Escriba el mensaje a enviar...";
 
-		JComboBox field = new JComboBox();
+		final JComboBox<String> field = new JComboBox<String>();
 		field.setOpaque(false);
 		field.setEditable(true);
 		field.setLightWeightPopupEnabled(false);
@@ -132,23 +133,26 @@ public class StatusPanelImpl extends AbstractFeature implements StatusPanel,
 		p.add(field, BorderLayout.CENTER);
 		p.add(boton, BorderLayout.EAST);
 
-		field.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() 
-	    {
-	        public void keyPressed(KeyEvent evt)
-	        {
-	            if(evt.getKeyCode() == KeyEvent.VK_ENTER)
-	            {
-	            	try {
+		// Listener para responder al pulsar ENTER
+		field.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent evt) {
+				if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+					try {
 						String texto;
 						JTextField mensaje = ((JTextField) evt.getSource());
 						texto = mensaje.getText();
-						// Se guardan los mensajes que hemos enviado
-						((JComboBox)mensaje.getParent()).addItem(texto);
-						// Prepare DDS message to publish
-						Msg message = new Msg("NULL", 0, 0, 0, texto);
-						controller.getMessageWindow().addMessage(texto, Util.OWN_MESSAGE);
-						controller.getCommLayer().publish(message);
-						((JComboBox)mensaje.getParent()).setSelectedItem(null);
+						if (!texto.trim().equalsIgnoreCase("")) {
+							// Se guardan los mensajes que hemos enviado
+							((JComboBox<String>) mensaje.getParent())
+									.addItem(texto);
+							// Prepare DDS message to publish
+							Msg message = new Msg("NULL", 0, 0, 0, texto);
+							controller.getMessageWindow().addMessage(texto,
+									Util.OWN_MESSAGE);
+							controller.getCommLayer().publish(message);
+							((JComboBox<String>) mensaje.getParent())
+									.setSelectedItem(null);
+						}
 
 					} catch (NoItemException e) {
 						controller.showMessageDialog("No hay mensaje",
@@ -157,10 +161,29 @@ public class StatusPanelImpl extends AbstractFeature implements StatusPanel,
 						controller.showMessageDialog("No hay mensaje",
 								"No hay mensaje", JOptionPane.ERROR_MESSAGE);
 					}
-	            }
-	        }
-	    });		
+				}
+			}
+		});
 
+		// El botón de enviar mensaje funciona igual que el ENTER
+		boton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String texto;
+				if (field.getSelectedItem() != null) {
+					texto = field.getSelectedItem().toString();
+					if (!texto.trim().equalsIgnoreCase("")) {
+						// Se guardan los mensajes que hemos enviado
+						field.addItem(texto);
+						// Prepare DDS message to publish
+						Msg message = new Msg("NULL", 0, 0, 0, texto);
+						controller.getMessageWindow().addMessage(texto,
+								Util.OWN_MESSAGE);
+						controller.getCommLayer().publish(message);
+						field.setSelectedItem(null);
+					}
+				}
+			}
+		});
 		return p;
 	}
 
