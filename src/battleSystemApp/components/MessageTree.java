@@ -117,6 +117,6 @@ public class MessageTree extends BasicTree {
 			break;
 		}
 	
-    	this.getModel().getRoot().addChild(mensaje);
+    	this.getModel().getRoot().addChild(0,mensaje);
     }
 }
