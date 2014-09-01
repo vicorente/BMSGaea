@@ -72,7 +72,7 @@ public class MessageTree extends BasicTree {
 
         BasicTreeAttributes attributes = new BasicTreeAttributes();
         attributes.setRootVisible(false);
-        attributes.setColor(new Color(0, 128, 255));
+        attributes.setColor(new Color(0x00FF00));
         attributes.setFont(Font.decode("Verdana-12"));
         layout.setAttributes(attributes);
 

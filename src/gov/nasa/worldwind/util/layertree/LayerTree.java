@@ -5,6 +5,9 @@
  */
 package gov.nasa.worldwind.util.layertree;
 
+import java.awt.Color;
+import java.awt.Font;
+
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.render.Offset;
 import gov.nasa.worldwind.util.Logging;
@@ -156,6 +159,8 @@ public class LayerTree extends BasicTree
 
         BasicTreeAttributes attributes = new BasicTreeAttributes();
         attributes.setRootVisible(false);
+        attributes.setColor(new Color(0x00FF00));
+        attributes.setFont(Font.decode("Verdana-12"));
         layout.setAttributes(attributes);
 
         BasicFrameAttributes frameAttributes = new BasicFrameAttributes();

@@ -4,6 +4,7 @@ import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.layers.*;
 import gov.nasa.worldwind.render.Offset;
 import gov.nasa.worldwind.util.layertree.LayerTree;
+import gov.nasa.worldwind.util.tree.BasicFrameAttributes;
 import battleSystemApp.core.*;
 
 /**
@@ -34,7 +35,7 @@ public class ScreenLayerTree extends AbstractFeatureLayer
         layerTree.getModel().refresh(this.controller.getWWd().getModel().getLayers());
         RenderableLayer hiddenLayer = new RenderableLayer();
         hiddenLayer.addRenderable(layerTree);
-        hiddenLayer.setValue(Constants.ACTIVE_LAYER, true);
+        hiddenLayer.setValue(Constants.ACTIVE_LAYER, true);              
         
         this.controller.addInternalActiveLayer(hiddenLayer);
 

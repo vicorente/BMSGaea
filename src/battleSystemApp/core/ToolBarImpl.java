@@ -138,7 +138,7 @@ public class ToolBarImpl extends AbstractFeature implements ToolBar
 
             // Creates a two-stops gradient
             GradientPaint p;
-            p = new GradientPaint(0, 0, new Color(0x6b89c8), 0, getHeight(), new Color(0x000000));
+            p = new GradientPaint(0, 0, new Color(0xA29E14), 0, getHeight(), new Color(0x514F24));
 
             // Saves the state
             Paint oldPaint = g2.getPaint();

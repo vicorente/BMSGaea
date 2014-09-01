@@ -143,6 +143,8 @@ public class StatusPanelImpl extends AbstractFeature implements StatusPanel,
 						texto = mensaje.getText();
 						if (!texto.trim().equalsIgnoreCase("")) {
 							// Se guardan los mensajes que hemos enviado
+							
+							texto = SimpleDateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date())+ " " + texto;
 							((JComboBox<String>) mensaje.getParent())
 									.addItem(texto);
 							// Prepare DDS message to publish
@@ -172,6 +174,7 @@ public class StatusPanelImpl extends AbstractFeature implements StatusPanel,
 				if (field.getSelectedItem() != null) {
 					texto = field.getSelectedItem().toString();
 					if (!texto.trim().equalsIgnoreCase("")) {
+						texto = SimpleDateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date())+ " " + texto;
 						// Se guardan los mensajes que hemos enviado
 						field.addItem(texto);
 						// Prepare DDS message to publish

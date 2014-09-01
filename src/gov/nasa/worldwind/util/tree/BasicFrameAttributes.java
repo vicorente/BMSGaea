@@ -45,16 +45,16 @@ public class BasicFrameAttributes implements FrameAttributes
     public BasicFrameAttributes()
     {
         this.backgroundOpacity = 0.8;
-        this.frameColor1 = Color.WHITE;
-        this.frameColor2 = new Color(0xC8D2DE);
+        this.frameColor1 = Color.GRAY;
+        this.frameColor2 = Color.BLACK;
 
-        this.titleBarColor1 = new Color(29, 78, 169);
-        this.titleBarColor2 = new Color(93, 158, 223);
+        this.titleBarColor1 = new Color(0x648448);
+        this.titleBarColor2 = new Color(0x5B6533);
 
-        this.scrollBarColor1 = new Color(29, 78, 169);
-        this.scrollBarColor2 = new Color(93, 158, 223);
+        this.scrollBarColor1 = new Color(0xA29E14);
+        this.scrollBarColor2 = new Color(0x5B6533);
 
-        this.minimizeButtonColor = new Color(0xEB9BA4);
+        this.minimizeButtonColor = Color.GRAY;
         this.foregroundOpacity = 1.0;
         this.foregroundColor = Color.BLACK;
         this.font = Font.decode("Arial-BOLD-14");
