@@ -25,7 +25,7 @@ import gov.nasa.worldwind.util.tree.TreeLayout;
  */
 public class MessageTree extends BasicTree {
     /** La localización por defecto es la zona derecha de la pantalla */
-    protected static final Offset DEFAULT_OFFSET = Offset.fromFraction(0.85, 0.74);
+    protected static final Offset DEFAULT_OFFSET = new Offset (1500.0, 1.0, AVKey.PIXELS, AVKey.PIXELS);
     protected static final String DEFAULT_FRAME_IMAGE = "resources/images/info-20x20.png";  
     protected static final String DEFAULT_FRAME_TITLE = "Mensajes";
     protected BasicTreeLayout layout=null;
@@ -50,7 +50,7 @@ public class MessageTree extends BasicTree {
         
         this.setModel(model);
         this.setLayout(this.createTreeLayout(offset));
-        this.expandPath(this.getModel().getRoot().getPath());
+        this.expandPath(this.getModel().getRoot().getPath());        
     }
     
     protected LayerTreeModel createTreeModel()
@@ -62,7 +62,7 @@ public class MessageTree extends BasicTree {
     {
         if (offset == null)
             offset = DEFAULT_OFFSET;
-
+        
         layout = new BasicTreeLayout(this, offset);
         layout.setDrawNodeStateSymbol(false);
         layout.setDrawSelectedSymbol(false);
@@ -88,6 +88,8 @@ public class MessageTree extends BasicTree {
         highlightFrameAttributes.setBackgroundOpacity(1.0);
         layout.getFrame().setHighlightAttributes(highlightFrameAttributes);
 
+       
+        
         return layout;
     }
     
@@ -116,7 +118,7 @@ public class MessageTree extends BasicTree {
 			mensaje = new BasicTreeNode(message, INFO_IMAGE_MESSAGE); 
 			break;
 		}
-	
+    	// Nuevo mensaje en la primera posición
     	this.getModel().getRoot().addChild(0,mensaje);
     }
 }
