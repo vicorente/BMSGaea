@@ -50,7 +50,7 @@ public class MessageTree extends BasicTree {
         
         this.setModel(model);
         this.setLayout(this.createTreeLayout(offset));
-        this.expandPath(this.getModel().getRoot().getPath());        
+        this.expandPath(this.getModel().getRoot().getPath());             
     }
     
     protected LayerTreeModel createTreeModel()
@@ -74,6 +74,7 @@ public class MessageTree extends BasicTree {
         attributes.setRootVisible(false);
         attributes.setColor(new Color(0x00FF00));
         attributes.setFont(Font.decode("Verdana-12"));
+        attributes.setRowSpacing(0);
         layout.setAttributes(attributes);
 
         BasicFrameAttributes frameAttributes = new BasicFrameAttributes();
@@ -88,7 +89,6 @@ public class MessageTree extends BasicTree {
         highlightFrameAttributes.setBackgroundOpacity(1.0);
         layout.getFrame().setHighlightAttributes(highlightFrameAttributes);
 
-       
         
         return layout;
     }
@@ -119,6 +119,8 @@ public class MessageTree extends BasicTree {
 			break;
 		}
     	// Nuevo mensaje en la primera posición
-    	this.getModel().getRoot().addChild(0,mensaje);
+    	this.getModel().getRoot().addChild(0,mensaje);    
+    	if(layout.getFrame().isMinimized())
+    		layout.getFrame().setMinimized(false);
     }
 }
