@@ -19,8 +19,6 @@ import gov.nasa.worldwind.util.*;
 import javax.media.opengl.*;
 import javax.media.opengl.glu.GLU;
 
-import si.xlab.gaea.avlist.AvKeyExt;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
@@ -1109,17 +1107,17 @@ public class ScrollFrame extends DragControl implements PreRenderable,
 				&& dc.getView().getViewport().getWidth() > 400) {
 			// De esta forma evitamos que el scroll frame se salga de la
 			// pantalla
-			if (dc.getView().getViewport().getWidth() < this.contentBounds.x
+			if (dc.getView().getViewport().getWidth() <= this.contentBounds.x
 					+ this.contentBounds.width) {
 				screenLocation.setX(dc.getView().getViewport().getSize()
 						.getWidth()
 						- this.contentBounds.width - 10);
 			}
-			if (dc.getView().getViewport().getMinX() > this.contentBounds.x) {
+			if (dc.getView().getViewport().getMinX() >= this.contentBounds.x) {
 				screenLocation.setX(dc.getView().getViewport().getMinX());
 			}
 
-			if (dc.getView().getViewport().getHeight() < this.contentBounds.y
+			if (dc.getView().getViewport().getHeight() <= this.contentBounds.y
 					+ this.contentBounds.height) {
 				screenLocation.setY(0.0);
 			}
@@ -1129,7 +1127,7 @@ public class ScrollFrame extends DragControl implements PreRenderable,
 			}
 
 			// Ajustamos el tamaño del ScrollFrame al de la ventana
-			if (dc.getView().getViewport().getWidth() < this.getSize()
+			if (dc.getView().getViewport().getWidth() <= this.getSize()
 					.getWidth()) {
 				Size tamanio = this.getSize();
 				tamanio.setWidth(
@@ -1139,7 +1137,7 @@ public class ScrollFrame extends DragControl implements PreRenderable,
 				this.setSize(tamanio);
 			}
 
-			if (dc.getView().getViewport().getHeight() < this.getSize()
+			if (dc.getView().getViewport().getHeight() <= this.getSize()
 					.getHeight()) {
 				Size tamanio = this.getSize();
 				tamanio.setHeight(
