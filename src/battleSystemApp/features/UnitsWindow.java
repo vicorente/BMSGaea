@@ -4,10 +4,12 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import battleSystemApp.utils.BasicScrollFrameAttributes;
 import gov.nasa.worldwind.WWObjectImpl;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.render.DrawContext;
 import gov.nasa.worldwind.render.PreRenderable;
+import gov.nasa.worldwind.util.tree.BasicTreeAttributes;
 import gov.nasa.worldwind.util.tree.ScrollFrame;
 import gov.nasa.worldwind.util.tree.Scrollable;
 import gov.nasa.worldwind.util.tree.TreeAttributes;
@@ -25,8 +27,13 @@ public class UnitsWindow extends WWObjectImpl implements Scrollable, PreRenderab
      * during rendering.
      */
     protected TreeNode scrollToNode;
-    
-    /** Frame that contains the tree. */
+    /** Attributes to use when is not highlighted. */
+    protected BasicScrollFrameAttributes normalAttributes = new BasicScrollFrameAttributes();
+    /** Attributes to use when the frame is highlighted. */
+    protected BasicScrollFrameAttributes highlightAttributes = new BasicScrollFrameAttributes();
+    /** Active attributes, either normal or highlight. */
+    protected BasicScrollFrameAttributes activeAttributes = new BasicScrollFrameAttributes();
+    /** Frame that contains the window. */
     protected ScrollFrame frame;
 	@Override
 	public void preRender(DrawContext dc) {
@@ -91,7 +98,7 @@ public class UnitsWindow extends WWObjectImpl implements Scrollable, PreRenderab
         return this.frame;
     }
 
-    protected TreeAttributes getActiveAttributes()
+    protected BasicScrollFrameAttributes getActiveAttributes()
     {
         return this.activeAttributes;
     }
