@@ -3,6 +3,7 @@ package battleSystemApp.utils;
 import gov.nasa.worldwind.WWObject;
 import gov.nasa.worldwind.render.DrawContext;
 import gov.nasa.worldwind.render.Renderable;
+import gov.nasa.worldwind.util.tree.ScrollFrame;
 
 public interface PanelLayout extends WWObject, Renderable{
 	 /**
@@ -29,5 +30,9 @@ public interface PanelLayout extends WWObject, Renderable{
      * @see #setAttributes(ScrollFrameAttributes)
      */
     ScrollFrameAttributes getAttributes();
+
+    ScrollFrame getFrame();
+
+	void setHighlightAttributes(BasicScrollFrameAttributes highlightAttributes);
 
 }

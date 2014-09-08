@@ -3,6 +3,8 @@ package battleSystemApp.utils;
 import gov.nasa.worldwind.avlist.AVList;
 import gov.nasa.worldwind.event.Message;
 import gov.nasa.worldwind.render.DrawContext;
+import gov.nasa.worldwind.render.Offset;
+import gov.nasa.worldwind.util.tree.ScrollFrame;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -12,6 +14,9 @@ import java.util.Set;
 
 public class BasicPanelLayout implements PanelLayout {
 
+	/** Frame that contains the tree. */
+    protected ScrollFrame frame;
+    
 	public BasicPanelLayout(Offset screenLocation){
 		
 	}
@@ -140,6 +145,11 @@ public class BasicPanelLayout implements PanelLayout {
 
 	@Override
 	public ScrollFrameAttributes getAttributes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public ScrollFrame getFrame() {
 		// TODO Auto-generated method stub
 		return null;
 	}
