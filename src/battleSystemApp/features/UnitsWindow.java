@@ -1,105 +1,40 @@
 package battleSystemApp.features;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
+import battleSystemApp.core.Constants;
+import battleSystemApp.core.Registry;
+import battleSystemApp.utils.UnitsPanel;
+import gov.nasa.worldwind.layers.Layer;
+import gov.nasa.worldwind.layers.RenderableLayer;
+import gov.nasa.worldwind.render.Offset;
 
-import battleSystemApp.utils.BasicScrollFrameAttributes;
-import gov.nasa.worldwind.WWObjectImpl;
-import gov.nasa.worldwind.avlist.AVKey;
-import gov.nasa.worldwind.render.DrawContext;
-import gov.nasa.worldwind.render.PreRenderable;
-import gov.nasa.worldwind.util.tree.BasicTreeAttributes;
-import gov.nasa.worldwind.util.tree.ScrollFrame;
-import gov.nasa.worldwind.util.tree.Scrollable;
-import gov.nasa.worldwind.util.tree.TreeAttributes;
-import gov.nasa.worldwind.util.tree.TreeNode;
-import gov.nasa.worldwind.util.tree.TreePath;
-/**
- * Ventana scrollable con las operaciones para informar sobre unidades
- * @author vgonllo
- *
- */
-public class UnitsWindow extends WWObjectImpl implements Scrollable, PreRenderable{
+public class UnitsWindow extends AbstractFeatureLayer {
 
-    /**
-     * This field is set by {@link #makeVisible(TreePath)}, and read by {@link #scrollToNode(gov.nasa.worldwind.render.DrawContext)}
-     * during rendering.
-     */
-    protected TreeNode scrollToNode;
-    /** Attributes to use when is not highlighted. */
-    protected BasicScrollFrameAttributes normalAttributes = new BasicScrollFrameAttributes();
-    /** Attributes to use when the frame is highlighted. */
-    protected BasicScrollFrameAttributes highlightAttributes = new BasicScrollFrameAttributes();
-    /** Active attributes, either normal or highlight. */
-    protected BasicScrollFrameAttributes activeAttributes = new BasicScrollFrameAttributes();
-    /** Frame that contains the window. */
-    protected ScrollFrame frame;
-	@Override
-	public void preRender(DrawContext dc) {
-		// TODO Auto-generated method stub
-		
-	}
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8931066367593112209L;
+	private UnitsPanel unitsPanel;
 
-	@Override
-	public void renderScrollable(DrawContext dc, Point location,
-			Dimension frameSize, Rectangle clipBounds) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Dimension getSize(DrawContext dc, Dimension frameSize) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setHighlighted(boolean highlighted) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public long getUpdateTime() {
-		// TODO Auto-generated method stub
-		return 0;
+	protected UnitsWindow(){
+		this(null);
 	}
 	
-	 /**
-     * Scroll the frame to make a the node set in {@link #scrollToNode} node visible. Does nothing if {@link
-     * #scrollToNode} is null.
-     *
-     * @param dc Draw context.
-     */
-    protected synchronized void scrollToNode(DrawContext dc)
+	public UnitsWindow(Registry registry)
     {
-        if (this.scrollToNode != null)
-        {
-            // Update the frame bounds to make sure that the frame's scroll model includes the full extent of the tree
-            ScrollFrame frame = this.getFrame();
-            frame.updateBounds(dc);
-
-            Point drawPoint = new Point(0, 0);
-            Rectangle bounds = this.findNodeBounds(this.scrollToNode, this.tree.getModel().getRoot(), dc,
-                frame.getBounds(dc).getSize(), drawPoint, 1);
-
-            // Calculate a scroll position that will bring the node to the top of the visible area. Subtract the row spacing
-            // to avoid clipping off the top of the node.
-            int scroll = (int) Math.abs(bounds.getMaxY()) - this.getActiveAttributes().getRowSpacing();
-            this.frame.getScrollBar(AVKey.VERTICAL).setValue(scroll);
-
-            this.scrollToNode = null;
-        }
-    }
-    
-    public ScrollFrame getFrame()
-    {
-        return this.frame;
+        super("Units Window", Constants.FEATURE_UNITS_WINDOW, null, true, registry);
     }
 
-    protected BasicScrollFrameAttributes getActiveAttributes()
+	@Override
+	protected Layer doAddLayer()
     {
-        return this.activeAttributes;
+        this.unitsPanel = new UnitsPanel(Offset.RIGHT_CENTER);
+        RenderableLayer hiddenLayer = new RenderableLayer();
+        hiddenLayer.addRenderable(unitsPanel);
+        hiddenLayer.setValue(Constants.ACTIVE_LAYER, true);
+     
+        this.controller.addInternalActiveLayer(hiddenLayer);
+
+        return hiddenLayer;
     }
+
 }

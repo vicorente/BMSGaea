@@ -70,7 +70,8 @@ public interface Constants
     static final String FEATURE_ICON_CONTROLLER = "battleSystemApp.feature.IconController";
     static final String FEATURE_HOTSPOT_CONTROLLER = "battleSystemApp.feature.BMSHotSpotController";
     static final String FEATURE_MESSAGE_WINDOW = "battleSystemApp.feature.MessageWindow";
-    
+    static final String FEATURE_UNITS_WINDOW = "battleSystemApp.feature.UnitsWindow";
+
     static final String FEATURE_IMPORT_IMAGERY = "battleSystemApp.feature.ImportImagery";
     static final String FEATURE_INFO_PANEL_CONTROLLER
         = "battleSystemApp.feature.InfoPanelController";
