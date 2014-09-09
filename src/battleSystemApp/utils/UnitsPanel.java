@@ -23,7 +23,7 @@ import gov.nasa.worldwind.util.tree.Scrollable;
  * 
  */
 public class UnitsPanel extends WWObjectImpl implements Scrollable,
-		PreRenderable, Renderable {
+		 Renderable {
 
 	/** Attributes to use when the frame is highlighted. */
 	protected BasicScrollFrameAttributes highlightAttributes;
@@ -31,7 +31,7 @@ public class UnitsPanel extends WWObjectImpl implements Scrollable,
 	protected BasicScrollFrameAttributes activeAttributes;
 
 	protected PanelLayout layout;
-	protected static final Offset DEFAULT_OFFSET = new Offset(1500.0, 1.0,
+	protected static final Offset DEFAULT_OFFSET = new Offset(100.0, 100.0,
 			AVKey.PIXELS, AVKey.PIXELS);
 	protected static final String DEFAULT_FRAME_IMAGE = "resources/images/info-20x20.png";
 	protected static final String DEFAULT_FRAME_TITLE = "Mensajes";
@@ -93,14 +93,14 @@ public class UnitsPanel extends WWObjectImpl implements Scrollable,
 		return layout;
 	}
 
-	@Override
-	public void preRender(DrawContext dc) {
-		// TODO Auto-generated method stub
-		PanelLayout layout = this.getLayout();
-		if (layout instanceof PreRenderable) {
-			((PreRenderable) layout).preRender(dc);
-		}
-	}
+//	@Override
+//	public void preRender(DrawContext dc) {
+//		// TODO Auto-generated method stub
+//		PanelLayout layout = this.getLayout();
+//		if (layout instanceof PreRenderable) {
+//			((PreRenderable) layout).preRender(dc);
+//		}
+//	}
 
 	/** {@inheritDoc} */
 	public PanelLayout getLayout() {

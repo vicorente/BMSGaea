@@ -19,12 +19,10 @@ import javax.swing.*;
 
 import battleSystemApp.core.layermanager.LayerManager;
 import battleSystemApp.dds.DDSCommLayer;
-import battleSystemApp.features.AbstractFeature;
 import battleSystemApp.features.MessageWindow;
 import battleSystemApp.features.MilSymbolFeatureLayer;
 import battleSystemApp.features.NetworkActivitySignal;
-import battleSystemApp.utils.ProxyAuthenticator;
-import battleSystemApp.utils.ProxyConfigurationManager;
+import battleSystemApp.features.UnitsWindow;
 import battleSystemApp.utils.Util;
 import battleSystemApp.utils.WWOUnitsFormat;
 
@@ -183,6 +181,10 @@ public class Controller {
 	
 	public MessageWindow getMessageWindow(){
 		return (MessageWindow) this.getRegisteredObject(Constants.FEATURE_MESSAGE_WINDOW);
+	}
+	
+	public UnitsWindow getUnitsWindow(){
+		return (UnitsWindow) this.getRegisteredObject(Constants.FEATURE_UNITS_WINDOW);
 	}
 	
 	public void redraw() {
