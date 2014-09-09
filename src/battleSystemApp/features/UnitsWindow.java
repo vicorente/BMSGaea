@@ -27,7 +27,7 @@ public class UnitsWindow extends AbstractFeatureLayer {
 	@Override
 	protected Layer doAddLayer()
     {
-        this.unitsPanel = new UnitsPanel(Offset.RIGHT_CENTER);
+        this.unitsPanel = new UnitsPanel(Offset.CENTER);
         RenderableLayer hiddenLayer = new RenderableLayer();
         hiddenLayer.addRenderable(unitsPanel);
         hiddenLayer.setValue(Constants.ACTIVE_LAYER, true);
