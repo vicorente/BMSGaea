@@ -53,9 +53,9 @@ public class UnitsPanel extends WWObjectImpl implements Scrollable,
 	}
 
 	/**
-	 * Get the frame that surrounds the tree.
+	 * Get the frame that surrounds the panel.
 	 * 
-	 * @return The frame that the tree is drawn on.
+	 * @return The frame that the panel is drawn on.
 	 */
 	public ScrollFrame getFrame() {
 		return this.frame;

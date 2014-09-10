@@ -12,7 +12,6 @@ import gov.nasa.worldwind.util.Logging;
 import gov.nasa.worldwind.util.OGLTextRenderer;
 import gov.nasa.worldwind.util.tree.ScrollFrame;
 import gov.nasa.worldwind.util.tree.Scrollable;
-
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
@@ -26,7 +25,8 @@ import java.util.Set;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
 
-public class BasicPanelLayout extends WWObjectImpl implements PanelLayout, Scrollable, PreRenderable {
+public class BasicPanelLayout extends WWObjectImpl implements PanelLayout,
+		Scrollable, PreRenderable {
 
 	/** Frame that contains the tree. */
 	protected ScrollFrame frame;
@@ -52,7 +52,16 @@ public class BasicPanelLayout extends WWObjectImpl implements PanelLayout, Scrol
 	protected boolean highlighted;
 	protected long frameNumber = -1L;
 	protected Dimension previousFrameSize;
-
+	/**
+	 * Point at which the next component should be drawn. Nodes are drawn left
+	 * to right, and the draw point is updated as parts of the node are
+	 * rendered. For example, the toggle triangle is drawn first at the draw
+	 * point, and then the draw point is moved to the right by the width of the
+	 * triangle, so the next component will draw at the correct point. The draw
+	 * point is reset to the lower left corner of the node bounds before each
+	 * render cycle.
+	 */
+	protected Point drawPoint;
 	static {
 		defaultAttributes = new BasicScrollFrameAttributes();
 	}
@@ -88,15 +97,16 @@ public class BasicPanelLayout extends WWObjectImpl implements PanelLayout, Scrol
 	}
 
 	/**
-     * Set the location of the upper left corner of the tree, measured in screen coordinates with the origin at the
-     * upper left corner of the screen.
-     *
-     * @param screenLocation New screen location.
-     */
-    public void setScreenLocation(Offset screenLocation)
-    {
-        frame.setScreenLocation(screenLocation);
-    }
+	 * Set the location of the upper left corner of the tree, measured in screen
+	 * coordinates with the origin at the upper left corner of the screen.
+	 * 
+	 * @param screenLocation
+	 *            New screen location.
+	 */
+	public void setScreenLocation(Offset screenLocation) {
+		frame.setScreenLocation(screenLocation);
+	}
+
 	/**
 	 * Get the location of the upper left corner of the tree, measured in screen
 	 * coordinates with the origin at the upper left corner of the screen.
@@ -243,6 +253,7 @@ public class BasicPanelLayout extends WWObjectImpl implements PanelLayout, Scrol
 	@Override
 	public void render(DrawContext dc) {
 		this.frame.render(dc);
+
 	}
 
 	@Override
@@ -281,7 +292,6 @@ public class BasicPanelLayout extends WWObjectImpl implements PanelLayout, Scrol
 	@Override
 	public void preRender(DrawContext dc) {
 		this.frame.preRender(dc);
-
 	}
 
 	/**
@@ -300,6 +310,7 @@ public class BasicPanelLayout extends WWObjectImpl implements PanelLayout, Scrol
 			this.lineHeight = this.computeMaxTextHeight(dc);
 
 			this.attributesFrameNumber = dc.getFrameTimeStamp();
+
 		}
 	}
 
@@ -475,18 +486,18 @@ public class BasicPanelLayout extends WWObjectImpl implements PanelLayout, Scrol
 	public Dimension getSize(DrawContext dc, Dimension frameSize) {
 		Dimension size = new Dimension();
 		size.height = 100;
-        size.width = 100;
-        return size;
+		size.width = 100;
+		return size;
 	}
 
 	@Override
 	public void setHighlighted(boolean highlighted) {
-		 this.highlighted = highlighted;
+		this.highlighted = highlighted;
 	}
 
 	@Override
 	public long getUpdateTime() {
-		 return this.updateTime;
+		return this.updateTime;
 	}
 
 	/** Cache key for cache text bound cache. */
