@@ -15,6 +15,7 @@ import gov.nasa.worldwind.render.Renderable;
 import gov.nasa.worldwind.util.tree.BasicFrameAttributes;
 import gov.nasa.worldwind.util.tree.ScrollFrame;
 import gov.nasa.worldwind.util.tree.Scrollable;
+import gov.nasa.worldwind.util.tree.TreeLayout;
 
 /**
  * Ventana scrollable con las operaciones para informar sobre unidades
@@ -23,7 +24,7 @@ import gov.nasa.worldwind.util.tree.Scrollable;
  * 
  */
 public class UnitsPanel extends WWObjectImpl implements Scrollable,
-		 Renderable {
+		PreRenderable, Renderable {
 
 	/** Attributes to use when the frame is highlighted. */
 	protected BasicScrollFrameAttributes highlightAttributes;
@@ -93,29 +94,29 @@ public class UnitsPanel extends WWObjectImpl implements Scrollable,
 		return layout;
 	}
 
-//	@Override
-//	public void preRender(DrawContext dc) {
-//		// TODO Auto-generated method stub
-//		PanelLayout layout = this.getLayout();
-//		if (layout instanceof PreRenderable) {
-//			((PreRenderable) layout).preRender(dc);
-//		}
-//	}
+	// @Override
+	// public void preRender(DrawContext dc) {
+	// // TODO Auto-generated method stub
+	// PanelLayout layout = this.getLayout();
+	// if (layout instanceof PreRenderable) {
+	// ((PreRenderable) layout).preRender(dc);
+	// }
+	// }
 
 	/** {@inheritDoc} */
 	public PanelLayout getLayout() {
 		return layout;
 	}
-	
+
 	/** {@inheritDoc} */
 	private void setLayout(PanelLayout layout) {
 		if (this.layout != null)
-            this.layout.removePropertyChangeListener(this);
+			this.layout.removePropertyChangeListener(this);
 
-        this.layout = layout;
+		this.layout = layout;
 
-        if (this.layout != null)
-            this.layout.addPropertyChangeListener(this);
+		if (this.layout != null)
+			this.layout.addPropertyChangeListener(this);
 	}
 
 	@Override
@@ -153,5 +154,14 @@ public class UnitsPanel extends WWObjectImpl implements Scrollable,
 		if (layout != null) {
 			layout.render(dc);
 		}
+	}
+
+	@Override
+	public void preRender(DrawContext dc) {
+		PanelLayout layout = this.getLayout();
+		if (layout instanceof PreRenderable) {
+			((PreRenderable) layout).preRender(dc);
+		}
+
 	}
 }

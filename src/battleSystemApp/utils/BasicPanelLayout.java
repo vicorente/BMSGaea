@@ -1,14 +1,18 @@
 package battleSystemApp.utils;
 
+import gov.nasa.worldwind.WWObjectImpl;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.avlist.AVList;
 import gov.nasa.worldwind.event.Message;
 import gov.nasa.worldwind.render.DrawContext;
 import gov.nasa.worldwind.render.Offset;
+import gov.nasa.worldwind.render.PreRenderable;
 import gov.nasa.worldwind.util.BoundedHashMap;
 import gov.nasa.worldwind.util.Logging;
 import gov.nasa.worldwind.util.OGLTextRenderer;
 import gov.nasa.worldwind.util.tree.ScrollFrame;
+import gov.nasa.worldwind.util.tree.Scrollable;
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
@@ -22,7 +26,7 @@ import java.util.Set;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
 
-public class BasicPanelLayout implements PanelLayout {
+public class BasicPanelLayout extends WWObjectImpl implements PanelLayout, Scrollable, PreRenderable {
 
 	/** Frame that contains the tree. */
 	protected ScrollFrame frame;
@@ -62,16 +66,9 @@ public class BasicPanelLayout implements PanelLayout {
 		// to pass AVKey.REPAINT events up the layer.
 		this.frame.addPropertyChangeListener(this);
 
-		// Add listener for tree events so that we can recompute the tree size
-		// when things change. Because TreeLayout
-		// is a WWObject, it sends property change events to its listeners.
-		// Since Tree is likely to listen for property
-		// change events on TreeLayout, we add an anonymous listener to avoid an
-		// infinite cycle of property change
-		// events between TreeLayout and Tree.
 		this.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-				// Ignore events originated by this TreeLayout, and repaint
+				// Ignore events originated by this Layout, and repaint
 				// events. There is no need to recompute the
 				// tree layout just because a repaint was triggered.
 				if (propertyChangeEvent.getSource() != BasicPanelLayout.this
@@ -476,20 +473,20 @@ public class BasicPanelLayout implements PanelLayout {
 
 	@Override
 	public Dimension getSize(DrawContext dc, Dimension frameSize) {
-		// TODO Auto-generated method stub
-		return null;
+		Dimension size = new Dimension();
+		size.height = 100;
+        size.width = 100;
+        return size;
 	}
 
 	@Override
 	public void setHighlighted(boolean highlighted) {
-		// TODO Auto-generated method stub
-
+		 this.highlighted = highlighted;
 	}
 
 	@Override
 	public long getUpdateTime() {
-		// TODO Auto-generated method stub
-		return 0;
+		 return this.updateTime;
 	}
 
 	/** Cache key for cache text bound cache. */

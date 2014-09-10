@@ -2,12 +2,10 @@ package battleSystemApp.utils;
 
 import gov.nasa.worldwind.WWObject;
 import gov.nasa.worldwind.render.DrawContext;
-import gov.nasa.worldwind.render.PreRenderable;
 import gov.nasa.worldwind.render.Renderable;
 import gov.nasa.worldwind.util.tree.ScrollFrame;
-import gov.nasa.worldwind.util.tree.Scrollable;
 
-public interface PanelLayout extends WWObject, Renderable, PreRenderable, Scrollable{
+public interface PanelLayout extends WWObject, Renderable{
 	 /**
      * Render a ScrollFrame
      *
