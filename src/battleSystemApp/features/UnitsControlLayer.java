@@ -17,9 +17,9 @@ import gov.nasa.worldwind.util.Logging;
 public class UnitsControlLayer extends RenderableLayer {
 
 	 // The default images
-    protected final static String IMAGE_PAN = "images/view-pan-64x64.png";
-    protected final static String IMAGE_LOOK = "images/view-look-64x64.png";
-    protected final static String IMAGE_HEADING_LEFT = "images/view-heading-left-32x32.png";
+    protected final static String IMAGE_PAN = "resources/images/twitter64x64.png";
+    protected final static String IMAGE_LOOK = "resources/images/twitter64x64.png";
+    protected final static String IMAGE_HEADING_LEFT = "resources/images/warning32.png";
     protected final static String IMAGE_HEADING_RIGHT = "images/view-heading-right-32x32.png";
     protected final static String IMAGE_ZOOM_IN = "images/view-zoom-in-32x32.png";
     protected final static String IMAGE_ZOOM_OUT = "images/view-zoom-out-32x32.png";
