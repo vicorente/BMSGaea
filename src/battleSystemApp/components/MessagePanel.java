@@ -23,7 +23,7 @@ import gov.nasa.worldwind.util.tree.TreeLayout;
  * @author vgonllo
  *
  */
-public class MessageTree extends BasicTree {
+public class MessagePanel extends BasicTree {
     /** La localización por defecto es la zona derecha de la pantalla */
     protected static final Offset DEFAULT_OFFSET = new Offset (1500.0, 1.0, AVKey.PIXELS, AVKey.PIXELS);
     protected static final String DEFAULT_FRAME_IMAGE = "resources/images/info-20x20.png";  
@@ -35,11 +35,11 @@ public class MessageTree extends BasicTree {
     protected final static String POSITION_IMAGE_MESSAGE = "resources/images/16x16-icon-earth.png";
     
     
-    public MessageTree(){
+    public MessagePanel(){
     	this.initialize(null);
     }
     
-    public MessageTree(Offset offset){
+    public MessagePanel(Offset offset){
     	this.initialize(offset);
     }
     

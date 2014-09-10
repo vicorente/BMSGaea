@@ -1,7 +1,7 @@
 package battleSystemApp.features;
 
 import gov.nasa.worldwind.layers.*;
-import battleSystemApp.components.MessageTree;
+import battleSystemApp.components.MessagePanel;
 import battleSystemApp.core.*;
 
 /**
@@ -14,7 +14,7 @@ public class MessageWindow extends AbstractFeatureLayer
 	 * 
 	 */
 	private static final long serialVersionUID = 5727249567363991741L;
-	private MessageTree msgTree;
+	private MessagePanel msgTree;
 	public MessageWindow()
     {
         this(null);
@@ -27,7 +27,7 @@ public class MessageWindow extends AbstractFeatureLayer
 
     protected Layer doAddLayer()
     {
-        this.msgTree = new MessageTree();
+        this.msgTree = new MessagePanel();
         RenderableLayer hiddenLayer = new RenderableLayer();
         hiddenLayer.addRenderable(msgTree);
         hiddenLayer.setValue(Constants.ACTIVE_LAYER, true);
