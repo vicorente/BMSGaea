@@ -49,6 +49,7 @@
     <!--<Feature className="battleSystemApp.features.MeasurementDialog" featureID="battleSystemApp.feature.MeasurementDialog" actuate="onDemand"/>-->
     <!--<Feature className="battleSystemApp.features.NASACopyrightDialog"/> -->
     <Feature className="battleSystemApp.features.Navigation"/>
+    <Feature className="battleSystemApp.features.MilitaryControls"/>
     <Feature className="battleSystemApp.features.Graticule"/>
     <Feature className="battleSystemApp.features.LatLonGraticule"/>
     <Feature className="battleSystemApp.features.UTMGraticule"/>

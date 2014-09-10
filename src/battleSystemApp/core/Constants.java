@@ -88,6 +88,7 @@ public interface Constants
     static final String FEATURE_MEASUREMENT_PANEL
         = "battleSystemApp.feature.MeasurementPanel";
     static final String FEATURE_NAVIGATION = "battleSystemApp.feature.Navigation";
+    static final String FEATURE_MILITARY_CONTROLS = "battleSystemApp.feature.MilitaryControls";
     static final String FEATURE_OPEN_FILE = "battleSystemApp.feature.OpenFile";
     static final String FEATURE_OPEN_URL = "battleSystemApp.feature.OpenURL";
     static final String FEATURE_SCALE_BAR = "battleSystemApp.feature.ScaleBar";
