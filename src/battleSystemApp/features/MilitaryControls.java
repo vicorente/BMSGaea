@@ -15,15 +15,6 @@ public class MilitaryControls extends AbstractFeatureLayer
 	 * 
 	 */
 	private static final long serialVersionUID = 573873613007735844L;
-	public static final String POSITION_PROPERTY = "battleSystemApp.features.Navegacion.PostionProperty";
-    public static final String ORIENTATION_PROPERTY = "battleSystemApp.features.Navegacion.OrientationProperty";
-    public static final String SIZE_PROPERTY = "battleSystemApp.features.Navegacion.SizeProperty";
-    public static final String OPACITY_PROPERTY = "battleSystemApp.features.Navegacion.OpacityProperty";
-
-    public static final String PAN_CONTROLS_PROPERTY = "battleSystemApp.features.Navegacion.PanControlS";
-    public static final String ZOOM_CONTROLS_PROPERTY = "battleSystemApp.features.Navegacion.ZoomControlS";
-    public static final String TILT_CONTROLS_PROPERTY = "battleSystemApp.features.Navegacion.TiltControlS";
-    public static final String HEADING_CONTROLS_PROPERTY = "battleSystemApp.features.Navegacion.HeadingControlS";
 
     public MilitaryControls()
     {
@@ -60,63 +51,11 @@ public class MilitaryControls extends AbstractFeatureLayer
         return layer;
     }
 
-    private ViewControlsLayer getLayer()
+    private UnitsControlLayer getLayer()
     {
-        return (ViewControlsLayer) this.layer;
+        return (UnitsControlLayer) this.layer;
     }
 
-    @Override
-    public void doPropertyChange(PropertyChangeEvent event)
-    {
-        if (event.getPropertyName().equals(POSITION_PROPERTY))
-        {
-            if (event.getNewValue() != null && event.getNewValue() instanceof String)
-            {
-                this.getLayer().setPosition((String) event.getNewValue());
-                this.controller.redraw();
-            }
-        }
-        else if (event.getPropertyName().equals(ORIENTATION_PROPERTY))
-        {
-            if (event.getNewValue() != null && event.getNewValue() instanceof String)
-            {
-                this.getLayer().setLayout((String) event.getNewValue());
-                this.controller.redraw();
-            }
-        }
-        else if (event.getPropertyName().equals(PAN_CONTROLS_PROPERTY))
-        {
-            if (event.getNewValue() != null && event.getNewValue() instanceof Boolean)
-            {
-                this.getLayer().setShowPanControls((Boolean) event.getNewValue());
-                this.controller.redraw();
-            }
-        }
-        else if (event.getPropertyName().equals(ZOOM_CONTROLS_PROPERTY))
-        {
-            if (event.getNewValue() != null && event.getNewValue() instanceof Boolean)
-            {
-                this.getLayer().setShowZoomControls((Boolean) event.getNewValue());
-                this.controller.redraw();
-            }
-        }
-        else if (event.getPropertyName().equals(HEADING_CONTROLS_PROPERTY))
-        {
-            if (event.getNewValue() != null && event.getNewValue() instanceof Boolean)
-            {
-                this.getLayer().setShowHeadingControls((Boolean) event.getNewValue());
-                this.controller.redraw();
-            }
-        }
-        else if (event.getPropertyName().equals(TILT_CONTROLS_PROPERTY))
-        {
-            if (event.getNewValue() != null && event.getNewValue() instanceof Boolean)
-            {
-                this.getLayer().setShowPitchControls((Boolean) event.getNewValue());
-                this.controller.redraw();
-            }
-        }
-    }
 
     public double getSize()
     {
@@ -138,23 +77,28 @@ public class MilitaryControls extends AbstractFeatureLayer
         return this.getLayer().getPosition();
     }
 
-    public boolean isShowPan()
+    public boolean isShowUnit()
     {
-        return this.getLayer().isShowPanControls();
+        return this.getLayer().isShowUnitControls();
     }
 
-    public boolean isShowZoom()
+    public boolean isShowAlarm()
     {
-        return this.getLayer().isShowZoomControls();
+        return this.getLayer().isShowAlarmControls();
     }
 
-    public boolean isShowTilt()
+    public boolean isShowThreat()
     {
-        return this.getLayer().isShowPitchControls();
+        return this.getLayer().isShowThreatControls();
     }
 
-    public boolean isShowHeading()
+    public boolean isShowTacLine()
     {
-        return this.getLayer().isShowHeadingControls();
+        return this.getLayer().isShowTacLineControls();
+    }
+    
+    public boolean isShowInstallation()
+    {
+        return this.getLayer().isShowInstallationControls();
     }
 }

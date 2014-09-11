@@ -15,7 +15,6 @@ import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.Vec4;
 import gov.nasa.worldwind.globes.Globe;
 import gov.nasa.worldwind.layers.Layer;
-import gov.nasa.worldwind.layers.ViewControlsLayer;
 import gov.nasa.worldwind.render.ScreenAnnotation;
 import gov.nasa.worldwind.util.Logging;
 import gov.nasa.worldwind.view.orbit.OrbitView;
@@ -31,22 +30,16 @@ public class UnitsControlsSelectListener implements SelectListener
     protected static final int DEFAULT_TIMER_DELAY = 50;
 
     protected WorldWindow wwd;
-    protected UnitsControlLayer viewControlsLayer;
+    protected UnitsControlLayer unitsControlsLayer;
 
     protected ScreenAnnotation pressedControl;
     protected String pressedControlType;
     protected Point lastPickPoint = null;
 
     protected Timer repeatTimer;
-    protected double panStep = .6;
-    protected double zoomStep = .8;
-    protected double headingStep = 1;
-    protected double pitchStep = 1;
-    protected double fovStep = 1.05;
-    protected double veStep = 0.1;
 
     /**
-     * Construct a controller for specified <code>WorldWindow</code> and <code>ViewControlsLayer<c/code>.
+     * Construct a controller for specified <code>WorldWindow</code> and <code>unitsControlsLayer<c/code>.
      * <p/>
      * <code>ViewControlLayer</code>s are not sharable among <code>WorldWindow</code>s. A separate layer and controller
      * must be established for each window that's to have view controls.
@@ -70,7 +63,7 @@ public class UnitsControlsSelectListener implements SelectListener
         }
 
         this.wwd = wwd;
-        this.viewControlsLayer = layer;
+        this.unitsControlsLayer = layer;
 
         // Setup repeat timer
         this.repeatTimer = new Timer(DEFAULT_TIMER_DELAY, new ActionListener()
@@ -112,156 +105,7 @@ public class UnitsControlsSelectListener implements SelectListener
         return this.repeatTimer.getDelay();
     }
 
-    /**
-     * Set the panning distance factor. Doubling this value will double the panning speed. Negating it will reverse the
-     * panning direction. Default value is .6.
-     *
-     * @param value the panning distance factor.
-     */
-    public void setPanIncrement(double value)
-    {
-        this.panStep = value;
-    }
-
-    /**
-     * Get the panning distance factor.
-     *
-     * @return the panning distance factor.
-     */
-    public double getPanIncrement()
-    {
-        return this.panStep;
-    }
-
-    /**
-     * Set the zoom distance factor. Doubling this value will double the zooming speed. Negating it will reverse the
-     * zooming direction. Default value is .8.
-     *
-     * @param value the zooming distance factor.
-     */
-    public void setZoomIncrement(double value)
-    {
-        this.zoomStep = value;
-    }
-
-    /**
-     * Get the zooming distance factor.
-     *
-     * @return the zooming distance factor.
-     */
-    public double getZoomIncrement()
-    {
-        return this.zoomStep;
-    }
-
-    /**
-     * Set the heading increment value in decimal degrees. Doubling this value will double the heading change speed.
-     * Negating it will reverse the heading change direction. Default value is 1 degree.
-     *
-     * @param value the heading increment value in decimal degrees.
-     */
-    public void setHeadingIncrement(double value)
-    {
-        this.headingStep = value;
-    }
-
-    /**
-     * Get the heading increment value in decimal degrees.
-     *
-     * @return the heading increment value in decimal degrees.
-     */
-    public double getHeadingIncrement()
-    {
-        return this.headingStep;
-    }
-
-    /**
-     * Set the pitch increment value in decimal degrees. Doubling this value will double the pitch change speed. Must be
-     * positive. Default value is 1 degree.
-     *
-     * @param value the pitch increment value in decimal degrees.
-     *
-     * @throws IllegalArgumentException
-     */
-    public void setPitchIncrement(double value)
-    {
-        if (value < 0)
-        {
-            String message = Logging.getMessage("generic.ArgumentOutOfRange", value);
-            Logging.logger().severe(message);
-            throw new IllegalArgumentException(message);
-        }
-        this.pitchStep = value;
-    }
-
-    /**
-     * Get the pitch increment value in decimal degrees.
-     *
-     * @return the pitch increment value in decimal degrees.
-     */
-    public double getPitchIncrement()
-    {
-        return this.pitchStep;
-    }
-
-    /**
-     * Set the field of view increment factor. At each iteration the current field of view will be multiplied or divided
-     * by this value. Must be greater then or equal to one. Default value is 1.05.
-     *
-     * @param value the field of view increment factor.
-     *
-     * @throws IllegalArgumentException
-     */
-    public void setFovIncrement(double value)
-    {
-        if (value < 1)
-        {
-            String message = Logging.getMessage("generic.ArgumentOutOfRange", value);
-            Logging.logger().severe(message);
-            throw new IllegalArgumentException(message);
-        }
-        this.fovStep = value;
-    }
-
-    /**
-     * Get the field of view increment factor.
-     *
-     * @return the field of view increment factor.
-     */
-    public double getFovIncrement()
-    {
-        return this.fovStep;
-    }
-
-    /**
-     * Set the vertical exaggeration increment. At each iteration the current vertical exaggeration will be increased or
-     * decreased by this amount. Must be greater than or equal to zero. Default value is 0.1.
-     *
-     * @param value the vertical exaggeration increment.
-     *
-     * @throws IllegalArgumentException
-     */
-    public void setVeIncrement(double value)
-    {
-        if (value < 0)
-        {
-            String message = Logging.getMessage("generic.ArgumentOutOfRange", value);
-            Logging.logger().severe(message);
-            throw new IllegalArgumentException(message);
-        }
-        this.veStep = value;
-    }
-
-    /**
-     * Get the vertical exaggeration increment.
-     *
-     * @return the vertical exaggeration increment.
-     */
-    public double getVeIncrement()
-    {
-        return this.veStep;
-    }
-
+   
     public void selected(SelectEvent event)
     {
         if (this.wwd == null)
@@ -272,9 +116,9 @@ public class UnitsControlsSelectListener implements SelectListener
 
         OrbitView view = (OrbitView) this.wwd.getView();
 
-        if (this.viewControlsLayer.getHighlightedObject() != null)
+        if (this.unitsControlsLayer.getHighlightedObject() != null)
         {
-            this.viewControlsLayer.highlight(null);
+            this.unitsControlsLayer.highlight(null);
             this.wwd.redraw(); // must redraw so the de-highlight can take effect
         }
 
@@ -295,7 +139,7 @@ public class UnitsControlsSelectListener implements SelectListener
         if (event.getEventAction().equals(SelectEvent.ROLLOVER))
         {
             // Highlight on rollover
-            this.viewControlsLayer.highlight(selectedObject);
+            this.unitsControlsLayer.highlight(selectedObject);
             this.wwd.redraw();
         }
         if (event.getEventAction().equals(SelectEvent.DRAG))
@@ -306,7 +150,7 @@ public class UnitsControlsSelectListener implements SelectListener
         else if (event.getEventAction().equals(SelectEvent.HOVER))
         {
             // Highlight on hover
-            this.viewControlsLayer.highlight(selectedObject);
+            this.unitsControlsLayer.highlight(selectedObject);
             this.wwd.redraw();
         }
         else if (event.getEventAction().equals(SelectEvent.LEFT_PRESS) ||
@@ -335,7 +179,7 @@ public class UnitsControlsSelectListener implements SelectListener
         // Keep pressed control highlighted - overrides rollover non currently pressed controls
         if (this.pressedControl != null)
         {
-            this.viewControlsLayer.highlight(this.pressedControl);
+            this.unitsControlsLayer.highlight(this.pressedControl);
             this.wwd.redraw();
         }
     }
@@ -348,7 +192,7 @@ public class UnitsControlsSelectListener implements SelectListener
      */
     protected Layer getParentLayer()
     {
-        return this.viewControlsLayer;
+        return this.unitsControlsLayer;
     }
 
     protected void updateView(ScreenAnnotation control, String controlType)

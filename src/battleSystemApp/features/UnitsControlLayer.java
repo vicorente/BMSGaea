@@ -22,13 +22,7 @@ public class UnitsControlLayer extends RenderableLayer {
 	protected final static String IMAGE_THREAT = "resources/images/target-grey64x64.png";
 	protected final static String IMAGE_TAC_LINE = "resources/images/mapa64x64.png";
 	protected final static String IMAGE_INSTALLATION = "resources/images/fire-engineering64x64.png";
-	protected final static String IMAGE_ZOOM_OUT = "images/view-zoom-out-32x32.png";
-	protected final static String IMAGE_PITCH_UP = "images/view-pitch-up-32x32.png";
-	protected final static String IMAGE_PITCH_DOWN = "images/view-pitch-down-32x32.png";
-	protected final static String IMAGE_FOV_NARROW = "images/view-fov-narrow-32x32.png";
-	protected final static String IMAGE_FOV_WIDE = "images/view-fov-wide-32x32.png";
-	protected final static String IMAGE_VE_UP = "images/view-elevation-up-32x32.png";
-	protected final static String IMAGE_VE_DOWN = "images/view-elevation-down-32x32.png";
+
 
 	// The annotations used to display the controls.
 	protected ScreenAnnotation controlUnit;
@@ -36,13 +30,6 @@ public class UnitsControlLayer extends RenderableLayer {
 	protected ScreenAnnotation controlThreat;
 	protected ScreenAnnotation controlTacLine;
 	protected ScreenAnnotation controlInstallation;
-	protected ScreenAnnotation controlThreatOut;
-	protected ScreenAnnotation controlTacLineUp;
-	protected ScreenAnnotation controlTacLineDown;
-	protected ScreenAnnotation controlInstallationNarrow;
-	protected ScreenAnnotation controlInstallationWide;
-	protected ScreenAnnotation controlVeUp;
-	protected ScreenAnnotation controlVeDown;
 	protected ScreenAnnotation currentControl;
 
 	protected String position = AVKey.SOUTHEAST;
@@ -63,7 +50,6 @@ public class UnitsControlLayer extends RenderableLayer {
 	protected boolean showHeadingControls = true;
 	protected boolean showTacLineControls = true;
 	protected boolean showInstallationControls = true;
-	protected boolean showVeControls = false;
 	
 
 	public int getBorderWidth() {
@@ -314,17 +300,7 @@ public class UnitsControlLayer extends RenderableLayer {
 		}
 	}
 
-	public void setShowVeControls(boolean state) {
-		if (this.showVeControls != state) {
-			this.showVeControls = state;
-			clearControls();
-		}
-	}
-
-	public boolean isShowVeControls() {
-		return this.showVeControls;
-	}
-
+	
 	/**
 	 * Get the control type associated with the given object or null if unknown.
 	 * 
@@ -505,12 +481,10 @@ public class UnitsControlLayer extends RenderableLayer {
 	 * Get a control image source.
 	 * 
 	 * @param control
-	 *            the control type. Can be one of {@link AVKey#VIEW_PAN},
-	 *            {@link AVKey#VIEW_LOOK}, {@link AVKey#VIEW_HEADING_LEFT},
-	 *            {@link AVKey#VIEW_HEADING_RIGHT}, {@link AVKey#VIEW_ZOOM_IN},
-	 *            {@link AVKey#VIEW_ZOOM_OUT}, {@link AVKey#VIEW_PITCH_UP},
-	 *            {@link AVKey#VIEW_PITCH_DOWN}, {@link AVKey#VIEW_FOV_NARROW}
-	 *            or {@link AVKey#VIEW_FOV_WIDE}.
+	 *            the control type. Can be one of {@link AVKey#VIEW_UNIT},
+	 *            {@link AVKey#VIEW_ALARM}, {@link AVKey#VIEW_THREAT},
+	 *            {@link AVKey#VIEW_TAC_LINE}, {@link AVKey#VIEW_ZOOM_IN},
+	 *            {@link AVKey#VIEW_INSTALLATION}
 	 * 
 	 * @return the image source associated with the given control type.
 	 */
@@ -665,13 +639,6 @@ public class UnitsControlLayer extends RenderableLayer {
 		this.controlThreat = null;
 		this.controlTacLine = null;
 		this.controlInstallation = null;
-		this.controlThreatOut = null;
-		this.controlTacLineUp = null;
-		this.controlTacLineDown = null;
-		this.controlInstallationNarrow = null;
-		this.controlInstallationWide = null;
-		this.controlVeUp = null;
-		this.controlVeDown = null;
 
 		this.initialized = false;
 	}
