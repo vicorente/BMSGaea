@@ -47,7 +47,7 @@ public class MilitaryControls extends AbstractFeatureLayer
 
         layer.setValue(Constants.SCREEN_LAYER, true);
         layer.setValue(Constants.INTERNAL_LAYER, true);
-        layer.setLayout(AVKey.VERTICAL);
+        layer.setLayout(AVKey.HORIZONTAL);
 
         controller.addInternalLayer(layer);
 

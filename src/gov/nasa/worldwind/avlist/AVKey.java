@@ -480,6 +480,11 @@ public interface AVKey // TODO: Eliminate unused constants, if any
     final String VIEW_PITCH_DOWN = "gov.nasa.worldwind.avkey.PitchDown";
     final String VIEW_FOV_NARROW = "gov.nasa.worldwind.avkey.FovNarrow";
     final String VIEW_FOV_WIDE = "gov.nasa.worldwind.avkey.FovWide";
+    final String VIEW_UNIT = "gov.nasa.worldwind.avkey.Unit";
+    final String VIEW_ALARM = "gov.nasa.worldwind.avkey.Alarm";
+    final String VIEW_THREAT = "gov.nasa.worldwind.avkey.Threat";
+    final String VIEW_TAC_LINE = "gov.nasa.worldwind.avkey.TacLine";
+    final String VIEW_INSTALLATION = "gov.nasa.worldwind.avkey.Installation";
 
     final String VISIBILITY_ACTION_RELEASE = "gov.nasa.worldwind.avkey.VisibilityActionRelease";
     final String VISIBILITY_ACTION_RETAIN = "gov.nasa.worldwind.avkey.VisibilityActionRetain";
