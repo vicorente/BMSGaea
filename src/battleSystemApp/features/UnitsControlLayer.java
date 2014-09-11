@@ -356,22 +356,6 @@ public class UnitsControlLayer extends RenderableLayer {
 			return AVKey.VIEW_TAC_LINE;
 		else if (showThreatControls && controlInstallation.equals(control))
 			return AVKey.VIEW_INSTALLATION;
-		else if (showThreatControls && controlThreatOut.equals(control))
-			return AVKey.VIEW_ZOOM_OUT;
-		else if (showTacLineControls && controlTacLineUp.equals(control))
-			return AVKey.VIEW_PITCH_UP;
-		else if (showTacLineControls && controlTacLineDown.equals(control))
-			return AVKey.VIEW_PITCH_DOWN;
-		else if (showInstallationControls
-				&& controlInstallationNarrow.equals(control))
-			return AVKey.VIEW_FOV_NARROW;
-		else if (showInstallationControls
-				&& controlInstallationWide.equals(control))
-			return AVKey.VIEW_FOV_WIDE;
-		else if (showVeControls && controlVeUp.equals(control))
-			return AVKey.VERTICAL_EXAGGERATION_UP;
-		else if (showVeControls && controlVeDown.equals(control))
-			return AVKey.VERTICAL_EXAGGERATION_DOWN;
 
 		return null;
 	}
@@ -541,20 +525,6 @@ public class UnitsControlLayer extends RenderableLayer {
 			return IMAGE_TAC_LINE;
 		else if (control.equals(AVKey.VIEW_INSTALLATION))
 			return IMAGE_INSTALLATION;
-		else if (control.equals(AVKey.VIEW_ZOOM_OUT))
-			return IMAGE_ZOOM_OUT;
-		else if (control.equals(AVKey.VIEW_PITCH_UP))
-			return IMAGE_PITCH_UP;
-		else if (control.equals(AVKey.VIEW_PITCH_DOWN))
-			return IMAGE_PITCH_DOWN;
-		else if (control.equals(AVKey.VIEW_FOV_WIDE))
-			return IMAGE_FOV_WIDE;
-		else if (control.equals(AVKey.VIEW_FOV_NARROW))
-			return IMAGE_FOV_NARROW;
-		else if (control.equals(AVKey.VERTICAL_EXAGGERATION_UP))
-			return IMAGE_VE_UP;
-		else if (control.equals(AVKey.VERTICAL_EXAGGERATION_DOWN))
-			return IMAGE_VE_DOWN;
 
 		return null;
 	}
@@ -568,10 +538,8 @@ public class UnitsControlLayer extends RenderableLayer {
 		int width = (showUnitControls ? alarmSize+iconSeparation : 0)
 				+ (showAlarmControls ? alarmSize+iconSeparation : 0)
 				+ (showThreatControls ? alarmSize+iconSeparation : 0)
-				+ (showHeadingControls ? alarmSize+iconSeparation : 0)
 				+ (showTacLineControls ? alarmSize+iconSeparation : 0)
-				+ (showInstallationControls ? alarmSize+iconSeparation : 0)
-				+ (showVeControls ? buttonSize : 0);
+				+ (showInstallationControls ? alarmSize+iconSeparation : 0);
 		int height = Math.max(alarmSize, buttonSize * 2);
 		width = (int) (width * scale);
 		height = (int) (height * scale);
@@ -638,16 +606,7 @@ public class UnitsControlLayer extends RenderableLayer {
 			controlInstallation.setScreenPoint(new Point(x + halfalarmSize, y));
 			if (horizontalLayout)
 				x += (int) (alarmSize * scale)+iconSeparation;
-		}
-		if (this.showVeControls) {
-			if (!horizontalLayout)
-				y -= (int) (buttonSize * scale);
-			controlVeUp.setScreenPoint(new Point(x + halfButtonSize + xOffset,
-					y + yOffset));
-			controlVeDown.setScreenPoint(new Point(x + halfButtonSize, y));
-			if (horizontalLayout)
-				x += (int) (buttonSize * scale);
-		}
+		}		
 
 		this.referenceViewport = dc.getView().getViewport();
 	}

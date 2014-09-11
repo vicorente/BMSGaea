@@ -27,7 +27,7 @@
     <Feature className="battleSystemApp.features.MilSymbolFeatureLayer"/>
     
     <!-- Features should and in some cases must be instantiated before the menus that refer to them -->
-    <Feature className="battleSystemApp.features.ScaleBar"/>
+    <!--  <Feature className="battleSystemApp.features.ScaleBar"/>  -->
     <Feature className="battleSystemApp.features.Compass"/>
     <Feature className="battleSystemApp.features.ScreenLayerTree"/>
     <!-- PANEL DE MENSAJES -->
