@@ -2,9 +2,6 @@ package battleSystemApp.features;
 
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.layers.Layer;
-import gov.nasa.worldwind.layers.ViewControlsLayer;
-import java.beans.PropertyChangeEvent;
-
 import battleSystemApp.core.Constants;
 import battleSystemApp.core.Controller;
 import battleSystemApp.core.Registry;
@@ -42,10 +39,9 @@ public class MilitaryControls extends AbstractFeatureLayer
 
         controller.addInternalLayer(layer);
 
-        UnitsControlsSelectListener listener = new UnitsControlsSelectListener(this.controller.getWWd(), layer);
+        UnitsControlsSelectListener listener = new UnitsControlsSelectListener(this.controller, layer);
         listener.setRepeatTimerDelay(30);
-        listener.setZoomIncrement(0.5);
-        listener.setPanIncrement(0.5);
+       
         this.controller.getWWd().addSelectListener(listener);
 
         return layer;

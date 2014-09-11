@@ -16,6 +16,9 @@ import gov.nasa.worldwind.geom.Vec4;
 import gov.nasa.worldwind.globes.Globe;
 import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.render.ScreenAnnotation;
+import gov.nasa.worldwind.symbology.AbstractTacticalSymbol;
+import gov.nasa.worldwind.symbology.SymbologyConstants;
+import gov.nasa.worldwind.symbology.milstd2525.MilStd2525TacticalSymbol;
 import gov.nasa.worldwind.util.Logging;
 import gov.nasa.worldwind.view.orbit.OrbitView;
 
@@ -24,6 +27,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
+
+import battleSystemApp.core.Controller;
 
 public class UnitsControlsSelectListener implements SelectListener
 {
@@ -35,7 +40,7 @@ public class UnitsControlsSelectListener implements SelectListener
     protected ScreenAnnotation pressedControl;
     protected String pressedControlType;
     protected Point lastPickPoint = null;
-
+    private Controller controller;
     protected Timer repeatTimer;
 
     /**
@@ -47,8 +52,10 @@ public class UnitsControlsSelectListener implements SelectListener
      * @param wwd   the <code>WorldWindow</code> the specified layer is associated with.
      * @param layer the layer to control.
      */
-    public UnitsControlsSelectListener(WorldWindow wwd, UnitsControlLayer layer)
+    public UnitsControlsSelectListener(Controller controller, UnitsControlLayer layer)
     {
+    	this.controller = controller;
+    	WorldWindow wwd = controller.getWWd();
         if (wwd == null)
         {
             String msg = Logging.getMessage("nullValue.WorldWindow");
@@ -206,89 +213,46 @@ public class UnitsControlsSelectListener implements SelectListener
         view.stopAnimations();
         view.stopMovement();
 
-        if (controlType.equals(AVKey.VIEW_PAN))
+        if (controlType.equals(AVKey.VIEW_UNIT))
         {
             resetOrbitView(view);
             // Go some distance in the control mouse direction
             Angle heading = computePanHeading(view, control);
-            Angle distance = computePanAmount(this.wwd.getModel().getGlobe(), view, control, panStep);
-            LatLon newViewCenter = LatLon.greatCircleEndPosition(view.getCenterPosition(),
-                heading, distance);
-            // Turn around if passing by a pole - TODO: better handling of the pole crossing situation
-            if (this.isPathCrossingAPole(newViewCenter, view.getCenterPosition()))
-                view.setHeading(Angle.POS180.subtract(view.getHeading()));
-            // Set new center pos
-            view.setCenterPosition(new Position(newViewCenter, view.getCenterPosition().getElevation()));
+            
+            Vec4 surfacePoint = computeSurfacePoint(view, heading, view.getPitch());
+         
+            
+            // GROUND SYMBOL
+    		AbstractTacticalSymbol groundSymbol = new MilStd2525TacticalSymbol(
+    				"SHGXUCFRMS----G", Position.fromDegrees(32.4014, 63.3894, 0));
+    		groundSymbol.setValue(AVKey.HOVER_TEXT,
+    				"MIL-STD-2525 Hostile Self-Propelled Rocket Launchers");
+    		groundSymbol.setAttributes(groundAttrs);
+    		groundSymbol.setHighlightAttributes(sharedHighlightAttrs);
+    		groundSymbol.setModifier(SymbologyConstants.DIRECTION_OF_MOVEMENT,
+    				Angle.fromDegrees(90));
+    		groundSymbol.setModifier(SymbologyConstants.SPEED_LEADER_SCALE, 0.5);
+    		groundSymbol.setShowLocation(false);
+    		layer.addRenderable(groundSymbol);
+      
         }
-        else if (controlType.equals(AVKey.VIEW_LOOK))
+        else if (controlType.equals(AVKey.VIEW_ALARM))
         {
-            setupFirstPersonView(view);
-            Angle heading = computeLookHeading(view, control, headingStep);
-            Angle pitch = computeLookPitch(view, control, pitchStep);
-            // Check whether the view will still point at terrain
-            Vec4 surfacePoint = computeSurfacePoint(view, heading, pitch);
-            if (surfacePoint != null)
-            {
-                // Change view state
-                final Position eyePos = view.getEyePosition();// Save current eye position
-                view.setHeading(heading);
-                view.setPitch(pitch);
-                view.setZoom(0);
-                view.setCenterPosition(eyePos); // Set center at the eye position
-            }
+            
         }
-        else if (controlType.equals(AVKey.VIEW_ZOOM_IN))
+        else if (controlType.equals(AVKey.VIEW_THREAT))
         {
-            resetOrbitView(view);
-            view.setZoom(computeNewZoom(view, -zoomStep));
+           
         }
-        else if (controlType.equals(AVKey.VIEW_ZOOM_OUT))
+        else if (controlType.equals(AVKey.VIEW_TAC_LINE))
         {
-            resetOrbitView(view);
-            view.setZoom(computeNewZoom(view, zoomStep));
+         
         }
-        else if (controlType.equals(AVKey.VIEW_HEADING_LEFT))
+        else if (controlType.equals(AVKey.VIEW_INSTALLATION))
         {
-            resetOrbitView(view);
-            view.setHeading(view.getHeading().addDegrees(headingStep));
+            
         }
-        else if (controlType.equals(AVKey.VIEW_HEADING_RIGHT))
-        {
-            resetOrbitView(view);
-            view.setHeading(view.getHeading().addDegrees(-headingStep));
-        }
-        else if (controlType.equals(AVKey.VIEW_PITCH_UP))
-        {
-            resetOrbitView(view);
-            if (view.getPitch().degrees >= pitchStep)
-                view.setPitch(view.getPitch().addDegrees(-pitchStep));
-        }
-        else if (controlType.equals(AVKey.VIEW_PITCH_DOWN))
-        {
-            resetOrbitView(view);
-            if (view.getPitch().degrees <= 90 - pitchStep)
-                view.setPitch(view.getPitch().addDegrees(pitchStep));
-        }
-        else if (controlType.equals(AVKey.VIEW_FOV_NARROW))
-        {
-            if (view.getFieldOfView().degrees / fovStep >= 4)
-                view.setFieldOfView(view.getFieldOfView().divide(fovStep));
-        }
-        else if (controlType.equals(AVKey.VIEW_FOV_WIDE))
-        {
-            if (view.getFieldOfView().degrees * fovStep < 120)
-                view.setFieldOfView(view.getFieldOfView().multiply(fovStep));
-        }
-        else if (controlType.equals(AVKey.VERTICAL_EXAGGERATION_UP))
-        {
-            SceneController sc = this.wwd.getSceneController();
-            sc.setVerticalExaggeration(sc.getVerticalExaggeration() + this.veStep);
-        }
-        else if (controlType.equals(AVKey.VERTICAL_EXAGGERATION_DOWN))
-        {
-            SceneController sc = this.wwd.getSceneController();
-            sc.setVerticalExaggeration(Math.max(1d, sc.getVerticalExaggeration() - this.veStep));
-        }
+
         view.firePropertyChange(AVKey.VIEW, null, view);
     }
 
