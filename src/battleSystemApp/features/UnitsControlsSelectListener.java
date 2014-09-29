@@ -29,7 +29,12 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 import battleSystemApp.core.Controller;
-
+/**
+ * Controla los iconos de la parte inferior derecha de la interfaz
+ * Son controles relacionados con el manejo de operaciones sobre unidades
+ * @author xs491004
+ *
+ */
 public class UnitsControlsSelectListener implements SelectListener
 {
     protected static final int DEFAULT_TIMER_DELAY = 50;
@@ -40,7 +45,7 @@ public class UnitsControlsSelectListener implements SelectListener
     protected ScreenAnnotation pressedControl;
     protected String pressedControlType;
     protected Point lastPickPoint = null;
-    private Controller controller;
+    protected Controller controller;
     protected Timer repeatTimer;
 
     /**
