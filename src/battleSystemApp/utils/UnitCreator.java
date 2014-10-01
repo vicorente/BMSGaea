@@ -606,9 +606,9 @@ public class UnitCreator extends WWObjectImpl
         this.setCursor(cursor);
     }
 
-    protected void setCursor(Cursor cursor)
+    public void setCursor(Cursor cursor)
     {
-        ((Component) this.getWwd()).setCursor(cursor != null ? cursor : Cursor.getDefaultCursor());
+        ((Component) this.getWwd()).setCursor(cursor != null ? cursor : Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
 
     protected static class RegionShape extends SurfaceSector

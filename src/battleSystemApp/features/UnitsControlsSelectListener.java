@@ -161,14 +161,25 @@ public class UnitsControlsSelectListener implements SelectListener {
 		this.lastPickPoint = event.getPickPoint();
 
 		if (event.getEventAction().equals(SelectEvent.LEFT_CLICK)) {
-			// Handle left press on controls
-			this.pressedControl = selectedObject;
-			this.pressedControlType = controlType;
-			this.unitsControlsLayer.highlight(selectedObject);
-			this.wwd.redraw();
-			if (controlType.equals(AVKey.VIEW_UNIT)) {
+
+			if (controlType.equals(AVKey.VIEW_UNIT)
+					&& !controlType.equals(this.pressedControlType)) {
 				this.unitCreator.enable();
+				this.unitsControlsLayer.highlight(selectedObject);
+				this.wwd.redraw();
+				this.pressedControl = selectedObject;
+				this.pressedControlType = controlType;
+			} else if (this.pressedControlType.equals(AVKey.VIEW_UNIT)
+					&& controlType.equals(this.pressedControlType)) {
+				this.unitCreator.disable();
+				this.unitCreator.setCursor(Cursor
+						.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				this.unitsControlsLayer.highlight(null);
+				this.wwd.redraw();
+				this.pressedControl = null;
+				this.pressedControlType = null;
 			}
+
 		}
 	}
 
@@ -217,16 +228,15 @@ public class UnitsControlsSelectListener implements SelectListener {
 			 * 0.5); groundSymbol.setShowLocation(false);
 			 * layer.addRenderable(groundSymbol);
 			 */
-			
 
 		} else if (controlType.equals(AVKey.VIEW_ALARM)) {
-		
+
 		} else if (controlType.equals(AVKey.VIEW_THREAT)) {
-		
+
 		} else if (controlType.equals(AVKey.VIEW_TAC_LINE)) {
-		
+
 		} else if (controlType.equals(AVKey.VIEW_INSTALLATION)) {
-		
+
 		}
 
 		view.firePropertyChange(AVKey.VIEW, null, view);
