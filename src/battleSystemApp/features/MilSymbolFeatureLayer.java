@@ -29,6 +29,16 @@ public class MilSymbolFeatureLayer extends AbstractFeatureLayer {
 	protected TacticalSymbolAttributes groundAttrs;
 	protected TacticalSymbolAttributes machineAttrs;
 	protected TacticalSymbolAttributes sharedHighlightAttrs;
+	protected ContextMenuItemInfo[] itemActions;
+	
+	public ContextMenuItemInfo[] getItemActions() {
+		return itemActions;
+	}
+
+	public void setItemActions(ContextMenuItemInfo[] itemActions) {
+		this.itemActions = itemActions;
+	}
+
 	public MilSymbolFeatureLayer() {
 		this(null);
 	}
@@ -75,7 +85,7 @@ public class MilSymbolFeatureLayer extends AbstractFeatureLayer {
 		RenderableLayer layer = new RenderableLayer();
 		layer.setName("MILSTD");
 
-		ContextMenuItemInfo[] itemActionNames = new ContextMenuItemInfo[] {
+		itemActions= new ContextMenuItemInfo[] {
 				new ContextMenuItemInfo(Constants.CONTEXT_MENU_ACTION_FOLLOW),
 				new ContextMenuItemInfo("Do That"),
 				new ContextMenuItemInfo("Do the Other Thing") };
@@ -138,11 +148,11 @@ public class MilSymbolFeatureLayer extends AbstractFeatureLayer {
 		layer.setValue(Constants.SCREEN_LAYER, true);			
 		
 		airSymbol.setValue(Constants.CONTEXT_MENU_INFO,
-				new ContextMenuInfo("Acciones", itemActionNames));
+				new ContextMenuInfo("Acciones", itemActions));
 		groundSymbol.setValue(Constants.CONTEXT_MENU_INFO,
-				new ContextMenuInfo("Acciones", itemActionNames));
+				new ContextMenuInfo("Acciones", itemActions));
 		machineGunSymbol.setValue(Constants.CONTEXT_MENU_INFO,
-				new ContextMenuInfo("Acciones", itemActionNames));
+				new ContextMenuInfo("Acciones", itemActions));
 		return layer;
 	}
 

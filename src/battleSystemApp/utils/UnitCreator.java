@@ -22,6 +22,8 @@ import gov.nasa.worldwind.util.Logging;
 import java.awt.*;
 import java.awt.event.*;
 
+import battleSystemApp.components.ContextMenuInfo;
+import battleSystemApp.core.Constants;
 import battleSystemApp.core.Controller;
 
 /**
@@ -162,6 +164,8 @@ public class UnitCreator extends WWObjectImpl implements SelectListener,
 			groundSymbol
 					.setModifier(SymbologyConstants.SPEED_LEADER_SCALE, 0.5);
 			groundSymbol.setShowLocation(false);
+			groundSymbol.setValue(Constants.CONTEXT_MENU_INFO,
+					new ContextMenuInfo("Acciones", controller.getMilSymbolFeatureLayer().getItemActions()));
 			controller.getMilSymbolFeatureLayer().getLayer()
 					.addRenderable(groundSymbol);
 
