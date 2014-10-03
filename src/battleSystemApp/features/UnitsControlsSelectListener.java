@@ -1,6 +1,5 @@
 package battleSystemApp.features;
 
-import gov.nasa.worldwind.SceneController;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.avlist.AVList;
@@ -16,20 +15,14 @@ import gov.nasa.worldwind.geom.Vec4;
 import gov.nasa.worldwind.globes.Globe;
 import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.render.ScreenAnnotation;
-import gov.nasa.worldwind.symbology.AbstractTacticalSymbol;
-import gov.nasa.worldwind.symbology.SymbologyConstants;
-import gov.nasa.worldwind.symbology.milstd2525.MilStd2525TacticalSymbol;
 import gov.nasa.worldwind.util.Logging;
 import gov.nasa.worldwind.view.orbit.OrbitView;
 
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
 import javax.swing.Timer;
 
 import battleSystemApp.core.Controller;
@@ -87,7 +80,7 @@ public class UnitsControlsSelectListener implements SelectListener {
 
 		this.wwd = wwd;
 		this.unitsControlsLayer = layer;
-		this.unitCreator = new UnitCreator(this.wwd);
+		this.unitCreator = new UnitCreator(this.controller);
 		// Setup repeat timer
 		this.repeatTimer = new Timer(DEFAULT_TIMER_DELAY, new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -169,6 +162,7 @@ public class UnitsControlsSelectListener implements SelectListener {
 				this.wwd.redraw();
 				this.pressedControl = selectedObject;
 				this.pressedControlType = controlType;
+				
 			} else if (this.pressedControlType.equals(AVKey.VIEW_UNIT)
 					&& controlType.equals(this.pressedControlType)) {
 				this.unitCreator.disable();
@@ -206,28 +200,8 @@ public class UnitsControlsSelectListener implements SelectListener {
 
 		if (controlType.equals(AVKey.VIEW_UNIT)) {
 
-			/*
-			 * resetOrbitView(view); // Go some distance in the control mouse
-			 * direction Angle heading = computePanHeading(view, control);
-			 * 
-			 * Vec4 surfacePoint = computeSurfacePoint(view, heading,
-			 * view.getPitch());
-			 * 
-			 * 
-			 * // GROUND SYMBOL AbstractTacticalSymbol groundSymbol = new
-			 * MilStd2525TacticalSymbol( "SHGXUCFRMS----G",
-			 * Position.fromDegrees(32.4014, 63.3894, 0));
-			 * groundSymbol.setValue(AVKey.HOVER_TEXT,
-			 * "MIL-STD-2525 Hostile Self-Propelled Rocket Launchers");
-			 * groundSymbol.setAttributes(groundAttrs);
-			 * groundSymbol.setHighlightAttributes(sharedHighlightAttrs);
-			 * groundSymbol
-			 * .setModifier(SymbologyConstants.DIRECTION_OF_MOVEMENT,
-			 * Angle.fromDegrees(90));
-			 * groundSymbol.setModifier(SymbologyConstants.SPEED_LEADER_SCALE,
-			 * 0.5); groundSymbol.setShowLocation(false);
-			 * layer.addRenderable(groundSymbol);
-			 */
+			this.unitCreator.setCursor(Cursor
+					.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 
 		} else if (controlType.equals(AVKey.VIEW_ALARM)) {
 

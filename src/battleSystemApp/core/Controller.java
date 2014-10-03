@@ -46,7 +46,7 @@ public class Controller {
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | UnsupportedLookAndFeelException e) {
 			Util.getLogger().log(Level.SEVERE,
-					"Error Gráfico -> " + e.getMessage());
+					"Error Grafico -> " + e.getMessage());
 		}
 	}
 

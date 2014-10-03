@@ -1,6 +1,5 @@
 package battleSystemApp.features;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import gov.nasa.worldwind.avlist.AVKey;
@@ -23,45 +22,50 @@ import battleSystemApp.core.layermanager.LayerPath;
 import battleSystemApp.utils.Util;
 
 @SuppressWarnings("serial")
-public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
+public class MilSymbolFeatureLayer extends AbstractFeatureLayer {
 
+	
+	protected TacticalSymbolAttributes airAttrs;
+	protected TacticalSymbolAttributes groundAttrs;
+	protected TacticalSymbolAttributes machineAttrs;
+	protected TacticalSymbolAttributes sharedHighlightAttrs;
 	public MilSymbolFeatureLayer() {
 		this(null);
 	}
 
 	public MilSymbolFeatureLayer(Registry registry) {
-		super("MIL-STD SYMBOL LAYER", Constants.FEATURE_MIL_STD,"images/wms-64x64.png", null, registry);
+		super("MIL-STD SYMBOL LAYER", Constants.FEATURE_MIL_STD, null, true, registry);
 	}
     @Override
     public void initialize(Controller controller)
     {
         super.initialize(controller);
 
-        this.addToToolBar();
+        //this.addToToolBar();
     }
 
-    @Override
-    protected RenderableLayer createLayer()
-    {
-    	RenderableLayer layer = this.doCreateLayer();
-
-        layer.setPickEnabled(true);
-
-        return layer;
-    }
-
-    @Override
-    protected void addLayer(LayerPath path)
-    {
-        controller.addInternalActiveLayer(this.layer);
-    }
-
-    @Override
-    protected void removeLayer()
-    {
-        this.controller.getWWPanel().removeLayer(this.layer);
-    }
-    
+//    @Override
+//    protected RenderableLayer createLayer()
+//    {
+//    	RenderableLayer layer = this.doCreateLayer();
+//
+//        layer.setPickEnabled(true);
+//
+//        return layer;
+//    }
+//
+//    @Override
+//    protected void addLayer(LayerPath path)
+//    {
+//        controller.addInternalActiveLayer(this.layer);
+//    }
+//
+//    @Override
+//    protected void removeLayer()
+//    {
+//        this.controller.getWWPanel().removeLayer(this.layer);
+//    }
+//    
     public RenderableLayer getLayer(){
     	return (RenderableLayer) this.layer;
     }
@@ -76,10 +80,10 @@ public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
 				new ContextMenuItemInfo("Do That"),
 				new ContextMenuItemInfo("Do the Other Thing") };
 		
-		TacticalSymbolAttributes airAttrs = new BasicTacticalSymbolAttributes();
-		TacticalSymbolAttributes groundAttrs = new BasicTacticalSymbolAttributes();
-		TacticalSymbolAttributes machineAttrs = new BasicTacticalSymbolAttributes();
-		TacticalSymbolAttributes sharedHighlightAttrs = new BasicTacticalSymbolAttributes();
+		airAttrs = new BasicTacticalSymbolAttributes();
+		groundAttrs = new BasicTacticalSymbolAttributes();
+		machineAttrs = new BasicTacticalSymbolAttributes();
+		sharedHighlightAttrs = new BasicTacticalSymbolAttributes();
 		sharedHighlightAttrs.setInteriorMaterial(Material.WHITE);
 		sharedHighlightAttrs.setOpacity(1.0);
 
@@ -142,6 +146,45 @@ public class MilSymbolFeatureLayer extends AbstractOnDemandLayerFeature {
 		return layer;
 	}
 
+	public TacticalSymbolAttributes getAirAttrs() {
+		return airAttrs;
+	}
+
+	public void setAirAttrs(TacticalSymbolAttributes airAttrs) {
+		this.airAttrs = airAttrs;
+	}
+
+	public TacticalSymbolAttributes getGroundAttrs() {
+		return groundAttrs;
+	}
+
+	public void setGroundAttrs(TacticalSymbolAttributes groundAttrs) {
+		this.groundAttrs = groundAttrs;
+	}
+
+	public TacticalSymbolAttributes getMachineAttrs() {
+		return machineAttrs;
+	}
+
+	public void setMachineAttrs(TacticalSymbolAttributes machineAttrs) {
+		this.machineAttrs = machineAttrs;
+	}
+
+	public TacticalSymbolAttributes getSharedHighlightAttrs() {
+		return sharedHighlightAttrs;
+	}
+
+	public void setSharedHighlightAttrs(
+			TacticalSymbolAttributes sharedHighlightAttrs) {
+		this.sharedHighlightAttrs = sharedHighlightAttrs;
+	}
+
+	@Override
+	protected Layer doAddLayer() {
+		this.layer = doCreateLayer();
+		controller.addInternalActiveLayer(this.layer);
+		return this.layer;
+	}
 	
 
 }
