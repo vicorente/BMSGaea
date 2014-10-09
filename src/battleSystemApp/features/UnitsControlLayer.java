@@ -6,6 +6,7 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import battleSystemApp.utils.HighlightableScreenAnnotation;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.geom.Vec4;
 import gov.nasa.worldwind.layers.RenderableLayer;
@@ -25,12 +26,12 @@ public class UnitsControlLayer extends RenderableLayer {
 
 
 	// The annotations used to display the controls.
-	protected ScreenAnnotation controlUnit;
-	protected ScreenAnnotation controlAlarm;
-	protected ScreenAnnotation controlThreat;
-	protected ScreenAnnotation controlTacLine;
-	protected ScreenAnnotation controlInstallation;
-	protected ScreenAnnotation currentControl;
+	protected HighlightableScreenAnnotation controlUnit;
+	protected HighlightableScreenAnnotation controlAlarm;
+	protected HighlightableScreenAnnotation controlThreat;
+	protected HighlightableScreenAnnotation controlTacLine;
+	protected HighlightableScreenAnnotation controlInstallation;
+	protected HighlightableScreenAnnotation currentControl;
 
 	protected String position = AVKey.SOUTHEAST;
 	protected String layout = AVKey.HORIZONTAL;
@@ -368,7 +369,7 @@ public class UnitsControlLayer extends RenderableLayer {
 
 		// Turn on highlight if object selected.
 		if (control != null && control instanceof ScreenAnnotation) {
-			this.currentControl = (ScreenAnnotation) control;
+			this.currentControl = (HighlightableScreenAnnotation) control;
 			this.currentControl.getAttributes().setImageOpacity(1);
 		}
 	}
@@ -407,7 +408,7 @@ public class UnitsControlLayer extends RenderableLayer {
 		final Point ORIGIN = new Point(0, 0);
 		if (this.showUnitControls) {
 			// Unit
-			controlUnit = new ScreenAnnotation(NOTEXT, ORIGIN, ca);
+			controlUnit = new HighlightableScreenAnnotation(NOTEXT, ORIGIN, ca);
 			controlUnit.setValue(AVKey.VIEW_OPERATION, AVKey.VIEW_UNIT);
 			controlUnit.getAttributes().setImageSource(
 					getImageSource(AVKey.VIEW_UNIT));
@@ -417,7 +418,7 @@ public class UnitsControlLayer extends RenderableLayer {
 		}
 		if (this.showAlarmControls) {
 			// Alarm
-			controlAlarm = new ScreenAnnotation(NOTEXT, ORIGIN, ca);
+			controlAlarm = new HighlightableScreenAnnotation(NOTEXT, ORIGIN, ca);
 			controlAlarm.setValue(AVKey.VIEW_OPERATION, AVKey.VIEW_ALARM);
 			controlAlarm.getAttributes().setImageSource(
 					getImageSource(AVKey.VIEW_ALARM));
@@ -427,7 +428,7 @@ public class UnitsControlLayer extends RenderableLayer {
 		}
 		if (this.showThreatControls) {
 			// Threat
-			controlThreat = new ScreenAnnotation(NOTEXT, ORIGIN, ca);
+			controlThreat = new HighlightableScreenAnnotation(NOTEXT, ORIGIN, ca);
 			controlThreat.setValue(AVKey.VIEW_OPERATION, AVKey.VIEW_THREAT);
 			controlThreat.getAttributes().setImageSource(
 					getImageSource(AVKey.VIEW_THREAT));
@@ -437,7 +438,7 @@ public class UnitsControlLayer extends RenderableLayer {
 		}
 		if (this.showTacLineControls) {
 			// TacLine
-			controlTacLine = new ScreenAnnotation(NOTEXT, ORIGIN, ca);
+			controlTacLine = new HighlightableScreenAnnotation(NOTEXT, ORIGIN, ca);
 			controlTacLine.setValue(AVKey.VIEW_OPERATION, AVKey.VIEW_TAC_LINE);
 			controlTacLine.getAttributes().setImageSource(
 					getImageSource(AVKey.VIEW_TAC_LINE));
@@ -446,7 +447,7 @@ public class UnitsControlLayer extends RenderableLayer {
 			this.addRenderable(controlTacLine);
 		}
 		if (this.showInstallationControls) {
-			controlInstallation = new ScreenAnnotation(NOTEXT, ORIGIN, ca);
+			controlInstallation = new HighlightableScreenAnnotation(NOTEXT, ORIGIN, ca);
 			controlInstallation.setValue(AVKey.VIEW_OPERATION,
 					AVKey.VIEW_INSTALLATION);
 			controlInstallation.getAttributes().setImageSource(

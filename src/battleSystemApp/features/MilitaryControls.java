@@ -39,10 +39,10 @@ public class MilitaryControls extends AbstractFeatureLayer
 
         controller.addInternalLayer(layer);
 
-        UnitsControlsSelectListener listener = new UnitsControlsSelectListener(this.controller, layer);
-        listener.setRepeatTimerDelay(30);
+        //UnitsControlsSelectListener listener = new UnitsControlsSelectListener(this.controller, layer);
+        //listener.setRepeatTimerDelay(30);
        
-        this.controller.getWWd().addSelectListener(listener);
+        //this.controller.getWWd().addSelectListener(listener);
 
         return layer;
     }

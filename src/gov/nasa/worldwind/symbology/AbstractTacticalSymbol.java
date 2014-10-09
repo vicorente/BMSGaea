@@ -251,7 +251,7 @@ public abstract class AbstractTacticalSymbol extends WWObjectImpl implements
 				IconSource source = (IconSource) this.getImageSource();
 				BufferedImage image = source.getRetriever().createIcon(
 						source.getSymbolId(), source.getRetrieverParams());
-
+				
 				if (image == null) {
 					// ModifierRetriever returns null if the modifier or its
 					// value is not recognized. In either case, we

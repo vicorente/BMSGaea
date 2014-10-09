@@ -30,6 +30,7 @@ import battleSystemApp.dds.DDSCommLayer;
 import battleSystemApp.dds.DDSListener;
 import battleSystemApp.dds.idl.Msg;
 import battleSystemApp.features.AbstractFeature;
+import battleSystemApp.features.UnitsControlLayer;
 import battleSystemApp.utils.Util;
 import gov.nasa.worldwind.Disposable;
 import gov.nasa.worldwind.Movable;
@@ -47,6 +48,7 @@ import gov.nasa.worldwind.render.Highlightable;
 import gov.nasa.worldwind.render.Material;
 import gov.nasa.worldwind.render.PatternFactory;
 import gov.nasa.worldwind.render.Renderable;
+import gov.nasa.worldwind.render.ScreenAnnotation;
 import gov.nasa.worldwind.render.UserFacingIcon;
 import gov.nasa.worldwind.symbology.AbstractTacticalSymbol;
 import gov.nasa.worldwind.symbology.SymbologyConstants;
@@ -82,6 +84,7 @@ public class IconController extends AbstractFeature implements SelectListener,
 
 	public void dispose() {
 		this.controller.getWWd().removeSelectListener(this);
+		this.controller.getCommLayer().removeListener(this);
 	}
 
 	public void selected(SelectEvent event) {
@@ -91,7 +94,8 @@ public class IconController extends AbstractFeature implements SelectListener,
 				Util.getLogger().severe("null event");
 				throw new IllegalArgumentException("null event");
 			} else if (event.getEventAction().equals(SelectEvent.ROLLOVER)) {
-				highlight(event, event.getTopObject());
+				Object topObject = event.getTopObject();			
+				highlight(event, topObject);
 			} else if (event.getEventAction().equals(SelectEvent.DRAG_END)) {
 				DragSelectEvent dragEvent = (DragSelectEvent) event;
 				Object topObject = dragEvent.getTopObject();
@@ -318,11 +322,11 @@ public class IconController extends AbstractFeature implements SelectListener,
 						// Creamos una linea que indique el movimiento
 						controller.getMilSymbolFeatureLayer().getLayer()
 								.addRenderable(Util.getPath(begin, end));
-						
+
 						// El simbolo ha sido movido
 						moved = true;
 					}
-				} 
+				}
 			}
 			// se realiza en el caso de que tengamos algún simbolo en
 			// seguimiento y haya sido movido externamente
