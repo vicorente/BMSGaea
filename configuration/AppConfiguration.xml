@@ -32,8 +32,7 @@
     <Feature className="battleSystemApp.features.ScreenLayerTree"/>
     <!-- PANEL DE MENSAJES -->
     <Feature className="battleSystemApp.features.MessageWindow"/>
-    <!-- PANEL DE UNIDADES -->
-    <!-- <Feature className="battleSystemApp.features.UnitsWindow"/> -->
+
     
     <!--<Feature className="battleSystemApp.features.swinglayermanager.LayerManagerDialog"/>-->
     <Feature className="battleSystemApp.features.CoordinatesDisplay"/>
