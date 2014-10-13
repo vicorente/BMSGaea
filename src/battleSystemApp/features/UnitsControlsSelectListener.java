@@ -158,7 +158,7 @@ public class UnitsControlsSelectListener implements SelectListener {
 			if (controlType.equals(AVKey.VIEW_UNIT)
 					&& !controlType.equals(this.pressedControlType)) {
 				this.unitCreator.enable();
-				this.unitsControlsLayer.highlight(selectedObject);
+			//	this.unitsControlsLayer.highlight(selectedObject);
 				this.wwd.redraw();
 				this.pressedControl = selectedObject;
 				this.pressedControlType = controlType;
@@ -168,7 +168,7 @@ public class UnitsControlsSelectListener implements SelectListener {
 				this.unitCreator.disable();
 				this.unitCreator.setCursor(Cursor
 						.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				this.unitsControlsLayer.highlight(null);
+			//	this.unitsControlsLayer.highlight(null);
 				this.wwd.redraw();
 				this.pressedControl = null;
 				this.pressedControlType = null;

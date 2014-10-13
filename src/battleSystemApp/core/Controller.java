@@ -21,6 +21,7 @@ import battleSystemApp.core.layermanager.LayerManager;
 import battleSystemApp.dds.DDSCommLayer;
 import battleSystemApp.features.MessageWindow;
 import battleSystemApp.features.MilSymbolFeatureLayer;
+import battleSystemApp.features.MilitaryControls;
 import battleSystemApp.features.NetworkActivitySignal;
 import battleSystemApp.utils.Util;
 import battleSystemApp.utils.WWOUnitsFormat;
@@ -149,6 +150,9 @@ public class Controller {
 		return (LayerManager) getRegisteredObject(Constants.FEATURE_LAYER_MANAGER);
 	}
 
+	public MilitaryControls getMilitaryControls(){
+		return (MilitaryControls) getRegisteredObject(Constants.FEATURE_MILITARY_CONTROLS);
+	}
 	public JFileChooser getFileChooser() {
 		if (this.fileChooser == null)
 			this.fileChooser = new JFileChooser();

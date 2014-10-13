@@ -5,14 +5,29 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+
+import battleSystemApp.components.ContextMenuInfo;
+import battleSystemApp.core.Constants;
+import battleSystemApp.core.Controller;
 import battleSystemApp.utils.HighlightableScreenAnnotation;
 import gov.nasa.worldwind.avlist.AVKey;
+import gov.nasa.worldwind.awt.AWTInputHandler;
+import gov.nasa.worldwind.geom.Angle;
+import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.Vec4;
 import gov.nasa.worldwind.layers.RenderableLayer;
 import gov.nasa.worldwind.render.AnnotationAttributes;
 import gov.nasa.worldwind.render.DrawContext;
 import gov.nasa.worldwind.render.ScreenAnnotation;
+import gov.nasa.worldwind.symbology.SymbologyConstants;
+import gov.nasa.worldwind.symbology.TacticalSymbol;
+import gov.nasa.worldwind.symbology.milstd2525.MilStd2525TacticalSymbol;
 import gov.nasa.worldwind.util.Logging;
 
 public class UnitsControlLayer extends RenderableLayer {
@@ -23,7 +38,6 @@ public class UnitsControlLayer extends RenderableLayer {
 	protected final static String IMAGE_THREAT = "resources/images/target-grey64x64.png";
 	protected final static String IMAGE_TAC_LINE = "resources/images/mapa64x64.png";
 	protected final static String IMAGE_INSTALLATION = "resources/images/fire-engineering64x64.png";
-
 
 	// The annotations used to display the controls.
 	protected HighlightableScreenAnnotation controlUnit;
@@ -44,14 +58,19 @@ public class UnitsControlLayer extends RenderableLayer {
 	protected boolean initialized = false;
 	protected Rectangle referenceViewport;
 	protected int iconSeparation = 5;
-	
+
 	protected boolean showUnitControls = true;
 	protected boolean showAlarmControls = true;
 	protected boolean showThreatControls = true;
 	protected boolean showHeadingControls = true;
 	protected boolean showTacLineControls = true;
 	protected boolean showInstallationControls = true;
-	
+	protected Controller controller;
+
+	public UnitsControlLayer(Controller controller) {
+		super();
+		this.controller = controller;
+	}
 
 	public int getBorderWidth() {
 		return this.borderWidth;
@@ -301,7 +320,6 @@ public class UnitsControlLayer extends RenderableLayer {
 		}
 	}
 
-	
 	/**
 	 * Get the control type associated with the given object or null if unknown.
 	 * 
@@ -347,32 +365,33 @@ public class UnitsControlLayer extends RenderableLayer {
 		return this.currentControl;
 	}
 
-	/**
-	 * Specifies the control to highlight. Any currently highlighted control is
-	 * un-highlighted.
-	 * 
-	 * @param control
-	 *            the control to highlight.
-	 */
-	public void highlight(Object control) {
-		// Manage highlighting of controls.
-		if (this.currentControl == control)
-			return; // same thing selected
-
-		// Turn off highlight if on.
-		if (this.currentControl != null) {
-			this.currentControl.getAttributes().setImageOpacity(-1); // use
-																		// default
-																		// opacity
-			this.currentControl = null;
-		}
-
-		// Turn on highlight if object selected.
-		if (control != null && control instanceof ScreenAnnotation) {
-			this.currentControl = (HighlightableScreenAnnotation) control;
-			this.currentControl.getAttributes().setImageOpacity(1);
-		}
-	}
+	// /**
+	// * Specifies the control to highlight. Any currently highlighted control
+	// is
+	// * un-highlighted.
+	// *
+	// * @param control
+	// * the control to highlight.
+	// */
+	// public void highlight(Object control) {
+	// // Manage highlighting of controls.
+	// if (this.currentControl == control)
+	// return; // same thing selected
+	//
+	// // Turn off highlight if on.
+	// if (this.currentControl != null) {
+	// this.currentControl.getAttributes().setImageOpacity(-1); // use
+	// // default
+	// // opacity
+	// this.currentControl = null;
+	// }
+	//
+	// // Turn on highlight if object selected.
+	// if (control != null && control instanceof ScreenAnnotation) {
+	// this.currentControl = (HighlightableScreenAnnotation) control;
+	// this.currentControl.getAttributes().setImageOpacity(1);
+	// }
+	// }
 
 	@Override
 	public void doRender(DrawContext dc) {
@@ -408,12 +427,14 @@ public class UnitsControlLayer extends RenderableLayer {
 		final Point ORIGIN = new Point(0, 0);
 		if (this.showUnitControls) {
 			// Unit
+
 			controlUnit = new HighlightableScreenAnnotation(NOTEXT, ORIGIN, ca);
 			controlUnit.setValue(AVKey.VIEW_OPERATION, AVKey.VIEW_UNIT);
 			controlUnit.getAttributes().setImageSource(
 					getImageSource(AVKey.VIEW_UNIT));
 			controlUnit.getAttributes().setSize(
 					new Dimension(alarmSize, alarmSize));
+			controlUnit.setAction(new newUnitAction());
 			this.addRenderable(controlUnit);
 		}
 		if (this.showAlarmControls) {
@@ -428,7 +449,8 @@ public class UnitsControlLayer extends RenderableLayer {
 		}
 		if (this.showThreatControls) {
 			// Threat
-			controlThreat = new HighlightableScreenAnnotation(NOTEXT, ORIGIN, ca);
+			controlThreat = new HighlightableScreenAnnotation(NOTEXT, ORIGIN,
+					ca);
 			controlThreat.setValue(AVKey.VIEW_OPERATION, AVKey.VIEW_THREAT);
 			controlThreat.getAttributes().setImageSource(
 					getImageSource(AVKey.VIEW_THREAT));
@@ -438,7 +460,8 @@ public class UnitsControlLayer extends RenderableLayer {
 		}
 		if (this.showTacLineControls) {
 			// TacLine
-			controlTacLine = new HighlightableScreenAnnotation(NOTEXT, ORIGIN, ca);
+			controlTacLine = new HighlightableScreenAnnotation(NOTEXT, ORIGIN,
+					ca);
 			controlTacLine.setValue(AVKey.VIEW_OPERATION, AVKey.VIEW_TAC_LINE);
 			controlTacLine.getAttributes().setImageSource(
 					getImageSource(AVKey.VIEW_TAC_LINE));
@@ -447,7 +470,8 @@ public class UnitsControlLayer extends RenderableLayer {
 			this.addRenderable(controlTacLine);
 		}
 		if (this.showInstallationControls) {
-			controlInstallation = new HighlightableScreenAnnotation(NOTEXT, ORIGIN, ca);
+			controlInstallation = new HighlightableScreenAnnotation(NOTEXT,
+					ORIGIN, ca);
 			controlInstallation.setValue(AVKey.VIEW_OPERATION,
 					AVKey.VIEW_INSTALLATION);
 			controlInstallation.getAttributes().setImageSource(
@@ -457,22 +481,7 @@ public class UnitsControlLayer extends RenderableLayer {
 
 			this.addRenderable(controlInstallation);
 		}
-		// if (this.showVeControls)
-		// {
-		// // Vertical Exaggeration
-		// controlVeUp = new ScreenAnnotation(NOTEXT, ORIGIN, ca);
-		// controlVeUp.setValue(AVKey.VIEW_OPERATION,
-		// AVKey.VERTICAL_EXAGGERATION_UP);
-		// controlVeUp.getAttributes().setImageSource(getImageSource(AVKey.VERTICAL_EXAGGERATION_UP));
-		// this.addRenderable(controlVeUp);
-		// controlVeDown = new ScreenAnnotation(NOTEXT, ORIGIN, ca);
-		// controlVeDown.setValue(AVKey.VIEW_OPERATION,
-		// AVKey.VERTICAL_EXAGGERATION_DOWN);
-		// controlVeDown.getAttributes().setImageSource(getImageSource(AVKey.VERTICAL_EXAGGERATION_DOWN));
-		// this.addRenderable(controlVeDown);
-		// }
 
-		// Place controls according to layout and viewport dimension
 		updatePositions(dc);
 
 		this.initialized = true;
@@ -510,11 +519,11 @@ public class UnitsControlLayer extends RenderableLayer {
 
 		// horizontal layout: pan button + look button beside 2 rows of 4
 		// buttons
-		int width = (showUnitControls ? alarmSize+iconSeparation : 0)
-				+ (showAlarmControls ? alarmSize+iconSeparation : 0)
-				+ (showThreatControls ? alarmSize+iconSeparation : 0)
-				+ (showTacLineControls ? alarmSize+iconSeparation : 0)
-				+ (showInstallationControls ? alarmSize+iconSeparation : 0);
+		int width = (showUnitControls ? alarmSize + iconSeparation : 0)
+				+ (showAlarmControls ? alarmSize + iconSeparation : 0)
+				+ (showThreatControls ? alarmSize + iconSeparation : 0)
+				+ (showTacLineControls ? alarmSize + iconSeparation : 0)
+				+ (showInstallationControls ? alarmSize + iconSeparation : 0);
 		int height = Math.max(alarmSize, buttonSize * 2);
 		width = (int) (width * scale);
 		height = (int) (height * scale);
@@ -556,7 +565,7 @@ public class UnitsControlLayer extends RenderableLayer {
 				y -= (int) (alarmSize * scale);
 			controlAlarm.setScreenPoint(new Point(x + halfalarmSize, y));
 			if (horizontalLayout)
-				x += (int) (alarmSize * scale)+iconSeparation;
+				x += (int) (alarmSize * scale) + iconSeparation;
 		}
 		if (this.showThreatControls) {
 
@@ -564,7 +573,7 @@ public class UnitsControlLayer extends RenderableLayer {
 				y -= (int) (alarmSize * scale);
 			controlThreat.setScreenPoint(new Point(x + halfalarmSize, y));
 			if (horizontalLayout)
-				x += (int) (alarmSize * scale)+iconSeparation;
+				x += (int) (alarmSize * scale) + iconSeparation;
 		}
 		if (this.showTacLineControls) {
 
@@ -572,7 +581,7 @@ public class UnitsControlLayer extends RenderableLayer {
 				y -= (int) (alarmSize * scale);
 			controlTacLine.setScreenPoint(new Point(x + halfalarmSize, y));
 			if (horizontalLayout)
-				x += (int) (alarmSize * scale)+iconSeparation;
+				x += (int) (alarmSize * scale) + iconSeparation;
 		}
 		if (this.showInstallationControls) {
 
@@ -580,8 +589,8 @@ public class UnitsControlLayer extends RenderableLayer {
 				y -= (int) (alarmSize * scale);
 			controlInstallation.setScreenPoint(new Point(x + halfalarmSize, y));
 			if (horizontalLayout)
-				x += (int) (alarmSize * scale)+iconSeparation;
-		}		
+				x += (int) (alarmSize * scale) + iconSeparation;
+		}
 
 		this.referenceViewport = dc.getView().getViewport();
 	}
@@ -647,5 +656,91 @@ public class UnitsControlLayer extends RenderableLayer {
 	@Override
 	public String toString() {
 		return Logging.getMessage("layers.ViewControlsLayer.Name");
+	}
+
+	/**
+	 * Crea una nueva unidad
+	 * 
+	 * @author xs491004
+	 *
+	 */
+	private class newUnitAction extends AbstractAction implements MouseListener {
+		private Position previousPosition = null;
+
+		public void actionPerformed(ActionEvent e) {
+			if (((HighlightableScreenAnnotation) e.getSource()).isArmed()) {
+				controller.getWWd().getInputHandler().addMouseListener(this);
+			} else {
+				controller.getWWd().getInputHandler().removeMouseListener(this);
+			}
+
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void mouseExited(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void mousePressed(MouseEvent mouseEvent) {
+			if (MouseEvent.BUTTON1_DOWN_MASK != mouseEvent.getModifiersEx())
+				return;
+
+			Position posicion = controller.getWWd().getCurrentPosition();
+			if (posicion != null) {
+				this.setPreviousPosition(controller.getWWd()
+						.getCurrentPosition());
+				// Add symbol in the specified position
+				TacticalSymbol groundSymbol = new MilStd2525TacticalSymbol(
+						"SHGXUCFRMS----G", posicion);
+				groundSymbol.setValue(AVKey.DISPLAY_NAME,
+						"MIL-STD-2525 Hostile Self-Propelled Rocket Launchers");
+				groundSymbol.setAttributes(controller
+						.getMilSymbolFeatureLayer().getGroundAttrs());
+				groundSymbol.setHighlightAttributes(controller
+						.getMilSymbolFeatureLayer().getSharedHighlightAttrs());
+				groundSymbol.setModifier(
+						SymbologyConstants.DIRECTION_OF_MOVEMENT,
+						Angle.fromDegrees(90));
+				groundSymbol.setModifier(SymbologyConstants.SPEED_LEADER_SCALE,
+						0.5);
+				groundSymbol.setShowLocation(false);
+				groundSymbol.setValue(Constants.CONTEXT_MENU_INFO,
+						new ContextMenuInfo("Acciones", controller
+								.getMilSymbolFeatureLayer().getItemActions()));
+				controller.getMilSymbolFeatureLayer().getLayer()
+						.addRenderable(groundSymbol);
+
+			}
+
+			mouseEvent.consume();
+		}
+
+		protected Position getPreviousPosition() {
+			return previousPosition;
+		}
+
+		protected void setPreviousPosition(Position previousPosition) {
+			this.previousPosition = previousPosition;
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+
+		}
 	}
 }

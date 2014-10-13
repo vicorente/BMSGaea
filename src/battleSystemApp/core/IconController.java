@@ -11,7 +11,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.Timer;
 
 import battleSystemApp.components.ContextMenuInfo;
 import battleSystemApp.components.ContextMenuItemInfo;
@@ -30,7 +28,7 @@ import battleSystemApp.dds.DDSCommLayer;
 import battleSystemApp.dds.DDSListener;
 import battleSystemApp.dds.idl.Msg;
 import battleSystemApp.features.AbstractFeature;
-import battleSystemApp.features.UnitsControlLayer;
+import battleSystemApp.utils.HighlightableScreenAnnotation;
 import battleSystemApp.utils.Util;
 import gov.nasa.worldwind.Disposable;
 import gov.nasa.worldwind.Movable;
@@ -38,7 +36,6 @@ import gov.nasa.worldwind.View;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.avlist.AVList;
 import gov.nasa.worldwind.event.*;
-import gov.nasa.worldwind.geom.Angle;
 import gov.nasa.worldwind.geom.Intersection;
 import gov.nasa.worldwind.geom.Line;
 import gov.nasa.worldwind.geom.Position;
@@ -48,7 +45,6 @@ import gov.nasa.worldwind.render.Highlightable;
 import gov.nasa.worldwind.render.Material;
 import gov.nasa.worldwind.render.PatternFactory;
 import gov.nasa.worldwind.render.Renderable;
-import gov.nasa.worldwind.render.ScreenAnnotation;
 import gov.nasa.worldwind.render.UserFacingIcon;
 import gov.nasa.worldwind.symbology.AbstractTacticalSymbol;
 import gov.nasa.worldwind.symbology.SymbologyConstants;
@@ -94,8 +90,9 @@ public class IconController extends AbstractFeature implements SelectListener,
 				Util.getLogger().severe("null event");
 				throw new IllegalArgumentException("null event");
 			} else if (event.getEventAction().equals(SelectEvent.ROLLOVER)) {
-				Object topObject = event.getTopObject();			
+				Object topObject = event.getTopObject();
 				highlight(event, topObject);
+				event.consume();
 			} else if (event.getEventAction().equals(SelectEvent.DRAG_END)) {
 				DragSelectEvent dragEvent = (DragSelectEvent) event;
 				Object topObject = dragEvent.getTopObject();
@@ -132,6 +129,7 @@ public class IconController extends AbstractFeature implements SelectListener,
 
 					this.dragging = false;
 					event.consume();
+					// ((Component)controller.getWWd()).setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				}
 
 			} else if (event.getEventAction().equals(SelectEvent.DRAG)) {
@@ -200,10 +198,16 @@ public class IconController extends AbstractFeature implements SelectListener,
 				}
 				this.dragging = true;
 				event.consume();
-				// movemos la vista de la cámara si está activado
+				// movemos la vista de la camara si esta activado
 				controller.getTrackingView().sceneChanged();
 			} else if (event.getEventAction().equals(SelectEvent.RIGHT_PRESS)) {
 				showContextMenu(event);
+				event.consume();
+			} else if (event.getEventAction().equals(SelectEvent.LEFT_PRESS)) {
+				Object topObject = event.getTopObject();
+				if (topObject instanceof HighlightableScreenAnnotation) {
+					((HighlightableScreenAnnotation) topObject).doClick();
+				}
 				event.consume();
 			}
 		} catch (Exception e) {
@@ -225,7 +229,6 @@ public class IconController extends AbstractFeature implements SelectListener,
 			this.lastPickedIcon.setHighlighted(false);
 			this.lastPickedIcon = null;
 			controller.setStatusMessage("");
-
 		}
 
 		// Turn on highlight if object selected.

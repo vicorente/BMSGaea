@@ -77,7 +77,7 @@ public class UnitCreator extends WWObjectImpl implements SelectListener,
 		// Update the layer panel to display the symbol layer.
 	}
 
-	public WorldWindow getWwd() {
+	public WorldWindow getWWd() {
 		return wwd;
 	}
 
@@ -88,15 +88,15 @@ public class UnitCreator extends WWObjectImpl implements SelectListener,
 
 		this.setArmed(true);
 
-		this.getWwd().addSelectListener(this);
-		this.getWwd().getInputHandler().addMouseListener(this);
+		this.getWWd().addSelectListener(this);
+		this.getWWd().getInputHandler().addMouseListener(this);
 
 		this.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 	}
 
 	public void disable() {
-		this.getWwd().removeSelectListener(this);
-		this.getWwd().getInputHandler().removeMouseListener(this);
+		this.getWWd().removeSelectListener(this);
+		this.getWWd().getInputHandler().removeMouseListener(this);
 		this.setArmed(false);
 	}
 
@@ -147,9 +147,9 @@ public class UnitCreator extends WWObjectImpl implements SelectListener,
 		if (!this.isArmed())
 			return;
 		
-		Position posicion = this.getWwd().getCurrentPosition();
+		Position posicion = this.getWWd().getCurrentPosition();
 		if (posicion != null) {
-			this.setPreviousPosition(this.getWwd().getCurrentPosition());
+			this.setPreviousPosition(this.getWWd().getCurrentPosition());
 			// Add symbol in the specified position
 			TacticalSymbol groundSymbol = new MilStd2525TacticalSymbol(
 					"SHGXUCFRMS----G", posicion);
@@ -240,12 +240,12 @@ public class UnitCreator extends WWObjectImpl implements SelectListener,
 	}
 
 	public void setCursor(Cursor cursor) {
-		((Component) this.getWwd()).setCursor(cursor != null ? cursor : Cursor
+		((Component) this.getWWd()).setCursor(cursor != null ? cursor : Cursor
 				.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 	}
 
 	public Cursor getCursor() {
-		return ((Component) this.getWwd()).getCursor();
+		return ((Component) this.getWWd()).getCursor();
 	}
 	
 	protected static class RegionShape extends SurfaceSector {

@@ -36,7 +36,6 @@ public abstract class AbstractFeatureLayer extends AbstractFeature
     public void initialize(Controller controller)
     {
         super.initialize(controller);
-
         this.layer = this.doAddLayer();
     }
 

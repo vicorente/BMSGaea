@@ -31,7 +31,7 @@ public class MilitaryControls extends AbstractFeatureLayer
 
     protected Layer doAddLayer()
     {
-        UnitsControlLayer layer = new UnitsControlLayer();
+        UnitsControlLayer layer = new UnitsControlLayer(this.controller);
 
         layer.setValue(Constants.SCREEN_LAYER, true);
         layer.setValue(Constants.INTERNAL_LAYER, true);
@@ -47,7 +47,7 @@ public class MilitaryControls extends AbstractFeatureLayer
         return layer;
     }
 
-    private UnitsControlLayer getLayer()
+    public UnitsControlLayer getLayer()
     {
         return (UnitsControlLayer) this.layer;
     }
